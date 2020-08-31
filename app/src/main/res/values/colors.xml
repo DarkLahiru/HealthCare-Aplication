@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#202F65</color>
+    <color name="colorPrimaryDark">#202F65</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="background">#D8D8D8</color>
+    <color name="titleColor">#ffffff</color>
+    <color name="imgUpload">#FFEB3B</color>
+    <color name="darkWhite">#BFBFBF</color>
+    <color name="medBG">#eaebe6</color>
+    <color name="contactItem">#FFEB3B</color>
+    <color name="contactButton">#aacef7</color>
+
+</resources>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bgapps"
+    tools:context=".LoginActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="32dp">
+
+        <TextView
+            android:id="@+id/txtDashboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btnSignIn"
+            android:layout_width="223dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/btnRegisterHere"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="96dp"
+            android:layout_marginEnd="92dp"
+            android:layout_marginBottom="56dp"
+            android:background="@drawable/custom_button"
+            android:text="Sign In"
+            android:textColor="#d8d8d8"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnRegisterHere"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="133dp"
+            android:layout_marginEnd="132dp"
+            android:layout_marginBottom="68dp"
+            android:background="@drawable/custom_button"
+            android:text="Click here for Registration"
+            android:textColor="#d8d8d8"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/eTUserName"
+            android:layout_width="236dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnSignIn"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="99dp"
+            android:layout_marginEnd="97dp"
+            android:layout_marginBottom="158dp"
+            android:autofillHints=""
+            android:drawableLeft="@drawable/username_icon"
+            android:ems="10"
+            android:hint=" Email Address"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/eTPassword"
+            android:layout_width="234dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnSignIn"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="98dp"
+            android:layout_marginBottom="63dp"
+            android:autofillHints=""
+            android:drawableStart="@drawable/password_icon"
+            android:ems="10"
+            android:hint=" Password"
+            android:inputType="textPassword" />
+    </RelativeLayout>
+
+
+</RelativeLayout>
