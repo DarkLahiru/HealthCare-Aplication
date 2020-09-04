@@ -14,6 +14,7 @@ import Contact.ContactActivity;
 import com.example.healthcare.NavigationActivity;
 import com.example.healthcare.R;
 
+import Reminder.ReminderActivity;
 import medicine.MedicineActivity;
 import profile.MyProfileActivity;
 
@@ -71,14 +72,14 @@ public class HomeFragment extends Fragment {
             }
         });*/
 
-        /*ImageView reminder = (ImageView) view.findViewById(R.id.reminder);
+        ImageView reminder = (ImageView) view.findViewById(R.id.reminder);
         reminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent rem = new Intent(getActivity(), MedicineRemActivity.class);
+                Intent rem = new Intent(getActivity(), ReminderActivity.class);
                 startActivity(rem);
             }
-        });*/
+        });
         return view;
     }
 }

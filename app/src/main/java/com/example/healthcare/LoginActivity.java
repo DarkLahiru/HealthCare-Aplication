@@ -51,33 +51,33 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
                 if( mFirebaseUser != null ){
+                    Intent i = new Intent(LoginActivity.this, NavigationActivity.class);
+                    startActivity(i);
 
+                    /*rootReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                           String firstLogin = Objects.requireNonNull(dataSnapshot.child("First Time Login").getValue()).toString();
+                           if (firstLogin.equals("false")) {
+                                Intent first = new Intent(LoginActivity.this, FirstMyProfileActivity.class);
+                                startActivity(first);
+                               rootReference.child("First Time Login").setValue("true");
+                           }
+                           else {
 
-//                    rootReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                            String firstLogin = Objects.requireNonNull(dataSnapshot.child("First Time Login").getValue()).toString();
-//                            if (firstLogin.equals("false")) {
-//                                Intent first = new Intent(LoginActivity.this, FirstMyProfileActivity.class);
-//                                startActivity(first);
-//                                rootReference.child("First Time Login").setValue("true");
-//                            }
-//                            else {
-//                                Intent i = new Intent(LoginActivity.this, NavigationActivity.class);
-//                                startActivity(i);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                        }
-//                    });
+                            }
+                       }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });*/
 
                 }
-//                else{
-//                    Toast.makeText(LoginActivity.this,"Please Login",Toast.LENGTH_SHORT).show();
-//                }
+                else{
+                    Toast.makeText(LoginActivity.this,"Please Login",Toast.LENGTH_SHORT).show();
+               }
             }
         };
 

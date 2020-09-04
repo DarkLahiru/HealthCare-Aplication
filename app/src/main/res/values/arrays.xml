@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="dosage_options">
+        <item>mg</item>
+        <item>ml</item>
+        <item>gram</item>
+        <item>pills</item>
+        <item>teaspoon</item>
+        <item>tablespoon</item>
+    </string-array>
+
+
+</resources>
