@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="ContactDoctor.CheckDoctorsActivity"></activity>
+        <activity android:name="ContactDoctor.CheckDoctorsActivity"
+            android:label="Doctors"
+            android:parentActivityName=".NavigationActivity" />
         <activity
             android:name="Reminder.ReminderActivity"
             android:label="Reminder Details"

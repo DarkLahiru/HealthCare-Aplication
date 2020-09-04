@@ -12,5 +12,9 @@
     <color name="contactButton">#aacef7</color>
     <color name="card_title">#202F65</color>
     <color name="card_bg">#fff</color>
+    <color name="favourite">#202F65</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorDivider">#ececec</color>
+    <color name="colorBlack">#000000</color>
 
 </resources>

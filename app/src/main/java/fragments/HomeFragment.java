@@ -14,6 +14,7 @@ import Contact.ContactActivity;
 import com.example.healthcare.NavigationActivity;
 import com.example.healthcare.R;
 
+import ContactDoctor.CheckDoctorsActivity;
 import Reminder.ReminderActivity;
 import medicine.MedicineActivity;
 import profile.MyProfileActivity;
@@ -42,6 +43,15 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent myProfile = new Intent(getActivity(), MyProfileActivity.class);
                 startActivity(myProfile);
+            }
+        });
+
+        ImageView doctors = (ImageView) view.findViewById(R.id.doctos);
+        doctors.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent doctors = new Intent(getActivity(), CheckDoctorsActivity.class);
+                startActivity(doctors);
             }
         });
 

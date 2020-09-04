@@ -25,14 +25,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="bottom">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rVContact"
             android:layout_width="match_parent"
-            android:layout_height="425dp"
-            android:layout_margin="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp"
             android:background="@color/colorPrimaryDark"
             android:scrollbars="vertical" />
 
@@ -40,14 +40,13 @@
             android:id="@+id/addNewContact"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="50dp"
             android:background="@drawable/button_contact"
             android:text="ADD NEW CONTACT"
             android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
 
     </LinearLayout>

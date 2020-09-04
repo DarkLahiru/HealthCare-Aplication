@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.healthcare.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -69,22 +71,33 @@ public class ReminderActivity extends AppCompatActivity {
             @NonNull
             @Override
             public ReminderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return null;
+
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reminder_list_layout,parent,false);
+                return new ReminderViewHolder(view);
+
             }
 
             @Override
             protected void onBindViewHolder(@NonNull ReminderViewHolder holder, int position, @NonNull Reminder model) {
-
+                holder.medName.setText(model.getMedicineName());
+                holder.medInstruction.setText(model.getInstructions());
             }
         };
+
+        adapter.startListening();
+        recyclerView.setAdapter(adapter);
     }
 
 
     public static class ReminderViewHolder extends RecyclerView.ViewHolder{
+
+        TextView medName , medInstruction;
         View mView;
         public ReminderViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
+            medName = (TextView)mView.findViewById(R.id.txtMedName);
+            medInstruction = (TextView)mView.findViewById(R.id.txtInstruction);
         }
     }
 }
