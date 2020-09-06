@@ -13,7 +13,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="ContactDoctor.CheckDoctorsActivity"
+        <activity android:name="ContactDoctor.MessageActivity" />
+        <activity
+            android:name="ForDoctor.MyProfile.EditMyProfileDoctorActivity"
+            android:label="Edit Profile"
+            android:parentActivityName="ForDoctor.MyProfile.MyProfileDoctorActivity" />
+        <activity
+            android:name="ForDoctor.MyProfile.MyProfileDoctorActivity"
+            android:label="My Profile"
+            android:parentActivityName="ForDoctor.NavigationDoctor" />
+        <activity android:name="ForDoctor.MyProfile.FirstDoctorProfileActivity" />
+        <activity android:name="ForDoctor.NavigationDoctor" />
+        <activity android:name="ForDoctor.RegistrationDoctorActivity" />
+        <activity android:name="ForDoctor.LoginDoctorActivity" />
+        <activity android:name=".PatientOrDoctorActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="ContactDoctor.CheckDoctorsActivity"
             android:label="Doctors"
             android:parentActivityName=".NavigationActivity" />
         <activity
@@ -60,14 +81,12 @@
         <activity
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation" />
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".RegistrationActivity"
+            android:parentActivityName=".LoginActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:parentActivityName=".PatientOrDoctorActivity" />
     </application>
 
 </manifest>

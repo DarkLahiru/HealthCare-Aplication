@@ -32,7 +32,7 @@
             android:layout_height="100dp"
             android:layout_margin="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_profile"
+            android:src="@drawable/profile_doctor"
             app:civ_border_width="2dp"
             />
 
@@ -43,6 +43,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/txtDocName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Doctor Name"
@@ -50,6 +51,7 @@
                 android:textSize="18dp"
                 android:textColor="@color/colorBlack"/>
             <TextView
+                android:id="@+id/txtDocStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="About Doctor"
@@ -81,6 +83,7 @@
             android:src="@drawable/ic_profile_image"
             android:tint="@color/colorPrimaryDark"/>
         <TextView
+            android:id="@+id/txtDocProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -109,6 +112,7 @@
             android:src="@drawable/ic_message"
             android:tint="@color/colorPrimaryDark"/>
         <TextView
+            android:id="@+id/txtSendMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -127,7 +131,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="20dp">
 
         <ImageView
             android:layout_width="25dp"
@@ -137,6 +141,7 @@
             android:src="@drawable/ic_favorite"
             android:tint="@color/colorPrimaryDark"/>
         <TextView
+            android:id="@+id/txtFavourite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -146,4 +151,19 @@
             android:textColor="@color/colorBlack"/>
 
     </LinearLayout>
+    
+    <!--<Button
+        android:id="@+id/btnAddToList"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/custom_button"
+        android:text="Add to list"
+        android:textColor="@color/colorWhite"
+        android:textSize="15dp"
+        android:fontFamily="@font/nunito_extrabold"
+        android:layout_marginBottom="10dp"/>-->
+
+
 </LinearLayout>

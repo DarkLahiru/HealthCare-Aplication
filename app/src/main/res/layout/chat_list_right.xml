@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/chatImageRight"
+            android:src="@drawable/ic_profile_image"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/showMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_right"
+            android:text="Wait..."
+            android:layout_alignParentEnd="true"
+            android:textSize="18dp"
+            android:padding="6dp"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

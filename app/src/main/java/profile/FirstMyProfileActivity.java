@@ -65,8 +65,9 @@ public class FirstMyProfileActivity  extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         rootReference = FirebaseDatabase.getInstance().getReference();
-        storageReference = FirebaseStorage.getInstance().getReference("ProfileImage");
         firebaseUser = mFirebaseAuth.getCurrentUser();
+        storageReference = FirebaseStorage.getInstance().getReference("Patients").child("ProfileImage");
+
         progressDialog = new ProgressDialog(this);
 
 
@@ -95,7 +96,7 @@ public class FirstMyProfileActivity  extends AppCompatActivity {
                     Toast.makeText(FirstMyProfileActivity.this, "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
                 } else {
                     User myDetails = new User(name, fName, bod, phone, heightValue, weightValue, address);
-                    rootReference.child(firebaseUser.getUid()).child("myProfile").setValue(myDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    rootReference.child("Patients").child(firebaseUser.getUid()).child("MyProfile").setValue(myDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isComplete()) {

@@ -1,35 +1,34 @@
-package com.example.healthcare;
+package ForDoctor;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.healthcare.PatientOrDoctorActivity;
+import com.example.healthcare.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import java.util.Objects;
 
+import ForDoctor.Fragments.HomeDoctor;
 import fragments.AboutUsFragment;
 import fragments.HomeFragment;
-import fragments.SettingFragment;
 
-public class NavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class NavigationDoctor extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -41,12 +40,11 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         navigationView.setNavigationItemSelectedListener(this);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.nav_host_fragment, new HomeFragment());
+        ft.replace(R.id.nav_host_fragment, new HomeDoctor());
         ft.commit();
         navigationView.setCheckedItem(R.id.dashboard);
-
-
     }
+
 
     public void setActionBarTitle(String title) {
         Objects.requireNonNull(getSupportActionBar()).setTitle(title);
@@ -62,39 +60,23 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 //            super.onBackPressed();
 //        }
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
         int id = item.getItemId();
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         if (id == R.id.dashboard) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.nav_host_fragment, new HomeFragment());
+            ft.replace(R.id.nav_host_fragment, new HomeDoctor());
             ft.commit();
             navigationView.setCheckedItem(R.id.dashboard);
-        } else if (id == R.id.setting) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.nav_host_fragment, new SettingFragment());
-            ft.commit();
-            navigationView.setCheckedItem(R.id.setting);
-
-        } else if (id == R.id.aboutUs) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.nav_host_fragment, new AboutUsFragment());
-            ft.commit();
-            navigationView.setCheckedItem(R.id.aboutUs);
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
         if (id == R.id.signOut) {
             FirebaseAuth.getInstance().signOut();
             Intent intoLogin = new Intent(this, PatientOrDoctorActivity.class);
             startActivity(intoLogin);
         }
-
         return false;
     }
 }

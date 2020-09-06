@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:background="@drawable/bgapps"
-    tools:context=".RegistrationActivity">
+    tools:context="ForDoctor.RegistrationDoctorActivity">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         android:layout_marginRight="32dp">
 
         <TextView
-            android:id="@+id/txtDashboard"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign Up"
@@ -36,7 +36,7 @@
         android:layout_marginBottom="33dp">
 
         <EditText
-            android:id="@+id/rePasseT"
+            android:id="@+id/rePasseTDoctor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -52,10 +52,10 @@
             android:inputType="textPassword" />
 
         <EditText
-            android:id="@+id/usereT"
+            android:id="@+id/usereTDoctor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/passeT"
+            android:layout_above="@+id/passeTDoctor"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="100dp"
@@ -67,10 +67,10 @@
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/passeT"
+            android:id="@+id/passeTDoctor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/rePasseT"
+            android:layout_above="@+id/rePasseTDoctor"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="100dp"
@@ -100,7 +100,7 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/btnSignUp"
+                    android:id="@+id/btnSignUpDoc"
                     android:layout_width="158dp"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"

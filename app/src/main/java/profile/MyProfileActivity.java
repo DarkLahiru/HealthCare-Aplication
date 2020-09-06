@@ -68,17 +68,17 @@ public class MyProfileActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
 
-        rootReference = FirebaseDatabase.getInstance().getReference(firebaseUser.getUid());
+        rootReference = FirebaseDatabase.getInstance().getReference("Patients").child(firebaseUser.getUid());
         rootReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String dName = Objects.requireNonNull(dataSnapshot.child("myProfile").child("displayName").getValue()).toString();
-                String fName = Objects.requireNonNull(dataSnapshot.child("myProfile").child("fullName").getValue()).toString();
-                String bod = Objects.requireNonNull(dataSnapshot.child("myProfile").child("birthDay").getValue()).toString();
-                String phone = Objects.requireNonNull(dataSnapshot.child("myProfile").child("phoneNum").getValue()).toString();
-                String h = Objects.requireNonNull(dataSnapshot.child("myProfile").child("height").getValue()).toString();
-                String w = Objects.requireNonNull(dataSnapshot.child("myProfile").child("weight").getValue()).toString();
-                String address = Objects.requireNonNull(dataSnapshot.child("myProfile").child("homeAddress").getValue()).toString();
+                String dName = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("displayName").getValue()).toString();
+                String fName = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("fullName").getValue()).toString();
+                String bod = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("birthDay").getValue()).toString();
+                String phone = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("phoneNum").getValue()).toString();
+                String h = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("height").getValue()).toString();
+                String w = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("weight").getValue()).toString();
+                String address = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("homeAddress").getValue()).toString();
                 String email = Objects.requireNonNull(dataSnapshot.child("LoginDetails").child("username").getValue()).toString();
 
 
@@ -99,7 +99,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
-        storageReference = FirebaseStorage.getInstance().getReference("ProfileImage").child(firebaseUser.getUid() + ".jpg");
+        storageReference = FirebaseStorage.getInstance().getReference("Patients").child("ProfileImage").child(firebaseUser.getUid() + ".jpg");
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

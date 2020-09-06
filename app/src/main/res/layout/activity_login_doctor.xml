@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/bgapps"
-    tools:context=".LoginActivity">
+    tools:context="ForDoctor.LoginDoctorActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -15,7 +15,6 @@
         android:layout_marginRight="32dp">
 
         <TextView
-            android:id="@+id/txtDashboard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign In"
@@ -32,10 +31,10 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/btnSignIn"
+            android:id="@+id/btnSignInDoc"
             android:layout_width="223dp"
             android:layout_height="50dp"
-            android:layout_above="@+id/btnRegisterHere"
+            android:layout_above="@+id/btnRegisterHereDoc"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="96dp"
@@ -49,7 +48,7 @@
             android:fontFamily="@font/nunito_extrabold"/>
 
         <Button
-            android:id="@+id/btnRegisterHere"
+            android:id="@+id/btnRegisterHereDoc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -66,10 +65,10 @@
             android:fontFamily="@font/nunito_extrabold"/>
 
         <EditText
-            android:id="@+id/eTUserName"
+            android:id="@+id/eTUserNameDoctor"
             android:layout_width="236dp"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btnSignIn"
+            android:layout_above="@+id/btnSignInDoc"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="99dp"
@@ -82,10 +81,10 @@
             android:inputType="textEmailAddress" />
 
         <EditText
-            android:id="@+id/eTPassword"
+            android:id="@+id/eTPasswordDoctor"
             android:layout_width="234dp"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btnSignIn"
+            android:layout_above="@+id/btnSignInDoc"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="100dp"
@@ -95,7 +94,8 @@
             android:drawableStart="@drawable/password_icon"
             android:ems="10"
             android:hint=" Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            />
     </RelativeLayout>
 
 

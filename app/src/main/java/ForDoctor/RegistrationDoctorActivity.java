@@ -1,4 +1,4 @@
-package com.example.healthcare;
+package ForDoctor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.healthcare.LoginActivity;
+import com.example.healthcare.R;
+import com.example.healthcare.RegistrationActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -20,24 +23,23 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import profile.User;
 
-
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationDoctorActivity extends AppCompatActivity {
 
     Button register;
     EditText emailId, Password, rePassword;
     FirebaseAuth mFirebaseAuth;
     DatabaseReference rootReference;
     FirebaseUser firebaseUser;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registration);
-        emailId = findViewById(R.id.usereT);
-        Password = findViewById(R.id.passeT);
-        rePassword = findViewById(R.id.rePasseT);
-        register = findViewById(R.id.btnSignUp);
+        setContentView(R.layout.activity_registration_doctor);
+
+        emailId = findViewById(R.id.usereTDoctor);
+        Password = findViewById(R.id.passeTDoctor);
+        rePassword = findViewById(R.id.rePasseTDoctor);
+        register = findViewById(R.id.btnSignUpDoc);
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         rootReference = FirebaseDatabase.getInstance().getReference();
 
@@ -67,28 +69,28 @@ public class RegistrationActivity extends AppCompatActivity {
                         Password.requestFocus();
                     } else {
                         final String finalPwd = pwd;
-                        mFirebaseAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
+                        mFirebaseAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(RegistrationDoctorActivity.this, new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (!task.isSuccessful()) {
-                                            Toast.makeText(RegistrationActivity.this, "SignUp Unsuccessful, Please Try Again", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(RegistrationDoctorActivity.this, "SignUp Unsuccessful, Please Try Again", Toast.LENGTH_SHORT).show();
                                         } else {
 
                                             firebaseUser = mFirebaseAuth.getCurrentUser();
                                             User myUserInsertObj = new User(email, finalPwd);
 
-                                            rootReference.child("Patients").child(firebaseUser.getUid()).child("LoginDetails").setValue(myUserInsertObj)
+                                            rootReference.child("Doctors").child(firebaseUser.getUid()).child("LoginDetails").setValue(myUserInsertObj)
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isComplete()) {
-                                                                Toast.makeText(RegistrationActivity.this, "You Created Account Successfully", Toast.LENGTH_SHORT).show();
-                                                                finish();
-                                                                rootReference.child("Users").child(firebaseUser.getUid()).child("First Time Login").setValue("false");
-                                                                rootReference.child("Users").child(firebaseUser.getUid()).child("LoginType").setValue("Patient");
-                                                                Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
-                                                                startActivity(myIntent);
+                                                                Toast.makeText(RegistrationDoctorActivity.this, "You Created Account Successfully", Toast.LENGTH_SHORT).show();
 
+                                                                rootReference.child("Users").child(firebaseUser.getUid()).child("First Time Login").setValue("false");
+                                                                rootReference.child("Users").child(firebaseUser.getUid()).child("LoginType").setValue("Doctor");
+                                                                Intent myIntent = new Intent(getApplicationContext(), LoginDoctorActivity.class);
+                                                                startActivity(myIntent);
+                                                                finish();
                                                             }
                                                         }
                                                     });
@@ -100,9 +102,5 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
-
-
 }

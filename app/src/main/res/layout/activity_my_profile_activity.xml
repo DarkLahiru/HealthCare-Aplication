@@ -54,10 +54,11 @@
                     android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/profile_image"
                     android:includeFontPadding="false"
-                    android:text="profile name"
+                    android:text="Profile name"
                     android:textColor="@color/background"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/nunito_extrabold"/>
 
                 <TextView
                     android:id="@+id/emailAddress"
@@ -91,8 +92,8 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_name"
                         android:drawablePadding="10dp"
-                        android:editable="false"
-
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textStyle="bold" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -109,8 +110,8 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_birthday_cake"
                         android:drawablePadding="10dp"
-                        android:editable="false"
-
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textStyle="bold" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -127,8 +128,8 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_telephone"
                         android:drawablePadding="10dp"
-                        android:editable="false"
-
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textStyle="bold" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -145,8 +146,8 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_height"
                         android:drawablePadding="10dp"
-                        android:editable="false"
-
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textStyle="bold" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -163,8 +164,8 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_weight"
                         android:drawablePadding="10dp"
-                        android:editable="false"
-
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textStyle="bold" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -181,8 +182,8 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_bmi"
                         android:drawablePadding="10dp"
-                        android:editable="false"
-
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textStyle="bold" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -199,8 +200,8 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_location"
                         android:drawablePadding="10dp"
-                        android:editable="false"
-
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textStyle="bold" />
 
                 </com.google.android.material.textfield.TextInputLayout>

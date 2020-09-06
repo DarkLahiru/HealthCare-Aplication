@@ -13,6 +13,10 @@ import android.widget.ImageView;
 import Contact.ContactActivity;
 import com.example.healthcare.NavigationActivity;
 import com.example.healthcare.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import ContactDoctor.CheckDoctorsActivity;
 import Reminder.ReminderActivity;
@@ -90,6 +94,10 @@ public class HomeFragment extends Fragment {
                 startActivity(rem);
             }
         });
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+        DatabaseReference rootReference = FirebaseDatabase.getInstance().getReference();
+        rootReference.child("Users").child(firebaseUser.getUid()).child("First Time Login").setValue("true");
         return view;
     }
 }

@@ -1,10 +1,8 @@
-package profile;
-
+package ForDoctor.MyProfile;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -28,18 +26,18 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.Objects;
-
+import ForDoctor.MyProfile.DoctorData;
+import ForDoctor.NavigationDoctor;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class EditMyProfileActivity extends AppCompatActivity {
-    TextInputLayout displayName, fullName, birthDay, phoneNum, height, weight, homeAddress;
+public class FirstDoctorProfileActivity extends AppCompatActivity {
+
+    TextInputLayout displayName, fullName, phoneNum, specializations, homeAddress;
     Button btnSave;
     ImageView clickUpload;
     Uri imageUri;
     CircleImageView uploadedImage;
     ProgressDialog progressDialog;
-
 
     DatabaseReference rootReference;
     FirebaseUser firebaseUser;
@@ -49,27 +47,23 @@ public class EditMyProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_my_profile);
-        btnSave = findViewById(R.id.btnSave);
-        clickUpload = findViewById(R.id.clickUpload);
-        uploadedImage = findViewById(R.id.uploadedImage);
+        setContentView(R.layout.activity_first_doctor_profile_activitiy);
 
-        displayName = findViewById(R.id.txtDisplayName);
-        fullName = findViewById(R.id.txtFullName);
-        birthDay = findViewById(R.id.txtBirthDay);
-        phoneNum = findViewById(R.id.txtPhoneNum);
-        height = findViewById(R.id.txtHeight);
-        weight = findViewById(R.id.txtWeight);
-        homeAddress = findViewById(R.id.txtHomeAddress);
+        btnSave = findViewById(R.id.btnFirstSaveDoctor);
+        clickUpload = findViewById(R.id.clickFUploadDoctor);
+        uploadedImage = findViewById(R.id.uploadedFImageDoctor);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        displayName = findViewById(R.id.txtFDisplayNameDoctor);
+        fullName = findViewById(R.id.txtFFullNameDoctor);
+        phoneNum = findViewById(R.id.txtFPhoneNumDoctor);
+        specializations = findViewById(R.id.txtSpecializations);
+        homeAddress = findViewById(R.id.txtFHomeAddressDoctor);
+        final DoctorData doctorData = new DoctorData();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        rootReference = FirebaseDatabase.getInstance().getReference();
-        storageReference = FirebaseStorage.getInstance().getReference("Patients").child("ProfileImage");
         firebaseUser = mFirebaseAuth.getCurrentUser();
+        rootReference = FirebaseDatabase.getInstance().getReference();
+        storageReference = FirebaseStorage.getInstance().getReference("Doctors").child("ProfileImage");
         progressDialog = new ProgressDialog(this);
 
 
@@ -81,30 +75,38 @@ public class EditMyProfileActivity extends AppCompatActivity {
             }
         });
 
-
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String docName= displayName.getEditText().getText().toString();
+                String docFullName = fullName.getEditText().getText().toString();
+                String docSP = specializations.getEditText().getText().toString();
+                String phone    = phoneNum.getEditText().getText().toString();
+                String address = homeAddress.getEditText().getText().toString();
 
-                String name = Objects.requireNonNull(displayName.getEditText()).getText().toString();
-                String fName = Objects.requireNonNull(fullName.getEditText()).getText().toString();
-                String bod = Objects.requireNonNull(birthDay.getEditText()).getText().toString();
-                String phone = Objects.requireNonNull(phoneNum.getEditText()).getText().toString();
-                String heightValue = Objects.requireNonNull(height.getEditText()).getText().toString();
-                String weightValue = Objects.requireNonNull(weight.getEditText()).getText().toString();
-                String address = Objects.requireNonNull(homeAddress.getEditText()).getText().toString();
+                if (docName.isEmpty() || docFullName.isEmpty() || docSP.isEmpty() || phone.isEmpty() || address.isEmpty() ) {
+                    Toast.makeText(getApplicationContext(), "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
+                }
+                else {
 
-                if (name.isEmpty() || fName.isEmpty() || bod.isEmpty() || phone.isEmpty() || heightValue.isEmpty() || weightValue.isEmpty() || address.isEmpty()) {
-                    Toast.makeText(EditMyProfileActivity.this, "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
-                } else {
-                    User myDetails = new User(name, fName, bod, phone, heightValue, weightValue, address);
-                    rootReference.child("Patients").child(firebaseUser.getUid()).child("MyProfile").setValue(myDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    doctorData.setDisplayName(docName);
+                    doctorData.setFullName(docFullName);
+                    doctorData.setSpecializations(docSP);
+                    doctorData.setPhoneNum(phone);
+                    doctorData.setHomeAddress(address);
+
+                    rootReference.child("Doctors").child(firebaseUser.getUid()).child("displayName").setValue(docName);
+                    rootReference.child("Doctors").child(firebaseUser.getUid()).child("specializations").setValue(docSP);
+                    //rootReference.child("Doctors").child(firebaseUser.getUid()).child("profileImage").setValue(firebaseUser.getUid()+".jpg");
+
+                    rootReference.child("Doctors").child(firebaseUser.getUid()).child("MyProfile").setValue(doctorData).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isComplete()) {
-                                Toast.makeText(EditMyProfileActivity.this, "Update Data Successfully", Toast.LENGTH_SHORT).show();
+
+                                Toast.makeText(getApplicationContext(), "Update Data Successfully", Toast.LENGTH_SHORT).show();
                                 finish();
-                                Intent myIntent = new Intent(getApplicationContext(), MyProfileActivity.class);
+                                Intent myIntent = new Intent(getApplicationContext(), NavigationDoctor.class);
                                 startActivity(myIntent);
 
                             }
@@ -114,8 +116,8 @@ public class EditMyProfileActivity extends AppCompatActivity {
 
             }
         });
-
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
