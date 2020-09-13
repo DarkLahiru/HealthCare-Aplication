@@ -94,10 +94,12 @@ public class FirstDoctorProfileActivity extends AppCompatActivity {
                     doctorData.setSpecializations(docSP);
                     doctorData.setPhoneNum(phone);
                     doctorData.setHomeAddress(address);
+                    doctorData.setId(firebaseUser.getUid());
 
                     rootReference.child("Doctors").child(firebaseUser.getUid()).child("displayName").setValue(docName);
                     rootReference.child("Doctors").child(firebaseUser.getUid()).child("specializations").setValue(docSP);
-                    //rootReference.child("Doctors").child(firebaseUser.getUid()).child("profileImage").setValue(firebaseUser.getUid()+".jpg");
+                    //rootReference.child("Doctors").child(firebaseUser.getUid()).child("id").setValue(firebaseUser.getUid());
+                    rootReference.child("Doctors").child(firebaseUser.getUid()).child("profileImage").setValue(firebaseUser.getUid()+".jpg");
 
                     rootReference.child("Doctors").child(firebaseUser.getUid()).child("MyProfile").setValue(doctorData).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

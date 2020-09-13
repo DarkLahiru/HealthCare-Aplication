@@ -96,6 +96,7 @@ public class EditMyProfileDoctorActivity extends AppCompatActivity {
                     doctorData.setSpecializations(docSP);
                     doctorData.setPhoneNum(phone);
                     doctorData.setHomeAddress(address);
+                    doctorData.setId(firebaseUser.getUid());
 
                     rootReference.child("Doctors").child(firebaseUser.getUid()).child("MyProfile").setValue(doctorData).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

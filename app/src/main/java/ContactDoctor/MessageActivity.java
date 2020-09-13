@@ -3,6 +3,7 @@ package ContactDoctor;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.net.Uri;
@@ -26,9 +27,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.List;
 
+import Chat.model.Chats;
+import Chat.Adapter.MessageAdapter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageActivity extends AppCompatActivity {
@@ -46,6 +50,9 @@ public class MessageActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     EditText sendMsg;
     FloatingActionButton send;
+
+    MessageAdapter messageAdapter;
+    List<Chats> mChats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,10 @@ public class MessageActivity extends AppCompatActivity {
         LoadData();
 
         recyclerView = findViewById(R.id.rv_chat);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager =new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
         sendMsg = findViewById(R.id.et_message_chat);
         send = findViewById(R.id.fab_chat);
 
@@ -82,7 +93,7 @@ public class MessageActivity extends AppCompatActivity {
                     sendMessage(firebaseUser.getUid(),docID,msg);
                 }
                 else {
-                    Toast.makeText(MessageActivity.this, "Please Enter Message", Toast.LENGTH_SHORT);
+                    Toast.makeText(MessageActivity.this, "Please Enter Message", Toast.LENGTH_SHORT).show();
                 }
                 sendMsg.setText("");
             }
@@ -93,17 +104,57 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
-    private void sendMessage(String patient, String doctor, String message) {
+    private void sendMessage(String sender, String receiver, String message) {
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
         rootReference = FirebaseDatabase.getInstance().getReference();
 
         HashMap<String,Object>hashMap = new HashMap<>();
-        hashMap.put("Patient",patient);
-        hashMap.put("Doctor",doctor);
-        hashMap.put("Message",message);
+        hashMap.put("sender",sender);
+        hashMap.put("receiver",receiver);
+        hashMap.put("message",message);
 
         rootReference.child("Chats").push().setValue(hashMap);
+
+        final DatabaseReference chatRef =FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid()).child(docID);
+        chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    chatRef.child("id").setValue(docID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void readMessage(final String sender, final String receiver){
+        mChats = new ArrayList<>();
+        rootReference = FirebaseDatabase.getInstance().getReference("Chats");
+        rootReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mChats.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Chats chats = dataSnapshot.getValue(Chats.class);
+                    if (chats.getSender().equals(sender) && chats.getReceiver().equals(receiver) || chats.getSender().equals(receiver) && chats.getReceiver().equals(sender)) {
+                        mChats.add(chats);
+                    }
+                    messageAdapter = new MessageAdapter(MessageActivity.this, mChats, receiver);
+                    recyclerView.setAdapter(messageAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void LoadData() {
@@ -120,6 +171,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name  = snapshot.child("displayName").getValue().toString();
                 docName.setText(name);
+                readMessage(firebaseUser.getUid(),docID);
             }
 
             @Override

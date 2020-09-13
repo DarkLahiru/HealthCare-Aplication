@@ -13,7 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="ContactDoctor.MessageActivity" />
+        <activity android:name="ContactDoctor.FavouriteList"
+            android:parentActivityName="ContactDoctor.CheckDoctorsActivity"/>
+        <activity
+            android:name="Chat.ChatListActivity"
+            android:parentActivityName="ContactDoctor.CheckDoctorsActivity" />
+        <activity
+            android:name="ContactDoctor.MessageActivity"
+            android:parentActivityName="Chat.ChatListActivity" />
         <activity
             android:name="ForDoctor.MyProfile.EditMyProfileDoctorActivity"
             android:label="Edit Profile"

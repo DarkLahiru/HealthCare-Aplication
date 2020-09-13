@@ -47,7 +47,7 @@ public class MyProfileDoctorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_profile_doctor);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        // Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         btnUpdate = findViewById(R.id.btnUpdateDoctor);
         profileName = findViewById(R.id.profile_nameDoctor);

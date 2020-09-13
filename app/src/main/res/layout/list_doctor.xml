@@ -11,7 +11,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:src="@drawable/profile_doctor"
         app:civ_border_width="2dp"
         app:civ_border_color="@color/imgUpload"/>
@@ -23,7 +23,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="25dp"
         android:layout_toEndOf="@+id/profile_imageFace"
         android:fontFamily="@font/nunito_extrabold"
         android:text="Username"
@@ -43,4 +43,10 @@
         android:text="Doctor Description"
         android:textColor="#999999"
         android:textSize="14sp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/colorDivider"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/profile_imageFace"/>
 </RelativeLayout>

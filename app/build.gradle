@@ -4,6 +4,10 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     buildToolsVersion '29.0.3'
     defaultConfig {
         applicationId "com.example.healthcare"
@@ -19,7 +23,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    aaptOptions { cruncherEnabled = false }
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

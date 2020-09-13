@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                                 firebaseUser = mFirebaseAuth.getCurrentUser();
                                 rootReference = FirebaseDatabase.getInstance().getReference();
 
-                                rootReference.child("Users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                                rootReference.child("Users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         loginType = Objects.requireNonNull(snapshot.child("LoginType").getValue()).toString();

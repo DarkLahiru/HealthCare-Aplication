@@ -1,25 +1,17 @@
 package ForDoctor.MyProfile;
 
 public class DoctorData {
-    public String username,password,displayName,fullName,phoneNum,specializations,homeAddress;;
+    public String displayName,fullName,phoneNum,specializations,homeAddress,id;
 
     public DoctorData() {
     }
 
-    public String getUsername() {
-        return username;
+    public String getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDisplayName() {

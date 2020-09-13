@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
+import Chat.ChatListActivity;
 import ForDoctor.MyProfile.DoctorData;
 import ForDoctor.MyProfile.MyProfileDoctorActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -53,6 +55,8 @@ public class CheckDoctorsActivity extends AppCompatActivity {
 
     TextView docName,docAbout,docProfile,docMessage,docFavourite;
     CircleImageView docProfileImage;
+
+    Button message, favourite;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +66,7 @@ public class CheckDoctorsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        recyclerView = (RecyclerView)findViewById(R.id.rVResult_List);
+        recyclerView = findViewById(R.id.rVResult_List);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -76,6 +80,24 @@ public class CheckDoctorsActivity extends AppCompatActivity {
         docFavourite = findViewById(R.id.txtFavourite);
 
         LoadData();
+
+        message =findViewById(R.id.btnMessageList);
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ChatListActivity.class);
+                startActivity(intent);
+            }
+        });
+        favourite = findViewById(R.id.btnFavourite);
+        favourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),FavouriteList.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -135,7 +157,38 @@ public class CheckDoctorsActivity extends AppCompatActivity {
                         bottomSheetView.findViewById(R.id.txtFavourite).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(CheckDoctorsActivity.this, "Login Error, You are not a Doctor !!!", Toast.LENGTH_SHORT).show();
+
+                                DatabaseReference rReference = FirebaseDatabase.getInstance().getReference("PatientFavourites").child(firebaseUser.getUid());
+                                rReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if(snapshot.exists()){
+                                            boolean flag = false;
+                                            for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                                                if (dataSnapshot.getKey().equalsIgnoreCase(key)){
+                                                    flag = true;
+                                                }
+                                            }
+                                            if (flag){
+                                                Toast.makeText(CheckDoctorsActivity.this, "Already Added", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else {
+                                                Toast.makeText(CheckDoctorsActivity.this, "Added to favourite", Toast.LENGTH_SHORT).show();
+                                                rReference.child(key).child("id").setValue(key);
+                                            }
+                                        }
+                                        else {
+                                            Toast.makeText(CheckDoctorsActivity.this, "Added to favourite", Toast.LENGTH_SHORT).show();
+                                            rReference.child(key).child("id").setValue(key);
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
                             }
                         });
 
