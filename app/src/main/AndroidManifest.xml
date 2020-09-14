@@ -13,8 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="ContactDoctor.FavouriteList"
-            android:parentActivityName="ContactDoctor.CheckDoctorsActivity"/>
+        <activity android:name="ForDoctor.Messages.ChatListDoctorActivity"
+            android:parentActivityName="ForDoctor.NavigationDoctor"/>
+        <activity
+            android:name="ForDoctor.Patients.ViewPatientsActivity"
+            android:parentActivityName="ForDoctor.NavigationDoctor" />
+        <activity android:name="ForDoctor.Messages.DocMessagesActivity"
+            android:parentActivityName="ForDoctor.Messages.ChatListDoctorActivity"/>
+        <activity
+            android:name="ContactDoctor.FavouriteList"
+            android:parentActivityName="ContactDoctor.CheckDoctorsActivity" />
         <activity
             android:name="Chat.ChatListActivity"
             android:parentActivityName="ContactDoctor.CheckDoctorsActivity" />
@@ -27,7 +35,7 @@
             android:parentActivityName="ForDoctor.MyProfile.MyProfileDoctorActivity" />
         <activity
             android:name="ForDoctor.MyProfile.MyProfileDoctorActivity"
-            android:label="My Profile"
+            android:label="Doctor Profile"
             android:parentActivityName="ForDoctor.NavigationDoctor" />
         <activity android:name="ForDoctor.MyProfile.FirstDoctorProfileActivity" />
         <activity android:name="ForDoctor.NavigationDoctor" />

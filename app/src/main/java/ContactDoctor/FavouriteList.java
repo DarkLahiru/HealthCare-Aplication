@@ -54,9 +54,8 @@ public class FavouriteList extends AppCompatActivity {
     FirebaseRecyclerOptions<ChatList> options;
     FirebaseRecyclerAdapter<ChatList, UserViewHolder> adapter;
 
-    private List<ChatList> userList;
     RecyclerView recyclerView;
-    private List<DoctorData> user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +126,7 @@ public class FavouriteList extends AppCompatActivity {
                         TextView fav = bottomSheetView.findViewById(R.id.txtFavourite);
                         ImageView unFav = bottomSheetView.findViewById(R.id.imgFav);
                         unFav.setImageResource(R.drawable.ic_unfavorite);
-                        fav.setText("Remove from Favourite");
+                        fav.setText(R.string.remove_favourite);
                         bottomSheetDialog.setContentView(bottomSheetView);
                         bottomSheetDialog.show();
 
@@ -197,15 +196,17 @@ public class FavouriteList extends AppCompatActivity {
         };
         adapter.startListening();
         recyclerView.setAdapter(adapter);
+
+
     }
 
-    private class UserViewHolder extends RecyclerView.ViewHolder {
+    private static class UserViewHolder extends RecyclerView.ViewHolder {
 
         TextView docName, docDescription;
         CircleImageView docFace;
         View mView;
 
-        public UserViewHolder(@NonNull View itemView) {
+        UserViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
             docName = (TextView) mView.findViewById(R.id.name_text);

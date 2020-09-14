@@ -12,8 +12,11 @@ import android.widget.ImageView;
 
 import com.example.healthcare.R;
 
+import ForDoctor.Messages.ChatListDoctorActivity;
+import ForDoctor.Messages.DocMessagesActivity;
 import ForDoctor.MyProfile.MyProfileDoctorActivity;
 import ForDoctor.NavigationDoctor;
+import ForDoctor.Patients.ViewPatientsActivity;
 
 public class HomeDoctor extends Fragment {
 
@@ -37,11 +40,11 @@ public class HomeDoctor extends Fragment {
             }
         });
 
-        /*ImageView patient = (ImageView) view.findViewById(R.id.imgPatient);
+        ImageView patient = (ImageView) view.findViewById(R.id.imgPatient);
         patient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent patient = new Intent(getActivity(), CheckDoctorsActivity.class);
+                Intent patient = new Intent(getActivity(), ViewPatientsActivity.class);
                 startActivity(patient);
             }
         });
@@ -50,12 +53,12 @@ public class HomeDoctor extends Fragment {
         message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent message = new Intent(getActivity(), MedicineActivity.class);
+                Intent message = new Intent(getActivity(), ChatListDoctorActivity.class);
                 startActivity(message);
             }
         });
 
-        ImageView appointments = (ImageView) view.findViewById(R.id.imgAppointments);
+        /*ImageView appointments = (ImageView) view.findViewById(R.id.imgAppointments);
         appointments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

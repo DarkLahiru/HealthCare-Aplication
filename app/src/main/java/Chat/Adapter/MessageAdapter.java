@@ -28,7 +28,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     private Context context;
     private List<Chats> mChats;
-    private String key;
+    private String key,type;
 
     DatabaseReference rootReference;
     FirebaseUser firebaseUser;
@@ -39,10 +39,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
 
-    public MessageAdapter(Context context, List<Chats> mChats, String key) {
+    public MessageAdapter(Context context, List<Chats> mChats, String key,String type) {
         this.mChats = mChats;
         this.context = context;
         this.key = key;
+        this.type = type;
     }
 
     @NonNull
@@ -61,7 +62,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(@NonNull final MessageAdapter.ViewHolder holder, int position) {
         final Chats chats = mChats.get(position);
         holder.show_message.setText(chats.getMessage());
-        storageReference = FirebaseStorage.getInstance().getReference("Doctors").child("ProfileImage");
+        storageReference = FirebaseStorage.getInstance().getReference(type).child("ProfileImage");
         storageReference.child(key +".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

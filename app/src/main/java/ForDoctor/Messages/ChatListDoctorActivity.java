@@ -1,4 +1,4 @@
-package Chat;
+package ForDoctor.Messages;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,12 +34,10 @@ import java.util.List;
 import java.util.Objects;
 
 import Chat.model.ChatList;
-import ContactDoctor.MessageActivity;
-import ForDoctor.MyProfile.DoctorData;
 import de.hdodenhof.circleimageview.CircleImageView;
+import profile.User;
 
-public class ChatListActivity extends AppCompatActivity {
-
+public class ChatListDoctorActivity extends AppCompatActivity {
     DatabaseReference rootReference;
     DatabaseReference rf;
     FirebaseUser firebaseUser;
@@ -47,23 +45,24 @@ public class ChatListActivity extends AppCompatActivity {
     StorageReference storageReference;
 
     FirebaseRecyclerOptions<ChatList> options;
-    FirebaseRecyclerAdapter<ChatList, UserViewHolder> adapter;
+    FirebaseRecyclerAdapter<ChatList, ViewHolder> adapter;
 
     private List<ChatList> userList;
     RecyclerView recyclerView;
-    private List<DoctorData> user;
+    private List<User> user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_list);
+        setContentView(R.layout.activity_chat_list_doctor);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Messages");
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        recyclerView = findViewById(R.id.recycleViewChatList);
+        recyclerView = findViewById(R.id.recycleViewMessageList);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -94,45 +93,46 @@ public class ChatListActivity extends AppCompatActivity {
 
     private void chatList() {
         user = new ArrayList<>();
-        rootReference = FirebaseDatabase.getInstance().getReference("Doctors");
+        rootReference = FirebaseDatabase.getInstance().getReference("Patients");
         rootReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 user.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        DoctorData doctorData = dataSnapshot.child("MyProfile").getValue(DoctorData.class);
+                        User users = dataSnapshot.child("MyProfile").getValue(User.class);
                         for (ChatList chatList : userList) {
-                            assert doctorData != null;
-                            if (doctorData.getId().equalsIgnoreCase(chatList.getId())) {
-                                user.add(doctorData);
+                            assert users != null;
+                            if (users.getId().equalsIgnoreCase(chatList.getId())) {
+                                user.add(users);
                             }
                         }
                     }
                 }
                 rootReference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
                 options = new FirebaseRecyclerOptions.Builder<ChatList>().setQuery(rootReference, ChatList.class).build();
-                adapter = new FirebaseRecyclerAdapter<ChatList, UserViewHolder>(options) {
+                adapter = new FirebaseRecyclerAdapter<ChatList, ViewHolder>(options) {
                     @NonNull
                     @Override
-                    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_doctor,parent,false);
-                        return new UserViewHolder(view);
+                    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_doctor, parent, false);
+                        return new ViewHolder(view);
                     }
 
                     @Override
-                    protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull ChatList model) {
-                        rf = FirebaseDatabase.getInstance().getReference("Doctors");
+                    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull ChatList model) {
+                        rf = FirebaseDatabase.getInstance().getReference("Patients");
                         rf.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                holder.docName.setText(snapshot.child(model.getId()).child("displayName").getValue().toString());
-                                holder.docDescription.setText(snapshot.child(model.getId()).child("specializations").getValue().toString());
-                                storageReference = FirebaseStorage.getInstance().getReference("Doctors").child("ProfileImage");
-                                storageReference.child(model.getId() +".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                holder.patientName.setText(snapshot.child(model.getId()).child("MyProfile").child("displayName").getValue().toString());
+                                holder.patientPhone.setText(snapshot.child(model.getId()).child("MyProfile").child("phoneNum").getValue().toString());
+
+                                storageReference = FirebaseStorage.getInstance().getReference("Patients").child("ProfileImage");
+                                storageReference.child(model.getId() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        Picasso.with(getApplicationContext()).load(uri.toString()).resize(400,600).centerInside().into(holder.docFace);
+                                        Picasso.with(getApplicationContext()).load(uri.toString()).resize(400, 600).centerInside().into(holder.patientFace);
                                     }
                                 });
                             }
@@ -142,24 +142,18 @@ public class ChatListActivity extends AppCompatActivity {
 
                             }
                         });
-
                         holder.mView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-                                intent.putExtra("docID",model.getId());
+                                Intent intent = new Intent(getApplicationContext(), DocMessagesActivity.class);
+                                intent.putExtra("PatientID", model.getId());
                                 startActivity(intent);
                             }
                         });
-
-
                     }
                 };
                 adapter.startListening();
                 recyclerView.setAdapter(adapter);
-
-
-
             }
 
             @Override
@@ -170,18 +164,18 @@ public class ChatListActivity extends AppCompatActivity {
 
     }
 
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-    private class UserViewHolder extends RecyclerView.ViewHolder {
-
-        TextView docName , docDescription;
-        CircleImageView docFace;
+        TextView patientName, patientPhone;
+        CircleImageView patientFace;
         View mView;
-        public UserViewHolder(@NonNull View itemView) {
+
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
-            docName = (TextView)mView.findViewById(R.id.name_text);
-            docDescription = (TextView)mView.findViewById(R.id.status_text);
-            docFace = (CircleImageView)mView.findViewById(R.id.profile_imageFace);
+            patientName = (TextView) mView.findViewById(R.id.name_text);
+            patientPhone = (TextView) mView.findViewById(R.id.status_text);
+            patientFace = (CircleImageView) mView.findViewById(R.id.profile_imageFace);
         }
     }
 }

@@ -1,4 +1,4 @@
-package ContactDoctor;
+package ForDoctor.Messages;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,21 +31,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import Chat.model.Chats;
 import Chat.Adapter.MessageAdapter;
+import Chat.model.Chats;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MessageActivity extends AppCompatActivity {
-
+public class DocMessagesActivity extends AppCompatActivity {
 
     DatabaseReference rootReference;
     FirebaseUser firebaseUser;
     FirebaseAuth mFirebaseAuth;
     StorageReference storageReference;
 
-    TextView docName;
-    CircleImageView docProfileImage;
-    String docID;
+    TextView patientName;
+    CircleImageView patientProfileImage;
+    String patientID;
 
     RecyclerView recyclerView;
     EditText sendMsg;
@@ -64,15 +63,14 @@ public class MessageActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        docProfileImage = findViewById(R.id.messengerImage);
-        docName = findViewById(R.id.txtMessengerName);
-
-        docID = getIntent().getStringExtra("docID");
+        patientProfileImage = findViewById(R.id.messengerImage);
+        patientName = findViewById(R.id.txtMessengerName);
+        patientID = getIntent().getStringExtra("PatientID");
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
-        rootReference = FirebaseDatabase.getInstance().getReference("Doctors");
-        storageReference = FirebaseStorage.getInstance().getReference("Doctors").child("ProfileImage");
+        rootReference = FirebaseDatabase.getInstance().getReference("Patients");
+        storageReference = FirebaseStorage.getInstance().getReference("Patients").child("ProfileImage");
 
         LoadData();
 
@@ -90,18 +88,14 @@ public class MessageActivity extends AppCompatActivity {
                 String msg  = sendMsg.getText().toString();
 
                 if (!msg.equals("")){
-                    sendMessage(firebaseUser.getUid(),docID,msg);
+                    sendMessage(firebaseUser.getUid(),patientID,msg);
                 }
                 else {
-                    Toast.makeText(MessageActivity.this, "Please Enter Message", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please Enter Message", Toast.LENGTH_SHORT).show();
                 }
                 sendMsg.setText("");
             }
         });
-
-
-
-
     }
 
     private void sendMessage(String sender, String receiver, String message) {
@@ -109,46 +103,15 @@ public class MessageActivity extends AppCompatActivity {
         firebaseUser = mFirebaseAuth.getCurrentUser();
         rootReference = FirebaseDatabase.getInstance().getReference();
 
-        HashMap<String,Object>hashMap = new HashMap<>();
+        HashMap<String,Object> hashMap = new HashMap<>();
         hashMap.put("sender",sender);
         hashMap.put("receiver",receiver);
         hashMap.put("message",message);
-
         rootReference.child("Chats").push().setValue(hashMap);
-
-        final DatabaseReference chatRef =FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid()).child(docID);
-        chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()){
-                    chatRef.child("id").setValue(docID);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        final DatabaseReference chatDocRef =FirebaseDatabase.getInstance().getReference("ChatList").child(docID).child(firebaseUser.getUid());
-        chatDocRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()){
-                    chatDocRef.child("id").setValue(firebaseUser.getUid());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
     }
 
-    private void readMessage(final String sender, final String receiver){
+
+    private void readMessage(String sender, String receiver) {
         mChats = new ArrayList<>();
         rootReference = FirebaseDatabase.getInstance().getReference("Chats");
         rootReference.addValueEventListener(new ValueEventListener() {
@@ -161,7 +124,7 @@ public class MessageActivity extends AppCompatActivity {
                     if (chats.getSender().equals(sender) && chats.getReceiver().equals(receiver) || chats.getSender().equals(receiver) && chats.getReceiver().equals(sender)) {
                         mChats.add(chats);
                     }
-                    messageAdapter = new MessageAdapter(MessageActivity.this, mChats, receiver,"Patients");
+                    messageAdapter = new MessageAdapter(DocMessagesActivity.this, mChats, receiver,"Doctors");
                     recyclerView.setAdapter(messageAdapter);
                 }
             }
@@ -175,19 +138,19 @@ public class MessageActivity extends AppCompatActivity {
 
     private void LoadData() {
 
-        storageReference.child(docID +".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child(patientID +".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.with(getApplicationContext()).load(uri.toString()).resize(400,600).centerInside().into(docProfileImage);
+                Picasso.with(getApplicationContext()).load(uri.toString()).resize(400,600).centerInside().into(patientProfileImage);
             }
         });
 
-        rootReference.child(docID).addValueEventListener(new ValueEventListener() {
+        rootReference.child(patientID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String name  = snapshot.child("displayName").getValue().toString();
-                docName.setText(name);
-                readMessage(firebaseUser.getUid(),docID);
+                String name  = snapshot.child("MyProfile").child("displayName").getValue().toString();
+                patientName.setText(name);
+                readMessage(firebaseUser.getUid(),patientID);
             }
 
             @Override
@@ -196,4 +159,6 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

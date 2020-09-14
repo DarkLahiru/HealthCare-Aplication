@@ -95,7 +95,11 @@ public class FirstMyProfileActivity  extends AppCompatActivity {
                 if (name.isEmpty() || fName.isEmpty() || bod.isEmpty() || phone.isEmpty() || heightValue.isEmpty() || weightValue.isEmpty() || address.isEmpty()) {
                     Toast.makeText(FirstMyProfileActivity.this, "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
                 } else {
+
+
                     User myDetails = new User(name, fName, bod, phone, heightValue, weightValue, address);
+
+                    rootReference.child("Patients").child(firebaseUser.getUid()).child("MyProfile").child("id").setValue(firebaseUser.getUid());
                     rootReference.child("Patients").child(firebaseUser.getUid()).child("MyProfile").setValue(myDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

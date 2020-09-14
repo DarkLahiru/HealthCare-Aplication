@@ -29,5 +29,20 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="hint_enter_medicine">Type medicine or brand name</string>
     <string name="select_days">Select Days</string>
+    <string name="remove_favourite">Remove from Favourite</string>
+    <string name="patient_profile">Patient Profile</string>
+    <string name="check_profile">Check Profile</string>
+    <string name="send_a_message">Send a Message</string>
+    <string name="doctor_name">Doctor Name</string>
+    <string name="about_doctor">About Doctor</string>
+    <string name="doctor_details">Doctor Details</string>
+    <string name="request_for_check_test_results">Request for Check Test Results</string>
+    <string name="profile">Profile</string>
+    <string name="add_to_favourite">Add to Favourite</string>
+    <string name="patient_name">Patient Name</string>
+    <string name="patient_phone">Patient Phone</string>
+    <string name="patient_details">Patient Details</string>
+    <string name="type_a_message">Type a Message</string>
+    <string name="messenger_name">Messenger Name</string>
 
 </resources>

@@ -3,16 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottomSheetContainer"
+    android:id="@+id/bottomSheetContainerPatient"
     android:orientation="vertical"
     android:background="@drawable/bottom_sheet_background">
-    
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="15dp"
-        android:text="@string/doctor_details"
+        android:text="@string/patient_details"
         android:fontFamily="@font/nunito_extrabold"
         android:textSize="18sp"
         />
@@ -27,7 +27,7 @@
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgDocProfile"
+            android:id="@+id/imgPatientProfile"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="10dp"
@@ -46,15 +46,15 @@
                 android:id="@+id/txtDocName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/doctor_name"
+                android:text="@string/patient_name"
                 android:fontFamily="@font/nunito_extrabold"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textColor="@color/colorBlack"/>
             <TextView
                 android:id="@+id/txtDocStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/about_doctor"
+                android:text="@string/patient_phone"
                 android:fontFamily="@font/nunito_semibold"/>
 
 
@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:background="@color/colorDivider"/>
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="12dp">
-        
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="25dp"
-            android:text="@string/profile"
+            android:text="@string/check_profile"
             android:textSize="15sp"
             android:textColor="@color/colorBlack"/>
 
@@ -118,7 +118,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="25dp"
             android:text="@string/send_a_message"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:textColor="@color/colorBlack"/>
 
     </LinearLayout>
@@ -134,25 +134,23 @@
         android:layout_marginBottom="20dp">
 
         <ImageView
-            android:id="@+id/imgFav"
             android:layout_width="25dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_marginStart="10dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_favorite"
-            android:tint="@color/colorPrimaryDark" />
+            android:src="@drawable/ic_request_test_results"
+            android:tint="@color/colorPrimaryDark"/>
         <TextView
-            android:id="@+id/txtFavourite"
+            android:id="@+id/txtReqTestResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="25dp"
-            android:text="@string/add_to_favourite"
+            android:text="@string/request_for_check_test_results"
             android:textSize="15sp"
             android:textColor="@color/colorBlack"/>
-
     </LinearLayout>
-    
+
     <!--<Button
         android:id="@+id/btnAddToList"
         android:layout_width="match_parent"
