@@ -45,6 +45,7 @@ public class MessageActivity extends AppCompatActivity {
 
     TextView docName;
     CircleImageView docProfileImage;
+    CircleImageView docChatImage;
     String docID;
 
     RecyclerView recyclerView;
@@ -66,6 +67,7 @@ public class MessageActivity extends AppCompatActivity {
 
         docProfileImage = findViewById(R.id.messengerImage);
         docName = findViewById(R.id.txtMessengerName);
+        docChatImage  = findViewById(R.id.chatImage);
 
         docID = getIntent().getStringExtra("docID");
 
@@ -179,6 +181,7 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.with(getApplicationContext()).load(uri.toString()).resize(400,600).centerInside().into(docProfileImage);
+
             }
         });
 

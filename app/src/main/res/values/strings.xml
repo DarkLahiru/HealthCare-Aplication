@@ -44,5 +44,19 @@
     <string name="patient_details">Patient Details</string>
     <string name="type_a_message">Type a Message</string>
     <string name="messenger_name">Messenger Name</string>
+    <string name="new_appointment">Add New</string>
+    <string name="pending_appointments">Check Pending </string>
+    <string name="wait">Wait....</string>
+    <string name="search_here">Search here</string>
+    <string name="want_to_remove_this_location">Want to remove this Location?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="finish">Finish</string>
+    <string name="full_name">Full Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="home_address">Home Address</string>
+    <string name="add_new">ADD NEW</string>
+    <string name="medical_council_reg_number">Medical Council Reg Number</string>
+
 
 </resources>

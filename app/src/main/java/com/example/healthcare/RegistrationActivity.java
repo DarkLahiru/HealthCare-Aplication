@@ -86,6 +86,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                                                 finish();
                                                                 rootReference.child("Users").child(firebaseUser.getUid()).child("First Time Login").setValue("false");
                                                                 rootReference.child("Users").child(firebaseUser.getUid()).child("LoginType").setValue("Patient");
+                                                                rootReference.child("Patients").child(firebaseUser.getUid()).child("MyProfile").child("id").setValue(firebaseUser.getUid());
                                                                 Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
                                                                 startActivity(myIntent);
 

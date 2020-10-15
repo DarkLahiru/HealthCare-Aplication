@@ -1,4 +1,4 @@
-package medicine;
+package Medicine;
 
 import android.view.View;
 import android.widget.TextView;

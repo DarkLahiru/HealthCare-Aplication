@@ -26,7 +26,7 @@ import profile.User;
 public class RegistrationDoctorActivity extends AppCompatActivity {
 
     Button register;
-    EditText emailId, Password, rePassword;
+    EditText emailId, Password, rePassword,doctorID;
     FirebaseAuth mFirebaseAuth;
     DatabaseReference rootReference;
     FirebaseUser firebaseUser;
@@ -39,6 +39,7 @@ public class RegistrationDoctorActivity extends AppCompatActivity {
         Password = findViewById(R.id.passeTDoctor);
         rePassword = findViewById(R.id.rePasseTDoctor);
         register = findViewById(R.id.btnSignUpDoc);
+        doctorID = findViewById(R.id.usereTDoctorID);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         rootReference = FirebaseDatabase.getInstance().getReference();
@@ -49,7 +50,12 @@ public class RegistrationDoctorActivity extends AppCompatActivity {
                 final String email = emailId.getText().toString();
                 String pwd = Password.getText().toString();
                 String rePwd = rePassword.getText().toString();
-                if (email.isEmpty()) {
+                String docID   = doctorID.getText().toString();
+                if (docID.isEmpty()){
+                    doctorID.setError("Please enter registration number");
+                    doctorID.requestFocus();
+                }
+                else if (email.isEmpty()) {
                     emailId.setError("Please enter email");
                     emailId.requestFocus();
                 } else if (pwd.isEmpty()) {
@@ -88,6 +94,7 @@ public class RegistrationDoctorActivity extends AppCompatActivity {
 
                                                                 rootReference.child("Users").child(firebaseUser.getUid()).child("First Time Login").setValue("false");
                                                                 rootReference.child("Users").child(firebaseUser.getUid()).child("LoginType").setValue("Doctor");
+                                                                rootReference.child("Users").child(firebaseUser.getUid()).child("MyProfile").child("regID").setValue(docID);
                                                                 Intent myIntent = new Intent(getApplicationContext(), LoginDoctorActivity.class);
                                                                 startActivity(myIntent);
                                                                 finish();

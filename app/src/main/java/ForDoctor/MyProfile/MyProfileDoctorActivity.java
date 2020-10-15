@@ -31,7 +31,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyProfileDoctorActivity extends AppCompatActivity {
-    TextInputLayout fullName, phoneNum,specializations, homeAddress;
+    TextInputLayout fullName, phoneNum,specializations, homeAddress,doctorID;
     CircleImageView profileImage;
     TextView profileName,emailId;
 
@@ -49,6 +49,7 @@ public class MyProfileDoctorActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
+        doctorID = findViewById(R.id.txtDocID);
         btnUpdate = findViewById(R.id.btnUpdateDoctor);
         profileName = findViewById(R.id.profile_nameDoctor);
         fullName = findViewById(R.id.txtFullNameDoctor);
@@ -75,6 +76,7 @@ public class MyProfileDoctorActivity extends AppCompatActivity {
         rootReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String mediID  = Objects.requireNonNull(snapshot.child("MyProfile").child("regID").getValue()).toString();
                 String dName = Objects.requireNonNull(snapshot.child("MyProfile").child("displayName").getValue()).toString();
                 String fName = Objects.requireNonNull(snapshot.child("MyProfile").child("fullName").getValue()).toString();
                 String spec = Objects.requireNonNull(snapshot.child("MyProfile").child("specializations").getValue()).toString();
@@ -82,6 +84,7 @@ public class MyProfileDoctorActivity extends AppCompatActivity {
                 String address = Objects.requireNonNull(snapshot.child("MyProfile").child("homeAddress").getValue()).toString();
                 String email = Objects.requireNonNull(snapshot.child("LoginDetails").child("username").getValue()).toString();
 
+                Objects.requireNonNull(doctorID.getEditText()).setText(mediID);
                 profileName.setText(dName);
                 emailId.setText(email);
                 Objects.requireNonNull(fullName.getEditText()).setText(fName);

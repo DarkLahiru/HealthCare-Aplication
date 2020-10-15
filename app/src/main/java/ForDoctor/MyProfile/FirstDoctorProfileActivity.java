@@ -26,13 +26,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import ForDoctor.AppointmentLocationActivity;
 import ForDoctor.MyProfile.DoctorData;
 import ForDoctor.NavigationDoctor;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FirstDoctorProfileActivity extends AppCompatActivity {
 
-    TextInputLayout displayName, fullName, phoneNum, specializations, homeAddress;
+    TextInputLayout docRegID, displayName, fullName, phoneNum, specializations, homeAddress;
     Button btnSave;
     ImageView clickUpload;
     Uri imageUri;
@@ -58,6 +59,7 @@ public class FirstDoctorProfileActivity extends AppCompatActivity {
         phoneNum = findViewById(R.id.txtFPhoneNumDoctor);
         specializations = findViewById(R.id.txtSpecializations);
         homeAddress = findViewById(R.id.txtFHomeAddressDoctor);
+        docRegID = findViewById(R.id.txtDocRegID);
         final DoctorData doctorData = new DoctorData();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -78,6 +80,7 @@ public class FirstDoctorProfileActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String docID = docRegID.getEditText().getText().toString();
                 String docName= displayName.getEditText().getText().toString();
                 String docFullName = fullName.getEditText().getText().toString();
                 String docSP = specializations.getEditText().getText().toString();
@@ -89,6 +92,7 @@ public class FirstDoctorProfileActivity extends AppCompatActivity {
                 }
                 else {
 
+                    doctorData.setRegID(docID);
                     doctorData.setDisplayName(docName);
                     doctorData.setFullName(docFullName);
                     doctorData.setSpecializations(docSP);
@@ -108,7 +112,7 @@ public class FirstDoctorProfileActivity extends AppCompatActivity {
 
                                 Toast.makeText(getApplicationContext(), "Update Data Successfully", Toast.LENGTH_SHORT).show();
                                 finish();
-                                Intent myIntent = new Intent(getApplicationContext(), NavigationDoctor.class);
+                                Intent myIntent = new Intent(getApplicationContext(), AppointmentLocationActivity.class);
                                 startActivity(myIntent);
 
                             }

@@ -1,4 +1,4 @@
-package medicine;
+package Medicine;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,7 +52,7 @@ public class MedicineActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
-        rootReference = FirebaseDatabase.getInstance().getReference(firebaseUser.getUid()).child("Medical Details");
+        rootReference = FirebaseDatabase.getInstance().getReference().child("Medical Details").child(firebaseUser.getUid());
 
         /*listData = new ArrayList<>();
 

@@ -68,6 +68,7 @@ public class MyProfileActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
 
+
         rootReference = FirebaseDatabase.getInstance().getReference("Patients").child(firebaseUser.getUid());
         rootReference.addValueEventListener(new ValueEventListener() {
             @Override

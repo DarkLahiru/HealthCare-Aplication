@@ -1,4 +1,4 @@
-package medicine;
+package Medicine;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,7 +52,7 @@ public class AddMedRecordActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
-        rootReference = FirebaseDatabase.getInstance().getReference(firebaseUser.getUid()).child("Medical Details");
+        rootReference = FirebaseDatabase.getInstance().getReference().child("Medical Details").child(firebaseUser.getUid());
         /*rootReference.addValueEventListener(new ValueEventListener() {
             @Override+
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -91,7 +91,7 @@ public class AddMedRecordActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isComplete()) {
-                                Toast.makeText(getApplicationContext(), "Update Data Successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Add Data Successfully", Toast.LENGTH_SHORT).show();
                                 finish();
 
 

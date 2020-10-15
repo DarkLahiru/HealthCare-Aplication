@@ -22,6 +22,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
     <RelativeLayout
         android:id="@+id/rLCheckDoctors"
         android:layout_width="wrap_content"
@@ -39,7 +40,7 @@
             android:layout_toStartOf="@+id/search_btn"
             android:background="@drawable/search_layout"
             android:fontFamily="@font/nunito_light"
-            android:hint="Search here"
+            android:hint="@string/search_here"
             android:inputType="textPersonName"
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
@@ -47,7 +48,8 @@
             android:paddingBottom="10dp"
             android:textColor="#999999"
             android:textSize="16sp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:autofillHints="" />
 
         <ImageButton
             android:id="@+id/search_btn"
@@ -58,7 +60,9 @@
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="0dp"
             android:background="@android:color/background_light"
-            app:srcCompat="@drawable/ic_action_name" />
+            app:srcCompat="@drawable/ic_action_name"
+            android:contentDescription="TODO" />
+
 
     </RelativeLayout>
 
@@ -66,12 +70,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rVResult_List"
         android:layout_width="match_parent"
-        android:layout_height="560dp"
+        android:layout_height="506dp"
         android:layout_below="@+id/rLCheckDoctors"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
-
+        android:layout_marginTop="22dp"
         android:layout_marginEnd="0dp" />
     <View
         android:layout_width="match_parent"
@@ -81,22 +85,27 @@
         android:layout_above="@id/rVResult_List"/>
 
     <LinearLayout
-        android:layout_below="@+id/rVResult_List"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/rVResult_List"
+        android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="39dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnFavourite"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
             android:background="@drawable/search_layout"
-            android:text="Favourite"
             android:padding="10sp"
-            android:textColor="@color/favourite"
-            android:layout_marginRight="30dp"/>
+            android:text="Favourite"
+            android:textColor="@color/favourite" />
 
         <Button
             android:id="@+id/btnMessageList"
@@ -105,8 +114,7 @@
             android:background="@drawable/search_layout"
             android:padding="10sp"
             android:text="Messages"
-            android:textColor="@color/favourite"
-            />
+            android:textColor="@color/favourite" />
 
     </LinearLayout>
 

@@ -65,7 +65,7 @@ public class AddNewContactActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
-        rootReference = FirebaseDatabase.getInstance().getReference(firebaseUser.getUid()).child("Contact Details");
+        rootReference = FirebaseDatabase.getInstance().getReference().child("Contact Details").child(firebaseUser.getUid());
         storageReference = FirebaseStorage.getInstance().getReference("ContactImages");
 
         uploadContactImage.setOnClickListener(new View.OnClickListener() {

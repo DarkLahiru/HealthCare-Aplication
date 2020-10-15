@@ -77,11 +77,13 @@ public class ChatListDoctorActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    ChatList chatList = dataSnapshot.getValue(ChatList.class);
-                    userList.add(chatList);
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        ChatList chatList = dataSnapshot.getValue(ChatList.class);
+                        userList.add(chatList);
+                    }
+                    chatList();
                 }
-                chatList();
             }
 
             @Override
@@ -102,10 +104,12 @@ public class ChatListDoctorActivity extends AppCompatActivity {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         User users = dataSnapshot.child("MyProfile").getValue(User.class);
                         for (ChatList chatList : userList) {
-                            assert users != null;
-                            if (users.getId().equalsIgnoreCase(chatList.getId())) {
-                                user.add(users);
+                            if (!userList.isEmpty()) {
+                                if (users.getId().equalsIgnoreCase(chatList.getId())) {
+                                    user.add(users);
+                                }
                             }
+
                         }
                     }
                 }

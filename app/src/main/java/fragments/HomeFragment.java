@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import Appointments.AppointmentPatientActivity;
 import Contact.ContactActivity;
 import com.example.healthcare.NavigationActivity;
 import com.example.healthcare.R;
@@ -20,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import ContactDoctor.CheckDoctorsActivity;
 import Reminder.ReminderActivity;
-import medicine.MedicineActivity;
+import Medicine.MedicineActivity;
 import profile.MyProfileActivity;
 
 
@@ -68,6 +69,15 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        ImageView appointments = (ImageView) view.findViewById(R.id.appointments);
+        appointments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AppointmentPatientActivity.class);
+                startActivity(intent);
+            }
+        });
+
         ImageView contact = (ImageView) view.findViewById(R.id.contact);
         contact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +86,7 @@ public class HomeFragment extends Fragment {
                 startActivity(contact);
             }
         });
+
 
         /*ImageView testReport = (ImageView) view.findViewById(R.id.testReport);
         testReport.setOnClickListener(new View.OnClickListener() {

@@ -1,9 +1,17 @@
 package ForDoctor.MyProfile;
 
 public class DoctorData {
-    public String displayName,fullName,phoneNum,specializations,homeAddress,id;
+    public String displayName,fullName,phoneNum,specializations,homeAddress,id,regID;
 
     public DoctorData() {
+    }
+
+    public String getRegID() {
+        return regID;
+    }
+
+    public void setRegID(String regID) {
+        this.regID = regID;
     }
 
     public String getId() {

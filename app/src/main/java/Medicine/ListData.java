@@ -1,4 +1,4 @@
-package medicine;
+package Medicine;
 
 public class ListData {
     private String date,reason;

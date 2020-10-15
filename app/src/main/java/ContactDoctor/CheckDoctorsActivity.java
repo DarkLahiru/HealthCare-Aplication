@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -39,7 +42,6 @@ import Chat.ChatListActivity;
 import ForDoctor.MyProfile.DoctorData;
 import ForDoctor.MyProfile.MyProfileDoctorActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
-import medicine.ListData;
 
 
 public class CheckDoctorsActivity extends AppCompatActivity {
@@ -53,10 +55,13 @@ public class CheckDoctorsActivity extends AppCompatActivity {
     FirebaseAuth mFirebaseAuth;
     StorageReference storageReference;
 
-    TextView docName,docAbout,docProfile,docMessage,docFavourite;
+    TextView docName, docAbout, docProfile, docMessage, docFavourite;
     CircleImageView docProfileImage;
+    ImageView searchBtn;
+    EditText mSearchText;
 
     Button message, favourite;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +86,7 @@ public class CheckDoctorsActivity extends AppCompatActivity {
 
         LoadData();
 
-        message =findViewById(R.id.btnMessageList);
+        message = findViewById(R.id.btnMessageList);
         message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,24 +98,63 @@ public class CheckDoctorsActivity extends AppCompatActivity {
         favourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),FavouriteList.class);
+                Intent intent = new Intent(getApplicationContext(), FavouriteList.class);
                 startActivity(intent);
+            }
+        });
+        mSearchText = findViewById(R.id.search_field);
+        searchBtn = findViewById(R.id.search_btn);
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchText = mSearchText.getText().toString();
+                firebaseSearch(searchText);
             }
         });
 
     }
 
+    private void firebaseSearch(String searchText) {
+
+        Toast.makeText(CheckDoctorsActivity.this, "Searching", Toast.LENGTH_LONG).show();
+        Query firebaseSearchQuery = rootReference.orderByChild("displayName").startAt(searchText).endAt(searchText + "\uf8ff");
+        FirebaseRecyclerOptions<DoctorData> FirebaseRecyclerOptions = new FirebaseRecyclerOptions.Builder<DoctorData>().setQuery(firebaseSearchQuery, DoctorData.class).build();
+        FirebaseRecyclerAdapter<DoctorData, DoctorViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<DoctorData, DoctorViewHolder>(FirebaseRecyclerOptions) {
+            @Override
+            protected void onBindViewHolder(@NonNull DoctorViewHolder holder, int position, @NonNull DoctorData model) {
+                holder.docName.setText(model.getDisplayName());
+                holder.docDescription.setText(model.getSpecializations());
+                final String key = getRef(position).getKey();
+                storageReference.child(key + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.with(getApplicationContext()).load(uri.toString()).resize(400, 600).centerInside().into(holder.docFace);
+                    }
+                });
+            }
+
+            @NonNull
+            @Override
+            public DoctorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_doctor, parent, false);
+                return new DoctorViewHolder(view);
+            }
+        };
+
+        firebaseRecyclerAdapter.startListening();
+        recyclerView.setAdapter(firebaseRecyclerAdapter);
+    }
 
     private void LoadData() {
 
 
-        options = new FirebaseRecyclerOptions.Builder<DoctorData>().setQuery(rootReference,DoctorData.class).build();
+        options = new FirebaseRecyclerOptions.Builder<DoctorData>().setQuery(rootReference, DoctorData.class).build();
         adapter = new FirebaseRecyclerAdapter<DoctorData, DoctorViewHolder>(options) {
 
             @NonNull
             @Override
             public DoctorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_doctor,parent,false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_doctor, parent, false);
                 return new DoctorViewHolder(view);
             }
 
@@ -119,21 +163,21 @@ public class CheckDoctorsActivity extends AppCompatActivity {
                 holder.docName.setText(model.getDisplayName());
                 holder.docDescription.setText(model.getSpecializations());
                 final String key = getRef(position).getKey();
-                storageReference.child(key +".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                storageReference.child(key + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Picasso.with(getApplicationContext()).load(uri.toString()).resize(400,600).centerInside().into(holder.docFace);
+                        Picasso.with(getApplicationContext()).load(uri.toString()).resize(400, 600).centerInside().into(holder.docFace);
                     }
                 });
 
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        BottomSheetDialog bottomSheetDialog =  new BottomSheetDialog(CheckDoctorsActivity.this,R.style.BottomSheetDialogTheme);
-                        final View bottomSheetView  = LayoutInflater.from(getApplicationContext())
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(CheckDoctorsActivity.this, R.style.BottomSheetDialogTheme);
+                        final View bottomSheetView = LayoutInflater.from(getApplicationContext())
                                 .inflate(
                                         R.layout.layout_bottomsheet_doctor,
-                                        (LinearLayout)findViewById(R.id.bottomSheetContainer)
+                                        (LinearLayout) findViewById(R.id.bottomSheetContainer)
                                 );
                         bottomSheetDialog.setContentView(bottomSheetView);
                         bottomSheetDialog.show();
@@ -142,16 +186,16 @@ public class CheckDoctorsActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Intent profile = new Intent(CheckDoctorsActivity.this, MyProfileDoctorActivity.class);
-                                profile.putExtra("docID",key);
+                                profile.putExtra("docID", key);
                                 startActivity(profile);
                             }
                         });
                         bottomSheetView.findViewById(R.id.txtSendMessage).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                               Intent message = new Intent(CheckDoctorsActivity.this,MessageActivity.class);
-                               message.putExtra("docID",key);
-                               startActivity(message);
+                                Intent message = new Intent(CheckDoctorsActivity.this, MessageActivity.class);
+                                message.putExtra("docID", key);
+                                startActivity(message);
                             }
                         });
                         bottomSheetView.findViewById(R.id.txtFavourite).setOnClickListener(new View.OnClickListener() {
@@ -162,22 +206,20 @@ public class CheckDoctorsActivity extends AppCompatActivity {
                                 rReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if(snapshot.exists()){
+                                        if (snapshot.exists()) {
                                             boolean flag = false;
-                                            for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                                                if (dataSnapshot.getKey().equalsIgnoreCase(key)){
+                                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                                if (dataSnapshot.getKey().equalsIgnoreCase(key)) {
                                                     flag = true;
                                                 }
                                             }
-                                            if (flag){
+                                            if (flag) {
                                                 Toast.makeText(CheckDoctorsActivity.this, "Already Added", Toast.LENGTH_SHORT).show();
-                                            }
-                                            else {
+                                            } else {
                                                 Toast.makeText(CheckDoctorsActivity.this, "Added to favourite", Toast.LENGTH_SHORT).show();
                                                 rReference.child(key).child("id").setValue(key);
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             Toast.makeText(CheckDoctorsActivity.this, "Added to favourite", Toast.LENGTH_SHORT).show();
                                             rReference.child(key).child("id").setValue(key);
 
@@ -195,10 +237,10 @@ public class CheckDoctorsActivity extends AppCompatActivity {
                         docProfileImage = bottomSheetView.findViewById(R.id.imgDocProfile);
                         docName = bottomSheetView.findViewById(R.id.txtDocName);
                         docAbout = bottomSheetView.findViewById(R.id.txtDocStatus);
-                        storageReference.child(key +".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        storageReference.child(key + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                Picasso.with(getApplicationContext()).load(uri.toString()).resize(400,600).centerInside().into(docProfileImage);
+                                Picasso.with(getApplicationContext()).load(uri.toString()).resize(400, 600).centerInside().into(docProfileImage);
                             }
                         });
 
@@ -230,18 +272,19 @@ public class CheckDoctorsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    public static class DoctorViewHolder extends RecyclerView.ViewHolder{
+    public static class DoctorViewHolder extends RecyclerView.ViewHolder {
 
-        TextView docName , docDescription;
+        TextView docName, docDescription;
         CircleImageView docFace;
 
         View mView;
+
         public DoctorViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
-            docName = (TextView)mView.findViewById(R.id.name_text);
-            docDescription = (TextView)mView.findViewById(R.id.status_text);
-            docFace = (CircleImageView)mView.findViewById(R.id.profile_imageFace);
+            docName = (TextView) mView.findViewById(R.id.name_text);
+            docDescription = (TextView) mView.findViewById(R.id.status_text);
+            docFace = (CircleImageView) mView.findViewById(R.id.profile_imageFace);
         }
     }
 }

@@ -83,6 +83,26 @@
             android:padding="30dp"
             android:layout_marginTop="30dp">
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtDocID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Medical Council Reg Number">
+
+                <com.google.android.material.textfield.TextInputEditText
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_medical_id"
+                    android:drawablePadding="10dp"
+                    android:textStyle="bold"
+                    android:inputType="text"
+                    android:focusable="false"
+                    android:cursorVisible="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
 
             <com.google.android.material.textfield.TextInputLayout

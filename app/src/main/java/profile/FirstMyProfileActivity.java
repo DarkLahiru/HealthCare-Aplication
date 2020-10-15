@@ -98,8 +98,6 @@ public class FirstMyProfileActivity  extends AppCompatActivity {
 
 
                     User myDetails = new User(name, fName, bod, phone, heightValue, weightValue, address);
-
-                    rootReference.child("Patients").child(firebaseUser.getUid()).child("MyProfile").child("id").setValue(firebaseUser.getUid());
                     rootReference.child("Patients").child(firebaseUser.getUid()).child("MyProfile").setValue(myDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

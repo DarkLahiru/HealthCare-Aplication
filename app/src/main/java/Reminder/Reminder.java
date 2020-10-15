@@ -15,7 +15,7 @@ public class Reminder implements Comparable<Reminder> {
     private String dosageQuantity;
     private String instructions;
     private String repeatTime;
-    private List<Long> medicineIds = new LinkedList<Long>();
+    //private int medicineId;
 
 
 
@@ -93,15 +93,13 @@ public class Reminder implements Comparable<Reminder> {
         this.repeatTime = repeatTime;
     }
 
-    public List<Long> getMedicineIds() {
-        return medicineIds;
+   /* public int getMedicineId() {
+        return medicineId;
     }
 
-    public void setMedicineIds(List<Long> medicineIds) {
-        this.medicineIds = medicineIds;
-    }
-
-    public void addMedicineIds(long id) { medicineIds.add(id); }
+    public void setMedicineId(int medicineId) {
+        this.medicineId = medicineId;
+    }*/
 
     public String getAmPm() { return (hour < 12) ? "am" : "pm"; }
 

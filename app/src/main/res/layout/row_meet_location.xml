@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp"
+    app:cardUseCompatPadding="true"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/background">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtLocation"
+            android:text="Place Name"
+            android:textSize="22sp"
+            android:textColor="#000"
+
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/bungee"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtAddress"
+            android:text="Address"
+            android:textSize="18sp"
+            android:textColor="#a9a9a9"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"
+            android:layout_below="@+id/txtLocation"
+            android:fontFamily="@font/nunito_light"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

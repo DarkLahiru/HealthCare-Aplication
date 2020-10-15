@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <application
         android:allowBackup="true"
@@ -13,13 +15,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="ForDoctor.Messages.ChatListDoctorActivity"
-            android:parentActivityName="ForDoctor.NavigationDoctor"/>
+        <activity android:name="Appointments.Booking.BookAppointmentActivity"></activity>
+        <activity android:name="ForDoctor.AppointmentLocationActivity" />
+        <activity
+            android:name="Appointments.AppointmentPatientActivity"
+            android:label="Appointments"
+            android:parentActivityName="ForDoctor.NavigationDoctor" />
+        <activity android:name="Reminder.AlertActivity" />
+        <activity
+            android:name="ForDoctor.Messages.ChatListDoctorActivity"
+            android:parentActivityName="ForDoctor.NavigationDoctor" />
         <activity
             android:name="ForDoctor.Patients.ViewPatientsActivity"
             android:parentActivityName="ForDoctor.NavigationDoctor" />
-        <activity android:name="ForDoctor.Messages.DocMessagesActivity"
-            android:parentActivityName="ForDoctor.Messages.ChatListDoctorActivity"/>
+        <activity
+            android:name="ForDoctor.Messages.DocMessagesActivity"
+            android:parentActivityName="ForDoctor.Messages.ChatListDoctorActivity" />
         <activity
             android:name="ContactDoctor.FavouriteList"
             android:parentActivityName="ContactDoctor.CheckDoctorsActivity" />
@@ -69,19 +80,19 @@
             android:label="Contact Details"
             android:parentActivityName="Contact.ContactActivity" />
         <activity
-            android:name="medicine.ViewMedicineActivity"
+            android:name="Medicine.ViewMedicineActivity"
             android:label="Your Medical Details"
-            android:parentActivityName="medicine.MedicineActivity" />
+            android:parentActivityName="Medicine.MedicineActivity" />
         <activity
             android:name="Contact.ContactActivity"
             android:label="ADD NEW CONTACT"
             android:parentActivityName=".NavigationActivity" />
         <activity
-            android:name="medicine.AddMedRecordActivity"
+            android:name="Medicine.AddMedRecordActivity"
             android:label="ADD DETAILS"
-            android:parentActivityName="medicine.MedicineActivity" />
+            android:parentActivityName="Medicine.MedicineActivity" />
         <activity
-            android:name="medicine.MedicineActivity"
+            android:name="Medicine.MedicineActivity"
             android:label="Medical History"
             android:parentActivityName=".NavigationActivity" />
         <activity android:name="profile.FirstMyProfileActivity" />
@@ -102,6 +113,10 @@
         <activity
             android:name=".LoginActivity"
             android:parentActivityName=".PatientOrDoctorActivity" />
+
+        <receiver
+            android:name="Reminder.AlarmReceiver"
+            android:process=":remote" />
     </application>
 
 </manifest>

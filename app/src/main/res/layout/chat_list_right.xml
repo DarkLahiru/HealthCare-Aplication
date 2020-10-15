@@ -14,7 +14,7 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/chatImage"
+
             android:src="@drawable/ic_profile_image"
             android:visibility="gone"/>
         <TextView

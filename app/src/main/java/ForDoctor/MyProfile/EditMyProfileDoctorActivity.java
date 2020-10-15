@@ -17,15 +17,20 @@ import android.widget.Toast;
 
 import com.example.healthcare.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
@@ -40,6 +45,7 @@ public class EditMyProfileDoctorActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     DatabaseReference rootReference;
+
     FirebaseUser firebaseUser;
     FirebaseAuth mFirebaseAuth;
     StorageReference storageReference;
@@ -69,6 +75,11 @@ public class EditMyProfileDoctorActivity extends AppCompatActivity {
         rootReference = FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference("Doctors").child("ProfileImage");
         progressDialog = new ProgressDialog(this);
+
+
+        LoadData();
+
+
 
         clickUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +127,44 @@ public class EditMyProfileDoctorActivity extends AppCompatActivity {
         });
     }
 
+    private void LoadData() {
+        DatabaseReference rootReference;
+        StorageReference storageReference;
+
+        rootReference = FirebaseDatabase.getInstance().getReference().child("Doctors").child(firebaseUser.getUid());
+        storageReference = FirebaseStorage.getInstance().getReference().child("Doctors").child("ProfileImage").child(firebaseUser.getUid()+".jpg");
+
+        rootReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String dName = Objects.requireNonNull(snapshot.child("MyProfile").child("displayName").getValue()).toString();
+                String fName = Objects.requireNonNull(snapshot.child("MyProfile").child("fullName").getValue()).toString();
+                String spec = Objects.requireNonNull(snapshot.child("MyProfile").child("specializations").getValue()).toString();
+                String phone = Objects.requireNonNull(snapshot.child("MyProfile").child("phoneNum").getValue()).toString();
+                String address = Objects.requireNonNull(snapshot.child("MyProfile").child("homeAddress").getValue()).toString();
+                //String email = Objects.requireNonNull(snapshot.child("LoginDetails").child("username").getValue()).toString();
+
+                Objects.requireNonNull(displayName.getEditText()).setText(dName);
+                Objects.requireNonNull(fullName.getEditText()).setText(fName);
+                Objects.requireNonNull(specializations.getEditText()).setText(spec);
+                Objects.requireNonNull(phoneNum.getEditText()).setText(phone);
+                Objects.requireNonNull(homeAddress.getEditText()).setText(address);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(getApplicationContext()).load(uri.toString()).resize(400,600).centerInside().into(uploadedImage);
+            }
+        });
+    }
 
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

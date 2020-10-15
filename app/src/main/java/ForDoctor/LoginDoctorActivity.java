@@ -101,7 +101,7 @@ public class LoginDoctorActivity extends AppCompatActivity {
                                                 finish();
 
                                             } else {
-                                                Intent dash = new Intent(LoginDoctorActivity.this, NavigationDoctor.class);
+                                                Intent dash = new Intent(LoginDoctorActivity.this, AppointmentLocationActivity.class);
                                                 startActivity(dash);
                                             }
                                         }

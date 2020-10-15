@@ -49,7 +49,7 @@ public class ViewContactDetails extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
-        rootReference = FirebaseDatabase.getInstance().getReference(firebaseUser.getUid()).child("Contact Details");
+        rootReference = FirebaseDatabase.getInstance().getReference().child("Contact Details").child(firebaseUser.getUid());
 
 
         String ContactUID = getIntent().getStringExtra("ContactItem");
