@@ -57,6 +57,7 @@
     <string name="home_address">Home Address</string>
     <string name="add_new">ADD NEW</string>
     <string name="medical_council_reg_number">Medical Council Reg Number</string>
+    <string name="search_doctor">Search doctor</string>
 
 
 </resources>

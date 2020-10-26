@@ -85,7 +85,7 @@ public class AppointmentLocationActivity extends AppCompatActivity {
 
     private void LoadData() {
 
-        rootReference = FirebaseDatabase.getInstance().getReference("Doctors").child(firebaseUser.getUid()).child("AppointmentLocation");
+        rootReference = FirebaseDatabase.getInstance().getReference("AppointmentLocation").child(firebaseUser.getUid());
         options = new FirebaseRecyclerOptions.Builder<Appointment>().setQuery(rootReference, Appointment.class).build();
         adapter = new FirebaseRecyclerAdapter<Appointment, UserViewHolder>(options) {
             @NonNull
@@ -169,10 +169,11 @@ public class AppointmentLocationActivity extends AppCompatActivity {
                 Appointment appointment = new Appointment();
                 appointment.setLocationName(locationName);
                 appointment.setLocationAddress(locationAddress);
+                appointment.setLocationID(firebaseUser.getUid());
 
                 mFirebaseAuth = FirebaseAuth.getInstance();
                 firebaseUser = mFirebaseAuth.getCurrentUser();
-                rootReference = FirebaseDatabase.getInstance().getReference().child("Doctors").child(firebaseUser.getUid()).child("AppointmentLocation");
+                rootReference = FirebaseDatabase.getInstance().getReference().child("AppointmentLocation").child(firebaseUser.getUid());
                 rootReference.push().setValue(appointment).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

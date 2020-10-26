@@ -1,52 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_doctor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_imageFace"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/profile_doctor"
-        app:civ_border_width="2dp"
-        app:civ_border_color="@color/imgUpload"/>
-
-    <TextView
-        android:id="@+id/name_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_toEndOf="@+id/profile_imageFace"
-        android:fontFamily="@font/nunito_extrabold"
-        android:text="Username"
-        android:textColor="#555555"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/status_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/name_text"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/profile_imageFace"
-        android:fontFamily="@font/nunito_bold"
-        android:text="Doctor Description"
-        android:textColor="#999999"
-        android:textSize="14sp" />
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@color/colorDivider"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/profile_imageFace"/>
-</RelativeLayout>
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_imageFace"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/profile_doctor"
+            app:civ_border_color="@color/imgUpload"
+            app:civ_border_width="2dp" />
+
+        <TextView
+            android:id="@+id/name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="20dp"
+            android:layout_toEndOf="@+id/profile_imageFace"
+            android:fontFamily="@font/nunito_extrabold"
+            android:text="Username"
+            android:textColor="#555555"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_text"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="30dp"
+            android:layout_toEndOf="@+id/profile_imageFace"
+            android:fontFamily="@font/nunito_bold"
+            android:text="Doctor Description"
+            android:textColor="#999999"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_below="@id/profile_imageFace"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorDivider" />
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

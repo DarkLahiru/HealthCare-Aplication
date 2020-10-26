@@ -116,7 +116,7 @@ public class ChatListActivity extends AppCompatActivity {
                     @NonNull
                     @Override
                     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_doctor,parent,false);
+                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_doctor, parent, false);
                         return new UserViewHolder(view);
                     }
 
@@ -129,10 +129,10 @@ public class ChatListActivity extends AppCompatActivity {
                                 holder.docName.setText(snapshot.child(model.getId()).child("displayName").getValue().toString());
                                 holder.docDescription.setText(snapshot.child(model.getId()).child("specializations").getValue().toString());
                                 storageReference = FirebaseStorage.getInstance().getReference("Doctors").child("ProfileImage");
-                                storageReference.child(model.getId() +".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                storageReference.child(model.getId() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        Picasso.with(getApplicationContext()).load(uri.toString()).resize(400,600).centerInside().into(holder.docFace);
+                                        Picasso.with(getApplicationContext()).load(uri.toString()).resize(400, 600).centerInside().into(holder.docFace);
                                     }
                                 });
                             }
@@ -147,7 +147,7 @@ public class ChatListActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-                                intent.putExtra("docID",model.getId());
+                                intent.putExtra("docID", model.getId());
                                 startActivity(intent);
                             }
                         });
@@ -157,7 +157,6 @@ public class ChatListActivity extends AppCompatActivity {
                 };
                 adapter.startListening();
                 recyclerView.setAdapter(adapter);
-
 
 
             }
@@ -173,15 +172,16 @@ public class ChatListActivity extends AppCompatActivity {
 
     private class UserViewHolder extends RecyclerView.ViewHolder {
 
-        TextView docName , docDescription;
+        TextView docName, docDescription;
         CircleImageView docFace;
         View mView;
+
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
-            docName = (TextView)mView.findViewById(R.id.name_text);
-            docDescription = (TextView)mView.findViewById(R.id.status_text);
-            docFace = (CircleImageView)mView.findViewById(R.id.profile_imageFace);
+            docName = (TextView) mView.findViewById(R.id.name_text);
+            docDescription = (TextView) mView.findViewById(R.id.status_text);
+            docFace = (CircleImageView) mView.findViewById(R.id.profile_imageFace);
         }
     }
 }

@@ -1,25 +1,10 @@
 package ForDoctor.MyProfile;
 
+
 public class DoctorData {
     public String displayName,fullName,phoneNum,specializations,homeAddress,id,regID;
 
     public DoctorData() {
-    }
-
-    public String getRegID() {
-        return regID;
-    }
-
-    public void setRegID(String regID) {
-        this.regID = regID;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getDisplayName() {
@@ -60,5 +45,21 @@ public class DoctorData {
 
     public void setHomeAddress(String homeAddress) {
         this.homeAddress = homeAddress;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRegID() {
+        return regID;
+    }
+
+    public void setRegID(String regID) {
+        this.regID = regID;
     }
 }

@@ -35,8 +35,6 @@ public class LoginDoctorActivity extends AppCompatActivity {
     public String loginType;
     public  String firstTimeLogin;
 
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -33,7 +33,7 @@
         app:sv_stepViewStyle="@style/StepView"
         app:sv_typeface="@font/nunito_bold" />
 
-    <androidx.viewpager.widget.ViewPager
+    <Common.NonSwipeViewPager
         android:id="@+id/viewPaper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -68,7 +68,7 @@
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
             android:background="@drawable/custom_button"
-
+            android:enabled="false"
             android:fontFamily="@font/nunito_bold"
             android:text="@string/next"
             android:textColor="@color/colorWhite" />
