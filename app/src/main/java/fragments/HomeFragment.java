@@ -22,7 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import ContactDoctor.CheckDoctorsActivity;
 import Reminder.ReminderActivity;
 import Medicine.MedicineActivity;
-import profile.MyProfileActivity;
+import Profile.MyProfileActivity;
+import TestResult.TestResultActivity;
 
 
 /**
@@ -88,14 +89,14 @@ public class HomeFragment extends Fragment {
         });
 
 
-        /*ImageView testReport = (ImageView) view.findViewById(R.id.testReport);
+        ImageView testReport = (ImageView) view.findViewById(R.id.testReport);
         testReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent contact = new Intent(getActivity(), TestingActivity.class);
-                startActivity(contact);
+                Intent testResult = new Intent(getActivity(), TestResultActivity.class);
+                startActivity(testResult);
             }
-        });*/
+        });
 
         ImageView reminder = (ImageView) view.findViewById(R.id.reminder);
         reminder.setOnClickListener(new View.OnClickListener() {

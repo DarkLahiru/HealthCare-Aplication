@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import profile.User;
+import Profile.User;
 
 
 public class RegistrationActivity extends AppCompatActivity {

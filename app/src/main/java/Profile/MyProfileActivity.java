@@ -1,4 +1,4 @@
-package profile;
+package Profile;
 
 import android.content.Intent;
 import android.net.Uri;

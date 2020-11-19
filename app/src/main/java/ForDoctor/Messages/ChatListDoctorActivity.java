@@ -35,7 +35,7 @@ import java.util.Objects;
 
 import Chat.model.ChatList;
 import de.hdodenhof.circleimageview.CircleImageView;
-import profile.User;
+import Profile.User;
 
 public class ChatListDoctorActivity extends AppCompatActivity {
     DatabaseReference rootReference;

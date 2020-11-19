@@ -47,7 +47,6 @@ public class BookAppointmentActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseAuth mFirebaseAuth;
     AlertDialog dialog;
-    String key;
 
     @BindView(R.id.btn_prev_step)
     Button btn_prev_step;
@@ -63,6 +62,10 @@ public class BookAppointmentActivity extends AppCompatActivity {
         if (Common.step == 3 || Common.step > 0) {
             Common.step--;
             viewPaper.setCurrentItem(Common.step);
+            if (Common.step <3){
+                btn_next_step.setEnabled(true);
+                setColorButton();
+            }
         }
     }
 
@@ -75,16 +78,29 @@ public class BookAppointmentActivity extends AppCompatActivity {
             if (Common.step == 1) {
 
                 if (Common.currentDoctor != null){
+                    //Toast.makeText(getApplicationContext(), ""+Common.currentDoctor, Toast.LENGTH_SHORT).show();
                     loadLocationByDoctor(Common.currentDoctor);
                 }
             }
             else if (Common.step  == 2 ){
                 if (Common.currentLocation != null){
+                    //Toast.makeText(getApplicationContext(), ""+Common.currentLocation, Toast.LENGTH_SHORT).show();
                     loadTimeByDoctor(Common.currentLocation);
+                }
+            }
+            else if (Common.step  == 3 ){
+                if (Common.currentTimeSlot != -1){
+                    //Toast.makeText(getApplicationContext(), ""+Common.currentTimeSlot, Toast.LENGTH_SHORT).show();
+                    confirmBooking();
                 }
             }
             viewPaper.setCurrentItem(Common.step);
         }
+    }
+
+    private void confirmBooking() {
+        Intent intent = new Intent(Common.KEY_CONFIRM_BOOKING);
+        localBroadcastManager.sendBroadcast(intent);
     }
 
     private void loadTimeByDoctor(String locationID) {
@@ -94,7 +110,6 @@ public class BookAppointmentActivity extends AppCompatActivity {
 
     private void loadLocationByDoctor(String keyDoctorStore) {
         dialog.show();
-        //Toast.makeText(getApplicationContext(), keyDoctorStore, Toast.LENGTH_SHORT).show();
         if (!TextUtils.isEmpty(keyDoctorStore)) {
 
             rootReference = FirebaseDatabase.getInstance().getReference().child("AppointmentLocation").child(keyDoctorStore);
@@ -129,8 +144,8 @@ public class BookAppointmentActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             int step = intent.getIntExtra(Common.KEY_STEP,0);
             if (step == 1 ){Common.currentDoctor = intent.getStringExtra(Common.KEY_DOCTOR_STORE);}
-            if (step == 2 ){Common.currentLocation = intent.getStringExtra(Common.KEY_LOCATION_SELECTED);}
-
+            else if (step == 2 ){Common.currentLocation = intent.getStringExtra(Common.KEY_LOCATION_SELECTED);}
+            else if (step == 3 ){Common.currentTimeSlot = intent.getIntExtra(Common.KEY_TIME_SLOT,-1);}
 
             btn_next_step.setEnabled(true);
             setColorButton();
@@ -147,6 +162,11 @@ public class BookAppointmentActivity extends AppCompatActivity {
 
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         localBroadcastManager.registerReceiver(buttonNextReceiver, new IntentFilter(Common.KEY_ENABLE_BUTTON_NEXT));
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = mFirebaseAuth.getCurrentUser();
+        assert firebaseUser != null;
+        Common.currentPatient = firebaseUser.getUid();
 
         setupStepView();
         setColorButton();
@@ -167,6 +187,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
                     btn_prev_step.setEnabled(false);
                 else
                     btn_prev_step.setEnabled(true);
+                btn_next_step.setEnabled(false);
                 setColorButton();
             }
 

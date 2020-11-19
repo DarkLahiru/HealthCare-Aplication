@@ -58,6 +58,8 @@
     <string name="add_new">ADD NEW</string>
     <string name="medical_council_reg_number">Medical Council Reg Number</string>
     <string name="search_doctor">Search doctor</string>
+    <string name="available">Available</string>
+    <string name="_9_00_10_00">9.00 - 10.00</string>
 
 
 </resources>

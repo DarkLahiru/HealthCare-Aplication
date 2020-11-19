@@ -65,7 +65,8 @@ public class BookingStep1Fragment extends Fragment {
 
     static BookingStep1Fragment instance;
     Context context;
-    public static   BookingStep1Fragment getInstance() {
+
+    public static BookingStep1Fragment getInstance() {
         if (instance == null)
             instance = new BookingStep1Fragment();
         return instance;
@@ -142,7 +143,7 @@ public class BookingStep1Fragment extends Fragment {
                     @Override
                     public void onItemSelectedListener(View view, int pos) {
                         //for not selected card background
-                        for (CardView cardView:cardViewList)
+                        for (CardView cardView : cardViewList)
                             cardView.setCardBackgroundColor(getContext().getResources().getColor(android.R.color.white));
 
                         //set selected card background
@@ -151,8 +152,6 @@ public class BookingStep1Fragment extends Fragment {
 
                         Intent intentTwo = new Intent(Common.KEY_ENABLE_BUTTON_NEXT);
                         localBroadcastManager.sendBroadcast(intentTwo);
-
-
 
 
                     }
@@ -196,14 +195,15 @@ public class BookingStep1Fragment extends Fragment {
                     @Override
                     public void onItemSelectedListener(View view, int pos) {
                         //for not selected card background
-                        for (CardView cardView:cardViewList)
+                        for (CardView cardView : cardViewList)
                             cardView.setCardBackgroundColor(getContext().getResources().getColor(android.R.color.white));
 
                         //set selected card background
                         holder.cardDoctor.setCardBackgroundColor(getContext().getResources().getColor(android.R.color.holo_orange_dark));
 
                         Intent intent = new Intent(Common.KEY_ENABLE_BUTTON_NEXT);
-                        intent.putExtra(Common.KEY_DOCTOR_STORE,key);
+                        intent.putExtra(Common.KEY_DOCTOR_STORE, key);
+                        intent.putExtra(Common.KEY_STEP, 1);
                         localBroadcastManager.sendBroadcast(intent);
 
                     }

@@ -23,8 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-import ForDoctor.LoginDoctorActivity;
-import profile.FirstMyProfileActivity;
+import Profile.FirstMyProfileActivity;
 
 public class LoginActivity extends AppCompatActivity {
     EditText emailId, password;

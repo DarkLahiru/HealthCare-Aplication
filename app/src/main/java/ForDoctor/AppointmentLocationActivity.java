@@ -30,14 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
-import Chat.model.ChatList;
-import ContactDoctor.FavouriteList;
-import Medicine.MedicineActivity;
-import Reminder.AddReminderActivity;
-import de.hdodenhof.circleimageview.CircleImageView;
-import profile.EditMyProfileActivity;
-import profile.User;
-
 public class AppointmentLocationActivity extends AppCompatActivity {
 
     RecyclerView rvLocations;

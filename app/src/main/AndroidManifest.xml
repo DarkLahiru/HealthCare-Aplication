@@ -15,7 +15,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="Appointments.Booking.BookAppointmentActivity"></activity>
+        <activity android:name="TestResult.StoredReportActivity"
+            android:label="Check Your Reports"
+            android:parentActivityName="TestResult.TestResultActivity" />
+        <activity android:name="TestResult.NewReportActivity"
+            android:label="New Report"
+            android:parentActivityName="TestResult.TestResultActivity" />
+        <activity android:name="TestResult.TestResultActivity"
+            android:label="Test Result"
+            android:parentActivityName=".NavigationActivity" />
+        <activity
+            android:name="Appointments.Pending.PendingAppointmentActivity"
+            android:label="Pending Appointments"
+            android:parentActivityName="Appointments.AppointmentPatientActivity" />
+        <activity android:name="Appointments.Booking.BookAppointmentActivity" />
         <activity android:name="ForDoctor.AppointmentLocationActivity" />
         <activity
             android:name="Appointments.AppointmentPatientActivity"
@@ -95,13 +108,13 @@
             android:name="Medicine.MedicineActivity"
             android:label="Medical History"
             android:parentActivityName=".NavigationActivity" />
-        <activity android:name="profile.FirstMyProfileActivity" />
+        <activity android:name="Profile.FirstMyProfileActivity" />
         <activity
-            android:name="profile.EditMyProfileActivity"
+            android:name="Profile.EditMyProfileActivity"
             android:label="Edit My Profile"
-            android:parentActivityName="profile.MyProfileActivity" />
+            android:parentActivityName="Profile.MyProfileActivity" />
         <activity
-            android:name="profile.MyProfileActivity"
+            android:name="Profile.MyProfileActivity"
             android:label="My Profile"
             android:parentActivityName=".NavigationActivity" />
         <activity

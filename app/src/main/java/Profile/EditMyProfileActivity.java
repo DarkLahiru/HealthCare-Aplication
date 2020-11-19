@@ -1,9 +1,10 @@
-package profile;
+package Profile;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,24 +16,28 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.healthcare.NavigationActivity;
 import com.example.healthcare.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class FirstMyProfileActivity  extends AppCompatActivity {
+public class EditMyProfileActivity extends AppCompatActivity {
     TextInputLayout displayName, fullName, birthDay, phoneNum, height, weight, homeAddress;
     Button btnSave;
     ImageView clickUpload;
@@ -49,27 +54,30 @@ public class FirstMyProfileActivity  extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_my_profile);
-        btnSave = findViewById(R.id.btnFirstSave);
-        clickUpload = findViewById(R.id.clickFUpload);
-        uploadedImage = findViewById(R.id.uploadedFImage);
+        setContentView(R.layout.activity_edit_my_profile);
+        btnSave = findViewById(R.id.btnSave);
+        clickUpload = findViewById(R.id.clickUpload);
+        uploadedImage = findViewById(R.id.uploadedImage);
 
-        displayName = findViewById(R.id.txtFDisplayName);
-        fullName = findViewById(R.id.txtFFullName);
-        birthDay = findViewById(R.id.txtFBirthDay);
-        phoneNum = findViewById(R.id.txtFPhoneNum);
-        height = findViewById(R.id.txtFHeight);
-        weight = findViewById(R.id.txtFWeight);
-        homeAddress = findViewById(R.id.txtFHomeAddress);
+        displayName = findViewById(R.id.txtDisplayName);
+        fullName = findViewById(R.id.txtFullName);
+        birthDay = findViewById(R.id.txtBirthDay);
+        phoneNum = findViewById(R.id.txtPhoneNum);
+        height = findViewById(R.id.txtHeight);
+        weight = findViewById(R.id.txtWeight);
+        homeAddress = findViewById(R.id.txtHomeAddress);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         rootReference = FirebaseDatabase.getInstance().getReference();
-        firebaseUser = mFirebaseAuth.getCurrentUser();
         storageReference = FirebaseStorage.getInstance().getReference("Patients").child("ProfileImage");
-
+        firebaseUser = mFirebaseAuth.getCurrentUser();
         progressDialog = new ProgressDialog(this);
 
+        LoadData();
 
         clickUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,18 +101,16 @@ public class FirstMyProfileActivity  extends AppCompatActivity {
                 String address = Objects.requireNonNull(homeAddress.getEditText()).getText().toString();
 
                 if (name.isEmpty() || fName.isEmpty() || bod.isEmpty() || phone.isEmpty() || heightValue.isEmpty() || weightValue.isEmpty() || address.isEmpty()) {
-                    Toast.makeText(FirstMyProfileActivity.this, "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditMyProfileActivity.this, "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
                 } else {
-
-
                     User myDetails = new User(name, fName, bod, phone, heightValue, weightValue, address);
                     rootReference.child("Patients").child(firebaseUser.getUid()).child("MyProfile").setValue(myDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isComplete()) {
-                                Toast.makeText(FirstMyProfileActivity.this, "Update Data Successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EditMyProfileActivity.this, "Update Data Successfully", Toast.LENGTH_SHORT).show();
                                 finish();
-                                Intent myIntent = new Intent(getApplicationContext(), NavigationActivity.class);
+                                Intent myIntent = new Intent(getApplicationContext(), MyProfileActivity.class);
                                 startActivity(myIntent);
 
                             }
@@ -112,6 +118,50 @@ public class FirstMyProfileActivity  extends AppCompatActivity {
                     });
                 }
 
+            }
+        });
+
+    }
+
+    private void LoadData() {
+        DatabaseReference rootReference;
+        StorageReference storageReference;
+        rootReference = FirebaseDatabase.getInstance().getReference("Patients").child(firebaseUser.getUid());
+        storageReference = FirebaseStorage.getInstance().getReference("Patients").child("ProfileImage").child(firebaseUser.getUid() + ".jpg");
+
+        rootReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String dName = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("displayName").getValue()).toString();
+                String fName = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("fullName").getValue()).toString();
+                String bod = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("birthDay").getValue()).toString();
+                String phone = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("phoneNum").getValue()).toString();
+                String h = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("height").getValue()).toString();
+                String w = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("weight").getValue()).toString();
+                String address = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("homeAddress").getValue()).toString();
+                String email = Objects.requireNonNull(dataSnapshot.child("LoginDetails").child("username").getValue()).toString();
+
+
+                Objects.requireNonNull(displayName.getEditText()).setText(dName);
+                Objects.requireNonNull(fullName.getEditText()).setText(fName);
+                Objects.requireNonNull(birthDay.getEditText()).setText(bod);
+                Objects.requireNonNull(phoneNum.getEditText()).setText(phone);
+                Objects.requireNonNull(height.getEditText()).setText(h);
+                Objects.requireNonNull(weight.getEditText()).setText(w);
+                Objects.requireNonNull(homeAddress.getEditText()).setText(address);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(getApplicationContext()).load(uri.toString()).resize(400,600).centerInside().into(uploadedImage);
             }
         });
 
