@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.example.healthcare.R;
 
+import ForDoctor.Appointments.CheckAppointmentsActivity;
 import ForDoctor.Messages.ChatListDoctorActivity;
 import ForDoctor.Messages.DocMessagesActivity;
 import ForDoctor.MyProfile.MyProfileDoctorActivity;
@@ -58,14 +59,14 @@ public class HomeDoctor extends Fragment {
             }
         });
 
-        /*ImageView appointments = (ImageView) view.findViewById(R.id.imgAppointments);
+        ImageView appointments = (ImageView) view.findViewById(R.id.imgAppointments);
         appointments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent appointments = new Intent(getActivity(), ContactActivity.class);
+                Intent appointments = new Intent(getActivity(), CheckAppointmentsActivity.class);
                 startActivity(appointments);
             }
-        });*/
+        });
         return view;
     }
 }

@@ -10,5 +10,13 @@
         <item>tablespoon</item>
     </string-array>
 
+    <string-array name="report_types">
+        <item>mg</item>
+        <item>ml</item>
+        <item>gram</item>
+        <item>pills</item>
+        <item>other</item>
+    </string-array>
+
 
 </resources>

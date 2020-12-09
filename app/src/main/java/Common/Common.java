@@ -1,9 +1,14 @@
 package Common;
 
+import com.google.firebase.storage.UploadTask;
+
 import java.util.Calendar;
+
+import TestResult.Upload;
 
 public class Common {
 
+    public static final String KEY_REPORT_SELECTED = "REPORT_SELECTED";
     public static final String KEY_ENABLE_BUTTON_NEXT = "ENABLE_BUTTON_NEXT";
     public static final String KEY_DOCTOR_STORE = "DOCTOR_STORE";
     public static final String KEY_LOCATION_LOAD_DONE = "LOCATION_LOAD_DONE";
@@ -20,6 +25,7 @@ public class Common {
     public static int currentTimeSlot = -1;
     public static Calendar currentDate =  Calendar.getInstance()  ;
     public static String currentPatient;
+    public static Upload currentReport;
 
     public static String convertTimeSlotToString(int position) {
         switch (position){

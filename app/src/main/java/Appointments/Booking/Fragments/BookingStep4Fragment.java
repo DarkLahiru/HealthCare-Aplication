@@ -66,6 +66,8 @@ public class BookingStep4Fragment extends Fragment {
 
     @OnClick(R.id.btn_confirm)
     void confirmBooking() {
+
+
         BookingInformation bookingInformation = new BookingInformation();
 
         bookingInformation.setStatus("pending");
@@ -85,6 +87,7 @@ public class BookingStep4Fragment extends Fragment {
 
 
 
+
         rootReference = FirebaseDatabase.getInstance().getReference().child("Patients").child(Common.currentPatient).child("MyProfile");
         rootReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -99,7 +102,11 @@ public class BookingStep4Fragment extends Fragment {
             }
         });
         rootReference = FirebaseDatabase.getInstance().getReference().child("Appointments");
-        rootReference.push().setValue(bookingInformation).addOnCompleteListener(new OnCompleteListener<Void>() {
+        DatabaseReference pushedPostRef = rootReference.push();
+        String postId = pushedPostRef.getKey();
+        bookingInformation.setNodeKey(postId);
+        assert postId != null;
+        rootReference.child(postId).setValue(bookingInformation).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isComplete()) {
@@ -117,7 +124,7 @@ public class BookingStep4Fragment extends Fragment {
         TimeSlot timeSlot = new TimeSlot();
         timeSlot.setSlot(Long.valueOf(Common.currentTimeSlot));
         rootReference  = FirebaseDatabase.getInstance().getReference().child("AppointmentTimeSlot").child(Common.currentDoctor).child(simpleDateFormat.format(Common.currentDate.getTime()));
-        rootReference.push().setValue(timeSlot).addOnCompleteListener(new OnCompleteListener<Void>() {
+        rootReference.child(postId).setValue(timeSlot).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isComplete()) {

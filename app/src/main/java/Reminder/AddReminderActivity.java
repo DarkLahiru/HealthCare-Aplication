@@ -42,14 +42,14 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Objects;
 
-public class AddReminderActivity extends AppCompatActivity{
+public class AddReminderActivity extends AppCompatActivity {
 
     //OnClickDays
     private String days;
     private String daysOfWeek = "Everyday";
-    private boolean dayOfWeekList[] = new boolean[7];
+    private boolean dayOfWeekList[] = new boolean[ 7 ];
     ArrayList<String> selectedDays;
-    private String instructions ="No Food Instructions";
+    private String instructions = "No Food Instructions";
 
     //getTodayDate
     private String startDate;
@@ -60,14 +60,13 @@ public class AddReminderActivity extends AppCompatActivity{
     RadioGroup radioGroupDays;
     RadioGroup radioGroupInstructions;
     LinearLayout dosagelayout, startTimeLayout, startDateLayout;
-    int medicineId;
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
 
     private String dosageUnit;
     private int startHour;
     private int startMinute;
-    private int dosageValue=1;
+    private int dosageValue = 1;
     int currentHour, currentMinute;
     String[] dosage_options;
     String dosage;
@@ -77,7 +76,7 @@ public class AddReminderActivity extends AppCompatActivity{
     FirebaseUser firebaseUser;
     FirebaseAuth mFirebaseAuth;
 
-    public void initialize(){
+    public void initialize() {
 
         medicineName = (TextInputLayout) findViewById(R.id.cardview_name_text);
         dosagelayout = (LinearLayout) findViewById(R.id.layoutDosage);
@@ -93,7 +92,7 @@ public class AddReminderActivity extends AppCompatActivity{
 
     }
 
-    public void getCurrentHourMinute(){
+    public void getCurrentHourMinute() {
         Calendar calendar = Calendar.getInstance();
         currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         currentMinute = calendar.get(Calendar.MINUTE);
@@ -116,9 +115,9 @@ public class AddReminderActivity extends AppCompatActivity{
         if(medName!=null)
             medicineName.setText(medName);*/
 
-        dosageUnit = getResources().getStringArray(R.array.dosage_options)[0];
+        dosageUnit = getResources().getStringArray(R.array.dosage_options)[ 0 ];
 
-        textStartTime.setText(setTime(currentHour,currentMinute));
+        textStartTime.setText(setTime(currentHour, currentMinute));
         startTimeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,25 +147,23 @@ public class AddReminderActivity extends AppCompatActivity{
                 int month = mcurrentDate.get(Calendar.MONTH);
                 int day = mcurrentDate.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog datePicker;
-                datePicker = new DatePickerDialog(AddReminderActivity.this, new DatePickerDialog.OnDateSetListener(){
+                datePicker = new DatePickerDialog(AddReminderActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String strMonth="",strDay="";
-                        if(month<10){
-                            strMonth = "0"+month;
+                        String strMonth = "", strDay = "";
+                        if (month < 10) {
+                            strMonth = "0" + month;
+                        } else {
+                            strMonth = "" + month;
                         }
-                        else{
-                            strMonth  = ""+month;
+                        if (dayOfMonth < 10) {
+                            strDay = "0" + dayOfMonth;
+                        } else {
+                            strDay = "" + dayOfMonth;
                         }
-                        if(dayOfMonth<10){
-                            strDay = "0"+dayOfMonth;
-                        }
-                        else {
-                            strDay = ""+dayOfMonth;
-                        }
-                        textStartDate.setText(strMonth+"/"+strDay+"/"+year);
-                        startDate = strMonth+"/"+strDay+"/"+year;
+                        textStartDate.setText(strMonth + "/" + strDay + "/" + year);
+                        startDate = strMonth + "/" + strDay + "/" + year;
                     }
                 }, year, month, day);
                 datePicker.setTitle("Set Start Date");
@@ -174,7 +171,7 @@ public class AddReminderActivity extends AppCompatActivity{
             }
         });
 
-        textDosage.setText(dosageValue+" "+dosageUnit);
+        textDosage.setText(dosageValue + " " + dosageUnit);
         dosagelayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,7 +194,7 @@ public class AddReminderActivity extends AppCompatActivity{
         int checkBoxCounter = 0;
         boolean cancel = false;
 
-        if(medicineName.getEditText().getText().toString().trim().equals("")){
+        if (medicineName.getEditText().getText().toString().trim().equals("")) {
             medicineName.setError("Medicine name is required!");
             cancel = true;
         }
@@ -206,14 +203,13 @@ public class AddReminderActivity extends AppCompatActivity{
         String med_name = medicineName.getEditText().getText().toString();
 
 
-        if (startHour == 0 || startMinute == 0 ||  dosageUnit.isEmpty() || instructions.isEmpty()) {
+        if (startHour == 0 || startMinute == 0 || dosageUnit.isEmpty() || instructions.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             reminder.setMedicineName(med_name);
             reminder.setHour(startHour);
             reminder.setMinute(startMinute);
-            reminder.setDosageQuantity(dosageValue+"");
+            reminder.setDosageQuantity(dosageValue + "");
             reminder.setDosageUnit(dosageUnit);
             reminder.setInstructions(instructions);
             //reminder.setRepeatTime(reminderTimeQuntity+" "+reminderTimeUnit);
@@ -231,7 +227,7 @@ public class AddReminderActivity extends AppCompatActivity{
 
             Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
             intent.putExtra("medicine_name", med_name);
-            intent.putExtra("id",checkBoxCounter);
+            intent.putExtra("id", checkBoxCounter);
 
             pendingIntent = PendingIntent.getBroadcast(AddReminderActivity.this, checkBoxCounter, intent, PendingIntent.FLAG_CANCEL_CURRENT);
             alarmManager = (AlarmManager) getBaseContext().getSystemService(ALARM_SERVICE);
@@ -243,7 +239,7 @@ public class AddReminderActivity extends AppCompatActivity{
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
             long alarm_time = calendar.getTimeInMillis();
-            alarmManager.set(AlarmManager.RTC_WAKEUP,alarm_time,pendingIntent);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, alarm_time, pendingIntent);
 
 
 
@@ -278,7 +274,7 @@ public class AddReminderActivity extends AppCompatActivity{
                             AlarmManager.INTERVAL_DAY * 7, pendingIntent);
                 }
             }*/
-            if(!cancel) { // Input form is completely filled out
+            if (!cancel) { // Input form is completely filled out
                 Toast.makeText(getBaseContext(), "Reminder for " + med_name + " is set successfully", Toast.LENGTH_SHORT).show();
                 Intent intentGo = new Intent(this, ReminderActivity.class);
                 startActivity(intentGo);
@@ -287,22 +283,22 @@ public class AddReminderActivity extends AppCompatActivity{
         }
     }
 
-    public String getTodayDate(){
-        String strMonth="", strDay="";
+    public String getTodayDate() {
+        String strMonth = "", strDay = "";
         Calendar mcurrentDate = Calendar.getInstance();
         int year = mcurrentDate.get(Calendar.YEAR);
         int month = mcurrentDate.get(Calendar.MONTH);
-        if(month<10)
-            strMonth = "0"+month;
+        if (month < 10)
+            strMonth = "0" + month;
         else
-            strMonth = ""+month;
+            strMonth = "" + month;
         int day = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-        if(day<10)
-            strDay = "0"+day;
+        if (day < 10)
+            strDay = "0" + day;
         else
-            strDay = ""+day;
-        startDate =strMonth+"/"+strDay+"/"+year;
-        return strMonth+"/"+strDay+"/"+year;
+            strDay = "" + day;
+        startDate = strMonth + "/" + strDay + "/" + year;
+        return strMonth + "/" + strDay + "/" + year;
     }
 
     public String setTime(int hour, int minute) {
@@ -318,21 +314,20 @@ public class AddReminderActivity extends AppCompatActivity{
         return nonMilitaryHour + ":" + minuteWithZero + am_pm;
     }
 
-    public void onClickDays(@NonNull View view){
-        final String[] daysofweek = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
-        switch(view.getId())
-        {
+    public void onClickDays(@NonNull View view) {
+        final String[] daysofweek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        switch (view.getId()) {
             case R.id.radioEveryDay:
                 RadioButton button = (RadioButton) findViewById(R.id.radioEveryDay);
                 days = button.getText().toString();
                 daysOfWeek = days;
-                for(int i=0;i<daysofweek.length;i++){
-                    dayOfWeekList[i] = true;
+                for (int i = 0; i < daysofweek.length; i++) {
+                    dayOfWeekList[ i ] = true;
                 }
                 break;
             case R.id.radioSpecificDay:
-                for(int i=0;i<daysofweek.length;i++){
-                    dayOfWeekList[i] = false;
+                for (int i = 0; i < daysofweek.length; i++) {
+                    dayOfWeekList[ i ] = false;
                 }
                 selectedDays = new ArrayList<String>();
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -344,15 +339,15 @@ public class AddReminderActivity extends AppCompatActivity{
                     public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
                         if (isChecked) {
                             // If the user checked the item, add it to the selected items
-                            selectedDays.add(daysofweek[indexSelected]);
-                            if(indexSelected+1 == 7)
-                                dayOfWeekList[0] = true;
+                            selectedDays.add(daysofweek[ indexSelected ]);
+                            if (indexSelected + 1 == 7)
+                                dayOfWeekList[ 0 ] = true;
                             else
-                                dayOfWeekList[indexSelected+1] = true;
+                                dayOfWeekList[ indexSelected + 1 ] = true;
                         } else if (selectedDays.contains(indexSelected)) {
                             // Else, if the item is already in the array, remove it
                             selectedDays.remove(Integer.valueOf(indexSelected));
-                            dayOfWeekList[indexSelected] = false;
+                            dayOfWeekList[ indexSelected ] = false;
                         }
                     }
                 })
@@ -384,10 +379,9 @@ public class AddReminderActivity extends AppCompatActivity{
         }
     }
 
-    public void onClickInstructions(@NonNull View view){
+    public void onClickInstructions(@NonNull View view) {
         RadioButton button;
-        switch(view.getId())
-        {
+        switch (view.getId()) {
             case R.id.radioBefore:
                 button = (RadioButton) findViewById(R.id.radioBefore);
                 instructions = button.getText().toString();
@@ -407,15 +401,15 @@ public class AddReminderActivity extends AppCompatActivity{
         }
     }
 
-    private void displayDosagePicker(){
+    private void displayDosagePicker() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Dosage");
         builder.setCancelable(true);
 
         LayoutInflater inflater = (this).getLayoutInflater();
-        View layout = inflater.inflate(R.layout.custom_dialog_dosage,null);
+        View layout = inflater.inflate(R.layout.custom_dialog_dosage, null);
         NumberPicker numberPicker = (NumberPicker) layout.findViewById(R.id.numberPicker);
-        loadNumberPicker(numberPicker,500);
+        loadNumberPicker(numberPicker, 500);
 
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -426,13 +420,14 @@ public class AddReminderActivity extends AppCompatActivity{
         Spinner spinnerDosage = (Spinner) layout.findViewById(R.id.spinnerDosage);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(AddReminderActivity.this,
-                R.array.dosage_options, android.R.layout.simple_spinner_item);
+                R.array.dosage_options,android.R.layout.simple_spinner_item);
+
         dosage_options = getResources().getStringArray(R.array.dosage_options);
         spinnerDosage.setAdapter(adapter);
         spinnerDosage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                dosageUnit = dosage_options[position];
+                dosageUnit = dosage_options[ position ];
             }
 
             @Override
@@ -446,7 +441,7 @@ public class AddReminderActivity extends AppCompatActivity{
         builder.setPositiveButton("SET", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                dosage = dosageValue+" "+dosageUnit;
+                dosage = dosageValue + " " + dosageUnit;
                 textDosage.setText(dosage);
                 dialog.dismiss();
                 //  You can write the code  to save the selected item here
@@ -464,10 +459,10 @@ public class AddReminderActivity extends AppCompatActivity{
         alertDialog.show();
     }
 
-    public void loadNumberPicker(NumberPicker numberPicker,int size){
-        String[] nums = new String[size];
-        for(int i=0; i<nums.length; i++)
-            nums[i] = Integer.toString(i+1);
+    public void loadNumberPicker(NumberPicker numberPicker, int size) {
+        String[] nums = new String[ size ];
+        for (int i = 0; i < nums.length; i++)
+            nums[ i ] = Integer.toString(i + 1);
 
         numberPicker.setMinValue(1);
         numberPicker.setMaxValue(nums.length);
@@ -475,7 +470,6 @@ public class AddReminderActivity extends AppCompatActivity{
         numberPicker.setDisplayedValues(nums);
         numberPicker.setValue(1);
     }
-
 
 
 }

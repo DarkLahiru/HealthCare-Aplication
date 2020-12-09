@@ -16,5 +16,6 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorDivider">#ececec</color>
     <color name="colorBlack">#000000</color>
+    <color name="selectedDate">#FF0000</color>
 
 </resources>

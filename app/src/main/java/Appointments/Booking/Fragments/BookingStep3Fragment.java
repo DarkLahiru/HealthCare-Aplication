@@ -172,7 +172,6 @@ public class BookingStep3Fragment extends Fragment implements ITimeSlotLoadListe
         });
 
     }
-
     @Override
     public void onTimeSlotLoadSuccess(List<TimeSlot> timeSlotList) {
         MyTimeSlotAdapter adapter = new MyTimeSlotAdapter(getContext(),timeSlotList);

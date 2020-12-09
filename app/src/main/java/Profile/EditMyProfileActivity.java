@@ -139,7 +139,6 @@ public class EditMyProfileActivity extends AppCompatActivity {
                 String h = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("height").getValue()).toString();
                 String w = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("weight").getValue()).toString();
                 String address = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("homeAddress").getValue()).toString();
-                String email = Objects.requireNonNull(dataSnapshot.child("LoginDetails").child("username").getValue()).toString();
 
 
                 Objects.requireNonNull(displayName.getEditText()).setText(dName);

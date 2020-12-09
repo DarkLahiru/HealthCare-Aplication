@@ -4,6 +4,191 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/upload_fire"
     tools:context="TestResult.StoredReportActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/contactButton"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextColor="@color/colorPrimaryDark "
+            />
+t
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:background="@color/contactButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout3"
+        android:paddingTop="15sp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="-5dp"
+            android:fontFamily="@font/nunito_extrabold"
+            android:text="Search By"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="27sp" />
+
+        <co.ceryle.radiorealbutton.RadioRealButtonGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="25dp"
+            app:rrbg_animateDrawables_enter="overshoot"
+            app:rrbg_animateTexts_enter="overshoot"
+            app:rrbg_backgroundColor="@color/colorWhite"
+            app:rrbg_borderSize="1dp"
+            app:rrbg_dividerColor="@color/colorBlack"
+            app:rrbg_dividerSize="3dp"
+            app:rrbg_radius="10dp"
+            app:rrbg_selectorColor="@color/colorPrimaryDark"
+            app:rrbg_selectorSize="10dp"
+
+            >
+
+            <co.ceryle.radiorealbutton.RadioRealButton
+                android:id="@+id/radioDate"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                app:rrb_drawable="@drawable/ic_baseline_date_range_24"
+                app:rrb_drawablePadding="12dp"
+                app:rrb_ripple="true"
+                app:rrb_rippleColor="@color/colorBlack"
+                app:rrb_text="Date"
+                app:rrb_textColor="@color/colorPrimaryDark"
+                app:rrb_textGravity="center"
+                app:rrb_textStyle="bold"
+                app:rrb_checked="true"/>
+
+            <co.ceryle.radiorealbutton.RadioRealButton
+                android:id="@+id/radioType"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                app:rrb_drawable="@drawable/ic_baseline_file_type_24"
+                app:rrb_drawablePadding="12dp"
+                app:rrb_ripple="true"
+                app:rrb_rippleColor="@color/colorBlack"
+                app:rrb_text="Type"
+                app:rrb_textColor="@color/colorPrimaryDark"
+                app:rrb_textGravity="center"
+                app:rrb_textStyle="bold"
+                app:rrb_checked="false"
+                />
+        </co.ceryle.radiorealbutton.RadioRealButtonGroup>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:background="@color/contactButton"
+        android:id="@+id/rLSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:ignore="MissingConstraints">
+
+        <EditText
+            android:id="@+id/search_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_toStartOf="@+id/btn_search_report"
+            android:autofillHints=""
+            android:background="@drawable/search_layout"
+            android:fontFamily="@font/nunito_light"
+            android:hint="Select Date"
+            android:inputType="none"
+            android:focusable="true"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            />
+
+        <Spinner
+
+            android:visibility="gone"
+            android:id="@+id/spinnerType"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_toStartOf="@+id/btn_search_report"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:popupBackground="@drawable/blue_outline"
+            android:spinnerMode="dropdown" />
+
+        <ImageButton
+            android:id="@+id/btn_search_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/search_field"
+            android:layout_alignBottom="@+id/search_field"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15sp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/background_transparent"
+            android:contentDescription="TODO"
+            app:srcCompat="@drawable/ic_action_name" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rLSearch"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rVReport_List"
+        android:layout_width="match_parent"
+        android:layout_height="499dp"
+        android:layout_below="@+id/rLSearch"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rLSearch" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

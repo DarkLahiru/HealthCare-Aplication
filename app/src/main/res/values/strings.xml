@@ -60,6 +60,9 @@
     <string name="search_doctor">Search doctor</string>
     <string name="available">Available</string>
     <string name="_9_00_10_00">9.00 - 10.00</string>
+    <string name="download">Download</string>
+    <string name="appointment_details">Appointment Information</string>
+    <string name="cancel_appointment">Cancel Appointment</string>
 
 
 </resources>

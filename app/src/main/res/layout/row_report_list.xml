@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_meet_location"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp"
+    app:cardUseCompatPadding="true"
+    android:orientation="horizontal"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="5dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtReportDate"
+            android:text="Date"
+            android:textSize="22sp"
+            android:textColor="#000"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/bungee"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtReportType"
+            android:text="Report Type"
+            android:textSize="20sp"
+            android:textColor="#a9a9a9"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/nunito_light"
+
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="end"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="12dp"
+        >
+
+        <ImageView
+            android:id="@+id/imgReport"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:src="@drawable/image_loading"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

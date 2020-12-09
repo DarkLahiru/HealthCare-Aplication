@@ -91,7 +91,7 @@ public class LoginDoctorActivity extends AppCompatActivity {
 
 
                                         if ("Doctor".equalsIgnoreCase(loginType)) {
-                                            Toast.makeText(LoginDoctorActivity.this, "You are a doctor", Toast.LENGTH_SHORT).show();
+                                            //Toast.makeText(LoginDoctorActivity.this, "You are a doctor", Toast.LENGTH_SHORT).show();
                                             if (firstTimeLogin.equals("false")) {
                                                 rootReference.child("Users").child(firebaseUser.getUid()).child("First Time Login").setValue("true");
                                                 Intent first = new Intent(LoginDoctorActivity.this, FirstDoctorProfileActivity.class);
@@ -99,7 +99,7 @@ public class LoginDoctorActivity extends AppCompatActivity {
                                                 finish();
 
                                             } else {
-                                                Intent dash = new Intent(LoginDoctorActivity.this, AppointmentLocationActivity.class);
+                                                Intent dash = new Intent(LoginDoctorActivity.this, NavigationDoctor.class);
                                                 startActivity(dash);
                                             }
                                         }

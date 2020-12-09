@@ -14,14 +14,31 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="TestResult.StoredReportActivity"
+        android:theme="@style/AppTheme.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name="ForDoctor.Appointments.CheckAppointmentsActivity"
+            android:label="Appointments"
+            android:parentActivityName="ForDoctor.NavigationDoctor" />
+        <activity android:name="Appointments.Confirmed.ConfirmedAppointmentActivity" />
+        <activity
+            android:name="TestResult.ReportIMGActivity"
+            android:label="Report Details"
+            android:parentActivityName="TestResult.StoredReportActivity" />
+        <activity
+            android:name="TestResult.ReportPDFActivity"
+            android:label="Report Details"
+            android:parentActivityName="TestResult.StoredReportActivity" />
+        <activity
+            android:name="TestResult.StoredReportActivity"
             android:label="Check Your Reports"
             android:parentActivityName="TestResult.TestResultActivity" />
-        <activity android:name="TestResult.NewReportActivity"
+        <activity
+            android:name="TestResult.NewReportActivity"
             android:label="New Report"
             android:parentActivityName="TestResult.TestResultActivity" />
-        <activity android:name="TestResult.TestResultActivity"
+        <activity
+            android:name="TestResult.TestResultActivity"
             android:label="Test Result"
             android:parentActivityName=".NavigationActivity" />
         <activity

@@ -8,10 +8,13 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintBottom_toTopOf="@+id/datePicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -21,26 +24,30 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
     <com.applandeo.materialcalendarview.CalendarView
-        android:layout_marginTop="?attr/actionBarSize"
         android:id="@+id/datePicker"
-        android:layout_width="0dp"
-        android:layout_height="370dp"
-        app:datePicker="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:eventsEnabled="true"
         app:headerColor="@color/colorPrimary"
+        app:highlightedDaysLabelsColor="@color/selectedDate"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_time_slot_pending"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:selectionColor="@color/colorAccent"
-        app:todayLabelColor="@color/colorPrimaryDark" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:selectionLabelColor="@color/colorPrimaryDark"
+        app:datePicker="true"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_time_slot_pending"
-        android:layout_width="391dp"
-        android:layout_height="351dp"
+        android:layout_width="match_parent"
+        android:layout_height="268dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
