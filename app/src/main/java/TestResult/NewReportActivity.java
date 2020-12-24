@@ -120,6 +120,7 @@ public class NewReportActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         String strMonth = "", strDay = "";
+                        month++;
                         if (month < 10) {
                             strMonth = "0" + month;
                         } else {
@@ -133,7 +134,6 @@ public class NewReportActivity extends AppCompatActivity {
                         textStartDate.setText(strMonth + "/" + strDay + "/" + year);
                     }
                 }, year, month, day);
-                datePicker.setTitle("Set Start Date");
                 datePicker.show();
             }
         });
@@ -226,6 +226,7 @@ public class NewReportActivity extends AppCompatActivity {
         Calendar mcurrentDate = Calendar.getInstance();
         int year = mcurrentDate.get(Calendar.YEAR);
         int month = mcurrentDate.get(Calendar.MONTH);
+        month++;
         if (month < 10)
             strMonth = "0" + month;
         else

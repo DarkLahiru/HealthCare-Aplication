@@ -192,7 +192,8 @@
                                 android:hint="About Test"
                                 android:inputType="text"
                                 android:textColor="#000"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:background="@color/colorWhite"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
 

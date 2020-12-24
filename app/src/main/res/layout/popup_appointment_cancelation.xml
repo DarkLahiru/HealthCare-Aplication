@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Want to Cancel ? "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginBottom="11dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txtCancellationNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="About Cancellation(Optional)"
+        android:layout_marginBottom="35dp"
+        app:boxBackgroundColor="@color/colorWhite">
+
+        <com.google.android.material.textfield.TextInputEditText
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_cancellation_note"
+            android:drawablePadding="10dp"
+            android:inputType="text"
+            android:textSize="15sp"
+            android:fontFamily="@font/nunito_light">
+
+        <requestFocus />
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

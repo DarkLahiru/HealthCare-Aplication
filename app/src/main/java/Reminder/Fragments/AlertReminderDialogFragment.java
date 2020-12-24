@@ -21,29 +21,16 @@ import java.util.Objects;
 import Reminder.AlertActivity;
 
 public class AlertReminderDialogFragment extends DialogFragment {
-    private MediaPlayer mMediaPlayer;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        requireActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle("HealthCare");
-        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mMediaPlayer.setDataSource(getActivity(),sound);
-            mMediaPlayer.prepare(); // might take long! (for buffering, etc)
-        } catch (IOException e) {
-            e.printStackTrace();
-    }
-
-        mMediaPlayer.start();
-
 
         setCancelable(false);
 
@@ -54,8 +41,6 @@ public class AlertReminderDialogFragment extends DialogFragment {
         builder.setPositiveButton("I took it", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                mMediaPlayer.stop();
 
                 AlertActivity act = (AlertActivity)getActivity();
                 assert act != null;
@@ -68,7 +53,6 @@ public class AlertReminderDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //if(mMediaPlayer.isPlaying()) {
-                mMediaPlayer.stop();
                 //}
                 AlertActivity act = (AlertActivity)getActivity();
                 assert act != null;
@@ -81,7 +65,6 @@ public class AlertReminderDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //if(mMediaPlayer.isPlaying()) {
-                mMediaPlayer.stop();
                 //}
                 AlertActivity act = (AlertActivity)getActivity();
                 assert act != null;
@@ -96,6 +79,6 @@ public class AlertReminderDialogFragment extends DialogFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getActivity().finish();
+        requireActivity().finish();
     }
 }

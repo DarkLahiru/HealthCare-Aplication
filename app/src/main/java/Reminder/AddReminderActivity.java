@@ -8,10 +8,13 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,12 +95,6 @@ public class AddReminderActivity extends AppCompatActivity {
 
     }
 
-    public void getCurrentHourMinute() {
-        Calendar calendar = Calendar.getInstance();
-        currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        currentMinute = calendar.get(Calendar.MINUTE);
-    }
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +106,7 @@ public class AddReminderActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         initialize();
-
-        /*Intent intent=getIntent();
-        medName=intent.getStringExtra("Medicine Name");
-        if(medName!=null)
-            medicineName.setText(medName);*/
-
+        createNotificationChannel();
         dosageUnit = getResources().getStringArray(R.array.dosage_options)[ 0 ];
 
         textStartTime.setText(setTime(currentHour, currentMinute));
@@ -134,7 +126,6 @@ public class AddReminderActivity extends AppCompatActivity {
                         startMinute = selectedMinute;
                     }
                 }, hour, minute, true);//Yes 24 hour time
-                timePicker.setTitle("Select Start Time");
                 timePicker.show();
             }
         });
@@ -146,12 +137,16 @@ public class AddReminderActivity extends AppCompatActivity {
                 int year = mcurrentDate.get(Calendar.YEAR);
                 int month = mcurrentDate.get(Calendar.MONTH);
                 int day = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+
                 DatePickerDialog datePicker;
                 datePicker = new DatePickerDialog(AddReminderActivity.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Toast.makeText(getApplicationContext(), "" + month, Toast.LENGTH_SHORT).show();
                         String strMonth = "", strDay = "";
+                        month++;
                         if (month < 10) {
                             strMonth = "0" + month;
                         } else {
@@ -166,7 +161,6 @@ public class AddReminderActivity extends AppCompatActivity {
                         startDate = strMonth + "/" + strDay + "/" + year;
                     }
                 }, year, month, day);
-                datePicker.setTitle("Set Start Date");
                 datePicker.show();
             }
         });
@@ -183,11 +177,24 @@ public class AddReminderActivity extends AppCompatActivity {
         saveMedication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveReminderForMedication();
-
-                //save all data
+                saveReminderForMedication();//save all data
             }
         });
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            CharSequence charSequence = "My Notification";
+            int important = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("SAMPLE CHANNEL", charSequence, important);
+            channel.setDescription("Channel Reminder");
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
+
+        }
     }
 
     private void saveReminderForMedication() {
@@ -217,7 +224,7 @@ public class AddReminderActivity extends AppCompatActivity {
 
             mFirebaseAuth = FirebaseAuth.getInstance();
             firebaseUser = mFirebaseAuth.getCurrentUser();
-            rootReference = FirebaseDatabase.getInstance().getReference("Patients").child(firebaseUser.getUid()).child("Reminders");
+            rootReference = FirebaseDatabase.getInstance().getReference("Reminders").child(firebaseUser.getUid());
             rootReference.push().setValue(reminder).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -227,53 +234,53 @@ public class AddReminderActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
             intent.putExtra("medicine_name", med_name);
-            intent.putExtra("id", checkBoxCounter);
-
-            pendingIntent = PendingIntent.getBroadcast(AddReminderActivity.this, checkBoxCounter, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-            alarmManager = (AlarmManager) getBaseContext().getSystemService(ALARM_SERVICE);
-
             Calendar calendar = Calendar.getInstance();
-
-            calendar.set(Calendar.HOUR_OF_DAY, startHour);
-            calendar.set(Calendar.MINUTE, startMinute);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
             long alarm_time = calendar.getTimeInMillis();
-            alarmManager.set(AlarmManager.RTC_WAKEUP, alarm_time, pendingIntent);
 
 
-
-            /*for(int i=0; i<7; i++) {
-                if (dayOfWeekList[i] && med_name.length() != 0) {
-
-                    int dayOfWeek = i;
-
-
-                    Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
-                    intent.putExtra("medicine_name", med_name);
-                    intent.putExtra("id",checkBoxCounter);
-
-
-                    pendingIntent = PendingIntent.getBroadcast(getBaseContext(), checkBoxCounter, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    alarmManager = (AlarmManager) getBaseContext().getSystemService(ALARM_SERVICE);
-                    checkBoxCounter++;
-                    Calendar calendar = Calendar.getInstance();
+            switch (radioGroupDays.getCheckedRadioButtonId()) {
+                case R.id.radioEveryDay:
+                    intent.putExtra("id", checkBoxCounter);
+                    alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    pendingIntent = PendingIntent.getBroadcast(AddReminderActivity.this, checkBoxCounter, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
                     calendar.set(Calendar.HOUR_OF_DAY, startHour);
                     calendar.set(Calendar.MINUTE, startMinute);
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
-                    calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+                    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarm_time, AlarmManager.INTERVAL_DAY, pendingIntent);
+                    break;
 
-                    long alarm_time = calendar.getTimeInMillis();
+                case R.id.radioSpecificDay:
+                    for (int i = 0; i < 7; i++) {
+                        if (dayOfWeekList[ i ] && med_name.length() != 0) {
 
-                    if (calendar.before(Calendar.getInstance()))
-                        alarm_time += AlarmManager.INTERVAL_DAY * 7;
+                            intent.putExtra("id", checkBoxCounter);
+                            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), checkBoxCounter, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                            alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                            checkBoxCounter++;
+                            calendar.set(Calendar.HOUR_OF_DAY, startHour);
+                            calendar.set(Calendar.MINUTE, startMinute);
+                            calendar.set(Calendar.SECOND, 0);
+                            calendar.set(Calendar.MILLISECOND, 0);
+                            calendar.set(Calendar.DAY_OF_WEEK, i);
 
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarm_time,
-                            AlarmManager.INTERVAL_DAY * 7, pendingIntent);
-                }
-            }*/
+                            Toast.makeText(getApplicationContext(),""+i,Toast.LENGTH_LONG).show();
+
+                            if (calendar.before(Calendar.getInstance()))
+                                alarm_time += AlarmManager.INTERVAL_DAY * 7;
+
+                            alarmManager.setInexactRepeating(
+                                    AlarmManager.RTC_WAKEUP
+                                    , alarm_time
+                                    , AlarmManager.INTERVAL_DAY * 7
+                                    , pendingIntent);
+                        }
+                    }
+                    break;
+
+            }
+
             if (!cancel) { // Input form is completely filled out
                 Toast.makeText(getBaseContext(), "Reminder for " + med_name + " is set successfully", Toast.LENGTH_SHORT).show();
                 Intent intentGo = new Intent(this, ReminderActivity.class);
@@ -288,6 +295,7 @@ public class AddReminderActivity extends AppCompatActivity {
         Calendar mcurrentDate = Calendar.getInstance();
         int year = mcurrentDate.get(Calendar.YEAR);
         int month = mcurrentDate.get(Calendar.MONTH);
+        month++;
         if (month < 10)
             strMonth = "0" + month;
         else
@@ -315,7 +323,7 @@ public class AddReminderActivity extends AppCompatActivity {
     }
 
     public void onClickDays(@NonNull View view) {
-        final String[] daysofweek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        final String[] daysofweek = {"Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         switch (view.getId()) {
             case R.id.radioEveryDay:
                 RadioButton button = (RadioButton) findViewById(R.id.radioEveryDay);
@@ -420,7 +428,7 @@ public class AddReminderActivity extends AppCompatActivity {
         Spinner spinnerDosage = (Spinner) layout.findViewById(R.id.spinnerDosage);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(AddReminderActivity.this,
-                R.array.dosage_options,android.R.layout.simple_spinner_item);
+                R.array.dosage_options, android.R.layout.simple_spinner_item);
 
         dosage_options = getResources().getStringArray(R.array.dosage_options);
         spinnerDosage.setAdapter(adapter);

@@ -39,6 +39,7 @@ public class ViewContactDetails extends AppCompatActivity {
         setContentView(R.layout.activity_view_contact_details);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorBlack));
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
@@ -46,6 +47,7 @@ public class ViewContactDetails extends AppCompatActivity {
         phoneNumber = findViewById(R.id.txtViewPhoneNum);
         location = findViewById(R.id.txtViewHomeAddress);
         contactImg = findViewById(R.id.imgViewContactImage);
+
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -82,5 +84,7 @@ public class ViewContactDetails extends AppCompatActivity {
                 Picasso.with(getApplicationContext()).load(uri.toString()).resize(400,600).centerInside().into(contactImg);
             }
         });
+
+
     }
 }

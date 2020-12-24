@@ -13,6 +13,7 @@ import com.example.healthcare.R;
 import java.util.Objects;
 
 import Appointments.Booking.BookAppointmentActivity;
+import Appointments.Confirmed.ConfirmedAppointmentActivity;
 import Appointments.Pending.PendingAppointmentActivity;
 
 public class AppointmentPatientActivity extends AppCompatActivity {
@@ -47,6 +48,12 @@ public class AppointmentPatientActivity extends AppCompatActivity {
             }
         });
 
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent((getApplicationContext()), ConfirmedAppointmentActivity.class));
+            }
+        });
     }
 
 }

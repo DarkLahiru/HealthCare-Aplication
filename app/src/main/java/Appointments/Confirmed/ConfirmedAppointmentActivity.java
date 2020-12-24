@@ -79,7 +79,7 @@ public class ConfirmedAppointmentActivity extends AppCompatActivity {
 
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         BookingInformation bookingInformation = dataSnapshot.getValue(BookingInformation.class);
-                        if (bookingInformation.getPatientID().equals(firebaseUser.getUid()) && bookingInformation.getStatus().equals("Confirmed")) {
+                        if (bookingInformation.getPatientID().equals(firebaseUser.getUid()) && bookingInformation.getStatus().equals("confirmed")) {
 
                             String[] dateArray = bookingInformation.getDate().split("-");
                             Calendar calendar = Calendar.getInstance();

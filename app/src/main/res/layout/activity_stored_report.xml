@@ -23,7 +23,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/contactButton"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:titleTextColor="@color/colorPrimaryDark "
+            app:titleTextColor="@color/colorPrimaryDark"
             />
 t
     </com.google.android.material.appbar.AppBarLayout>
@@ -55,7 +55,7 @@ t
             android:id="@+id/radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
             app:rrbg_animateDrawables_enter="overshoot"
             app:rrbg_animateTexts_enter="overshoot"
             app:rrbg_backgroundColor="@color/colorWhite"
@@ -64,7 +64,7 @@ t
             app:rrbg_dividerSize="3dp"
             app:rrbg_radius="10dp"
             app:rrbg_selectorColor="@color/colorPrimaryDark"
-            app:rrbg_selectorSize="10dp"
+            app:rrbg_selectorSize="8dp"
 
             >
 

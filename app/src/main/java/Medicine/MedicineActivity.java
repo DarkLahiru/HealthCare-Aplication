@@ -16,6 +16,7 @@ import android.widget.Button;
 import com.example.healthcare.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +31,7 @@ public class MedicineActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     FirebaseRecyclerOptions<ListData> options;
     FirebaseRecyclerAdapter<ListData,MyRecyclerAdapter>adapter;
-    Button btnAdd;
+    ExtendedFloatingActionButton fabAdd;
 
     DatabaseReference rootReference;
     FirebaseUser firebaseUser;
@@ -44,7 +45,7 @@ public class MedicineActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        btnAdd = (Button)findViewById(R.id.addMedDetails) ;
+        fabAdd = findViewById(R.id.extended_fab) ;
 
 
         recyclerView = (RecyclerView)findViewById(R.id.rVMedDetails);
@@ -78,7 +79,7 @@ public class MedicineActivity extends AppCompatActivity {
         });*/
         LoadData();
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent goAdd = new Intent(getApplicationContext(), AddMedRecordActivity.class);

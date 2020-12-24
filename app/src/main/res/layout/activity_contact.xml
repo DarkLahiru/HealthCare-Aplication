@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="Medicine.MedicineActivity"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/contactButton">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -17,10 +17,53 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/contactButton"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/rLCheckDoctors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
+
+        <EditText
+            android:id="@+id/search_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_toStartOf="@+id/search_btn"
+            android:autofillHints=""
+            android:background="@drawable/search_layout"
+            android:fontFamily="@font/nunito_light"
+            android:hint="@string/search_here"
+            android:inputType="textPersonName"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:textColor="#999999"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/search_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/search_field"
+            android:layout_alignBottom="@+id/search_field"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="0dp"
+            android:background="@color/contactButton"
+            app:srcCompat="@drawable/ic_action_name"
+            android:contentDescription="TODO" />
+
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,21 +75,20 @@
             android:id="@+id/rVContact"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
-            android:background="@color/colorPrimaryDark"
-            android:scrollbars="vertical" />
+            android:layout_marginTop="75dp"
+            android:background="@color/contactButton"
 
-        <Button
-            android:id="@+id/addNewContact"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="50dp"
-            android:background="@drawable/button_contact"
-            android:text="ADD NEW CONTACT"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
             />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/extended_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_marginEnd="15dp"
+            android:layout_gravity="bottom|end"
+            android:text="new"
+            android:layout_marginBottom="15dp"
+            app:icon="@drawable/ic_add"/>
 
 
     </LinearLayout>

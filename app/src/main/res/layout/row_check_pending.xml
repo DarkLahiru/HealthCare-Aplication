@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_check_appointment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp"
+    app:cardUseCompatPadding="true"
+    android:orientation="horizontal"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtAppointmentDate"
+            android:text="Date"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/nunito_bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtAppointmentSlot"
+            android:text="TimeSlot"
+            android:textSize="12sp"
+            android:textColor="#a9a9a9"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/nunito_light"
+            android:layout_marginTop="8dp"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="end"
+        android:gravity="center_vertical"
+        android:layout_margin="12dp">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_animation_cancel"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@raw/cancel"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="6dp" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_animation_confirm"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@raw/select"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+
+            />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

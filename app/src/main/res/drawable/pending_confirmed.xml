@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:left="10dp">
+        <bitmap
+            android:gravity="top|left"
+            android:tint="@android:color/holo_green_dark"
+            android:src="@drawable/for_pending" />
+    </item>
+    <item android:left="45dp">
+        <bitmap
+            android:gravity="right"
+            android:tint="@android:color/holo_blue_dark"
+            android:src="@drawable/for_confirm"/>
+    </item>
+</layer-list>

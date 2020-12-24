@@ -37,19 +37,16 @@
             android:background="@color/titleColor"
             android:scrollbars="vertical" />
 
-        <Button
-            android:id="@+id/addMedDetails"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/border"
-            android:text="ADD MEDICAL DETAILS"
-            android:textColor="#d8d8d8"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
 
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/extended_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="22dp"
+            android:layout_marginTop="35dp"
+            android:layout_gravity="bottom|end"
+            android:text="new"
+            app:icon="@drawable/ic_add"/>
 
     </LinearLayout>
 

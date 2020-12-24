@@ -4,31 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/contactButton"
     tools:context="Contact.ViewContactDetails">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/contactButton"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
 
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
         tools:ignore="MissingConstraints">
 
@@ -43,10 +50,8 @@
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:src="@drawable/ic_profile_image"
-                app:civ_border_color="@color/imgUpload"
+                app:civ_border_color="@color/colorBlack"
                 app:civ_border_width="2dp" />
-
-
 
 
         </LinearLayout>
@@ -64,7 +69,6 @@
                 android:id="@+id/txtViewFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-12dp"
                 android:layout_marginBottom="10dp"
                 android:hint="Full Name">
 
@@ -72,11 +76,15 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_name"
+                    android:drawableStart="@drawable/ic_name"
                     android:drawablePadding="10dp"
                     android:inputType="text"
                     android:textStyle="bold"
-                    android:editable="false"/>
+                    android:background="@color/contactButton"
+                    android:focusable="false"
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusableInTouchMode="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,7 +104,11 @@
                     android:drawablePadding="10dp"
                     android:inputType="number"
                     android:textStyle="bold"
-                    android:editable="false"/>
+                    android:background="@color/contactButton"
+                    android:focusable="false"
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusableInTouchMode="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,7 +128,11 @@
                     android:drawablePadding="10dp"
                     android:inputType="text"
                     android:textStyle="bold"
-                    android:editable="false"/>
+                    android:background="@color/contactButton"
+                    android:focusable="false"
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusableInTouchMode="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

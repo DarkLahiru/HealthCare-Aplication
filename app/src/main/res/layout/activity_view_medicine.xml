@@ -42,7 +42,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <TextView
                     android:layout_width="100dp"
@@ -51,7 +52,9 @@
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    tools:ignore="RtlCompat" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/medViewDate"
@@ -67,7 +70,8 @@
                         android:drawablePadding="10dp"
                         android:inputType="date"
                         android:textStyle="bold"
-                        android:editable="false"/>
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -84,7 +88,9 @@
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    tools:ignore="RtlCompat" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/medViewPlace"
@@ -100,7 +106,8 @@
                         android:drawablePadding="10dp"
                         android:inputType="text"
                         android:textStyle="bold"
-                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -118,7 +125,9 @@
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    tools:ignore="RtlCompat" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/medViewDoc"
@@ -134,7 +143,8 @@
                         android:drawablePadding="10dp"
                         android:inputType="text"
                         android:textStyle="bold"
-                        android:editable="false"/>
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -151,7 +161,9 @@
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    tools:ignore="RtlCompat" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/medViewReason"
@@ -167,7 +179,8 @@
                         android:drawablePadding="10dp"
                         android:inputType="text"
                         android:textStyle="bold"
-                        android:editable="false"/>
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -186,7 +199,9 @@
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    tools:ignore="RtlCompat" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/medViewPills"
@@ -200,9 +215,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="10dp"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:inputType="text"
-                        android:textStyle="bold"
-                        android:editable="false"/>
+                        android:textStyle="bold" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

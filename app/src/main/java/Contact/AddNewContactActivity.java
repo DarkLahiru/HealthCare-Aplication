@@ -50,6 +50,7 @@ public class AddNewContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_new_contact);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorBlack));
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 

@@ -125,13 +125,14 @@
                     android:hint="Birth Day">
 
                     <com.google.android.material.textfield.TextInputEditText
-
+                        android:id="@+id/eTBirthDay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_birthday_cake"
                         android:drawablePadding="10dp"
                         android:textStyle="bold"
-                        android:inputType="date"/>
+                        android:inputType="date"
+                        android:editable="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

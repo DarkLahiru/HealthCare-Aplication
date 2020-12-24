@@ -69,7 +69,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="#00000000"
                 android:hint="Type a Message"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginStart="10dp"/>
 
 
 

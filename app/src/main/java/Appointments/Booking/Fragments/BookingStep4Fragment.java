@@ -48,9 +48,7 @@ public class BookingStep4Fragment extends Fragment {
     LocalBroadcastManager localBroadcastManager;
 
     DatabaseReference rootReference;
-    FirebaseUser firebaseUser;
-    FirebaseAuth mFirebaseAuth;
-
+    String patientName, patientNumber;
     Unbinder unbinder;
 
     @BindView(R.id.txt_booking_doctor)
@@ -84,16 +82,12 @@ public class BookingStep4Fragment extends Fragment {
         bookingInformation.setSlot(Long.valueOf(Common.currentTimeSlot));
         bookingInformation.setDate(simpleDateFormat.format(Common.currentDate.getTime()));
 
-
-
-
-
         rootReference = FirebaseDatabase.getInstance().getReference().child("Patients").child(Common.currentPatient).child("MyProfile");
         rootReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                bookingInformation.setPatientName(Objects.requireNonNull(snapshot.child("fullName").getValue()).toString());
-                bookingInformation.setPatientPhone(Objects.requireNonNull(snapshot.child("phoneNum").getValue()).toString());
+                patientName = snapshot.child("fullName").getValue().toString();
+                patientNumber = snapshot.child("phoneNum").getValue().toString();
             }
 
             @Override
@@ -101,6 +95,9 @@ public class BookingStep4Fragment extends Fragment {
 
             }
         });
+
+        bookingInformation.setPatientName(patientName);
+        bookingInformation.setPatientPhone(patientNumber);
         rootReference = FirebaseDatabase.getInstance().getReference().child("Appointments");
         DatabaseReference pushedPostRef = rootReference.push();
         String postId = pushedPostRef.getKey();
@@ -122,7 +119,7 @@ public class BookingStep4Fragment extends Fragment {
             }
         });
         TimeSlot timeSlot = new TimeSlot();
-        timeSlot.setSlot(Long.valueOf(Common.currentTimeSlot));
+        timeSlot.setSlot((long) Common.currentTimeSlot);
         rootReference  = FirebaseDatabase.getInstance().getReference().child("AppointmentTimeSlot").child(Common.currentDoctor).child(simpleDateFormat.format(Common.currentDate.getTime()));
         rootReference.child(postId).setValue(timeSlot).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +21,9 @@
             android:name="ForDoctor.Appointments.CheckAppointmentsActivity"
             android:label="Appointments"
             android:parentActivityName="ForDoctor.NavigationDoctor" />
-        <activity android:name="Appointments.Confirmed.ConfirmedAppointmentActivity" />
+        <activity android:name="Appointments.Confirmed.ConfirmedAppointmentActivity"
+            android:label="Confirmed Appointments"
+            android:parentActivityName=".NavigationActivity" />/>
         <activity
             android:name="TestResult.ReportIMGActivity"
             android:label="Report Details"
@@ -50,7 +53,7 @@
         <activity
             android:name="Appointments.AppointmentPatientActivity"
             android:label="Appointments"
-            android:parentActivityName="ForDoctor.NavigationDoctor" />
+            android:parentActivityName=".NavigationActivity" />
         <activity android:name="Reminder.AlertActivity" />
         <activity
             android:name="ForDoctor.Messages.ChatListDoctorActivity"
@@ -115,11 +118,11 @@
             android:parentActivityName="Medicine.MedicineActivity" />
         <activity
             android:name="Contact.ContactActivity"
-            android:label="ADD NEW CONTACT"
+            android:label="Add New Contact"
             android:parentActivityName=".NavigationActivity" />
         <activity
             android:name="Medicine.AddMedRecordActivity"
-            android:label="ADD DETAILS"
+            android:label="Add Details"
             android:parentActivityName="Medicine.MedicineActivity" />
         <activity
             android:name="Medicine.MedicineActivity"

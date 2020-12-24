@@ -10,23 +10,24 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.healthcare.R;
 
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(Context context, @NonNull Intent intent) {
         int id = intent.getIntExtra("id", 0);
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         //Intent
         Intent resultIntent = new Intent(context, AlertActivity.class);
         resultIntent.putExtra("medicine_name", intent.getStringExtra("medicine_name"));
         resultIntent.putExtra("Source", "Service");
-
         PendingIntent pIntent = PendingIntent.getActivity(context, id, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
 /*
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
@@ -44,26 +45,17 @@ public class AlarmReceiver extends BroadcastReceiver {
                 );
        // mBuilder.setContentIntent(resultPendingIntent);*/
 
+        NotificationCompat.Builder mBuilder =
+                (NotificationCompat.Builder) new NotificationCompat.Builder(context, "SAMPLE CHANNEL")
+                        .setSmallIcon(R.drawable.reminder)
+                        .setSound(sound)
+                        .setContentIntent(pIntent)
+                        .setContentTitle("HealthCare")
+                        .setAutoCancel(true)
+                        .setContentText("Take Your Medicines!\n" + intent.getStringExtra("medicine_name"));
 
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
+        NotificationManagerCompat mNotificationManager = NotificationManagerCompat.from(context);
+        mNotificationManager.notify(id, mBuilder.build());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence charSequence = "My Notification";
-            int important = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("SAMPLE CHANNEL", charSequence, important);
-            mNotificationManager.createNotificationChannel(channel);
-
-            NotificationCompat.Builder mBuilder =
-                    (NotificationCompat.Builder) new NotificationCompat.Builder(context, "SAMPLE CHANNEL")
-                            .setSmallIcon(R.drawable.reminder)
-                            .setSound(sound)
-                            .setContentIntent(pIntent)
-                            .setContentTitle("HealthCare")
-                            .setAutoCancel(true)
-                            .setContentText("Take Your Medicines!\n" + intent.getStringExtra("medicine_name"));
-            mNotificationManager.notify(id, mBuilder.build());
-        }
     }
 }

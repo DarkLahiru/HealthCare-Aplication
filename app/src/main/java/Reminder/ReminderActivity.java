@@ -55,7 +55,7 @@ public class ReminderActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
-        rootReference = FirebaseDatabase.getInstance().getReference("Patients").child(firebaseUser.getUid()).child("Reminders");
+        rootReference = FirebaseDatabase.getInstance().getReference().child("Reminders").child(firebaseUser.getUid());
 
         recyclerView = (RecyclerView) findViewById(R.id.rV_Reminder);
         recyclerView.setHasFixedSize(true);

@@ -88,6 +88,7 @@ public class StoredReportActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         String strMonth = "", strDay = "";
+                        month++;
                         if (month < 10) {
                             strMonth = "0" + month;
                         } else {
@@ -101,7 +102,6 @@ public class StoredReportActivity extends AppCompatActivity {
                         searchField.setText(strMonth + "/" + strDay + "/" + year);
                     }
                 }, year, month, day);
-                datePicker.setTitle("Set Start Date");
                 datePicker.show();
             }
         });

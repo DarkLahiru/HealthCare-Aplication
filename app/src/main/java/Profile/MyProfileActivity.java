@@ -31,7 +31,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyProfileActivity extends AppCompatActivity {
-    TextInputLayout fullName, birthDay, phoneNum, height, weight, homeAddress,bmi;
+    TextInputLayout fullName, birthDay, phoneNum, height, weight, homeAddress,txtBmiUpdated;
     CircleImageView profileImage;
     TextView profileName,emailId;
 
@@ -61,7 +61,7 @@ public class MyProfileActivity extends AppCompatActivity {
         height = findViewById(R.id.txtHeightUpdated);
         weight = findViewById(R.id.txtWeightUpdated);
         homeAddress = findViewById(R.id.txtHomeAddressUpdated);
-        bmi = findViewById(R.id.txtBmiUpdated);
+        txtBmiUpdated = findViewById(R.id.txtBmiUpdated);
         profileImage = findViewById(R.id.profile_image);
         emailId = findViewById(R.id.emailAddress);
 
@@ -82,6 +82,10 @@ public class MyProfileActivity extends AppCompatActivity {
                 String address = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("homeAddress").getValue()).toString();
                 String email = Objects.requireNonNull(dataSnapshot.child("LoginDetails").child("username").getValue()).toString();
 
+                float hForBMI = Float.parseFloat(h);
+                float wForBMI = Float.parseFloat(w);
+                float BMI = wForBMI / (hForBMI * hForBMI) * 10000;
+
 
                 profileName.setText(dName);
                 emailId.setText(email);
@@ -91,6 +95,8 @@ public class MyProfileActivity extends AppCompatActivity {
                 Objects.requireNonNull(height.getEditText()).setText(h);
                 Objects.requireNonNull(weight.getEditText()).setText(w);
                 Objects.requireNonNull(homeAddress.getEditText()).setText(address);
+                Objects.requireNonNull(txtBmiUpdated.getEditText()).setText(String.valueOf(BMI));
+
 
             }
 

@@ -1,6 +1,7 @@
 package Appointments.Confirmed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthcare.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
 import Appointments.Booking.Model.BookingInformation;
 import Common.Common;
+import ContactDoctor.MessageActivity;
+import ForDoctor.Messages.DocMessagesActivity;
 
 public class ConfirmedTimeSlotAdapter extends RecyclerView.Adapter<ConfirmedTimeSlotAdapter.MyViewHolder> {
 
@@ -27,6 +37,9 @@ public class ConfirmedTimeSlotAdapter extends RecyclerView.Adapter<ConfirmedTime
     BottomSheetDialog bottomSheetDialog;
     TextView txt_booking_time_slot, txt_booking_doctor, txt_booking_address_name, txt_booking_address, txt_booking_phone_number;
     Button btnContactDoctor;
+
+
+
 
     public ConfirmedTimeSlotAdapter(Context context, List<BookingInformation> timeSlotList, BottomSheetDialog bottomSheetDialog) {
         this.context = context;
@@ -46,7 +59,7 @@ public class ConfirmedTimeSlotAdapter extends RecyclerView.Adapter<ConfirmedTime
         int slot = Integer.parseInt(timeSlotList.get(position).getSlot().toString());
         holder.txtTimeSlot.setText(Common.convertTimeSlotToString(slot));
         holder.cardTimeSlot.setCardBackgroundColor(context.getResources().getColor(android.R.color.darker_gray));
-        holder.txtAvailability.setText("Pending");
+        holder.txtAvailability.setText("Confirmed");
         holder.txtAvailability.setTextColor(context.getResources().getColor(android.R.color.white));
         holder.txtTimeSlot.setTextColor(context.getResources().getColor(android.R.color.white));
 
@@ -75,9 +88,53 @@ public class ConfirmedTimeSlotAdapter extends RecyclerView.Adapter<ConfirmedTime
 
                 btnContactDoctor= bottomSheetView.findViewById(R.id.btnContactDoctor);
 
+                btnContactDoctor.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        contactDoctor(timeSlotList.get(position));
+                    }
+                });
+
 
             }
         });
+    }
+
+    private void contactDoctor(BookingInformation bookingInformation) {
+
+        final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("ChatList").child(bookingInformation.getPatientID()).child(bookingInformation.getDoctorID());
+        chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    chatRef.child("id").setValue(bookingInformation.getDoctorID());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        final DatabaseReference chatDocRef =FirebaseDatabase.getInstance().getReference("ChatList").child(bookingInformation.getDoctorID()).child(bookingInformation.getPatientID());
+        chatDocRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    chatDocRef.child("id").setValue(bookingInformation.getPatientID());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        Intent intent = new Intent(context, MessageActivity.class);
+        intent.putExtra("docID",bookingInformation.getDoctorID());
+        context.startActivity(intent);
     }
 
     @Override

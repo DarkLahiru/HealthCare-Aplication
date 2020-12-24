@@ -4,21 +4,29 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.healthcare.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
 import java.util.Objects;
+
+import Profile.EditMyProfileActivity;
 
 public class AddMedRecordActivity extends AppCompatActivity {
 
@@ -27,6 +35,7 @@ public class AddMedRecordActivity extends AppCompatActivity {
     DatabaseReference rootReference;
     FirebaseUser firebaseUser;
     FirebaseAuth mFirebaseAuth;
+    TextInputEditText txtMedDate;
 
     /*long maxNum = 0;*/
 
@@ -45,6 +54,12 @@ public class AddMedRecordActivity extends AppCompatActivity {
         reason = findViewById(R.id.medReason);
         pills = findViewById(R.id.medPills);
         btnSave = findViewById(R.id.btnSaveMed);
+        txtMedDate = findViewById(R.id.txtMedDate);
+
+        txtMedDate.setEnabled(true);
+        txtMedDate.setTextIsSelectable(true);
+        txtMedDate.setFocusable(false);
+        txtMedDate.setFocusableInTouchMode(false);
 
         final ListData listData = new ListData();
 
@@ -66,6 +81,39 @@ public class AddMedRecordActivity extends AppCompatActivity {
 
             }
         });*/
+
+        txtMedDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mCurrentDate = Calendar.getInstance();
+                int year = mCurrentDate.get(Calendar.YEAR);
+                int month = mCurrentDate.get(Calendar.MONTH);
+                int day = mCurrentDate.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePicker;
+                datePicker = new DatePickerDialog(AddMedRecordActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String strMonth = "", strDay = "";
+                        month++;
+                        if (month < 10) {
+                            strMonth = "0" + month;
+                        } else {
+                            strMonth = "" + month;
+                        }
+                        if (dayOfMonth < 10) {
+                            strDay = "0" + dayOfMonth;
+                        } else {
+                            strDay = "" + dayOfMonth;
+                        }
+                        Objects.requireNonNull(date.getEditText()).setText(strMonth + "/" + strDay + "/" + year);
+
+                    }
+                }, year, month, day);
+                datePicker.show();
+            }
+        });
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override

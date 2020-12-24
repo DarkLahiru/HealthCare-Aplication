@@ -4,34 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/contactButton"
     tools:context="Contact.AddNewContactActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/contactButton"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
+        app:layout_constraintVertical_bias="0.485"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
@@ -45,7 +52,7 @@
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:src="@drawable/ic_profile_image"
-                app:civ_border_color="@color/imgUpload"
+                app:civ_border_color="@color/colorBlack"
                 app:civ_border_width="2dp" />
 
 
@@ -82,11 +89,9 @@
                 android:id="@+id/txtContactFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-12dp"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/full_name"
-                android:textColorHint="@color/colorWhite"
-                >
+                android:textColorHint="@color/colorBlack">
 
                 <com.google.android.material.textfield.TextInputEditText
 
@@ -95,8 +100,9 @@
                     android:drawableStart="@drawable/ic_name"
                     android:drawablePadding="10dp"
                     android:inputType="text"
+                    android:textColor="@color/colorBlack"
                     android:textStyle="bold"
-                    android:textColor="@color/colorWhite"/>
+                    android:background="@color/contactButton"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/phone_number"
-                android:textColorHint="@color/colorWhite">
+                android:textColorHint="@color/colorBlack">
 
                 <com.google.android.material.textfield.TextInputEditText
 
@@ -116,7 +122,9 @@
                     android:drawableStart="@drawable/ic_telephone"
                     android:drawablePadding="10dp"
                     android:inputType="number"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:background="@color/contactButton"
+                    android:textColor="@color/colorBlack"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/home_address"
-                android:textColorHint="@color/colorWhite">
+                android:textColorHint="@color/colorBlack">
 
                 <com.google.android.material.textfield.TextInputEditText
 
@@ -136,7 +144,9 @@
                     android:drawableStart="@drawable/ic_location"
                     android:drawablePadding="10dp"
                     android:inputType="text"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:background="@color/contactButton"
+                    android:textColor="@color/colorBlack"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -146,15 +156,16 @@
                 android:layout_marginTop="20dp">
 
                 <Button
+                    android:background="@drawable/search_layout"
                     android:id="@+id/btnAddContact"
-                    android:layout_width="160dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/border"
                     android:text="@string/add_new"
                     android:textColor="@color/colorWhite"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/nunito_extrabold"
+                    />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
