@@ -90,8 +90,7 @@
                         android:drawablePadding="10dp"
                         android:textStyle="bold"
                         android:inputType="text"
-                        android:focusable="false"
-                        android:cursorVisible="false"/>
+                        android:drawableTint="@color/colorBlack"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout

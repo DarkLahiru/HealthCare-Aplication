@@ -3,15 +3,24 @@ package com.example.healthcare;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,8 +35,9 @@ import java.util.Objects;
 import Profile.FirstMyProfileActivity;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText emailId, password;
-    Button signIn, signUp;
+    TextInputLayout emailId, password;
+    Button signIn;
+    TextView signUp, forgotPw;
     FirebaseAuth mFirebaseAuth;
     DatabaseReference rootReference;
 
@@ -47,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.eTPassword);
         signIn = findViewById(R.id.btnSignIn);
         signUp = findViewById(R.id.btnRegisterHere);
-
+        forgotPw = findViewById(R.id.txtForgotPw);
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -83,12 +93,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailId.getText().toString();
-                String pwd = password.getText().toString();
+                String email = emailId.getEditText().getText().toString();
+                String pwd = password.getEditText().getText().toString();
                 if (email.isEmpty()) {
                     emailId.setError("Please enter your email");
                     emailId.requestFocus();
@@ -99,44 +108,53 @@ public class LoginActivity extends AppCompatActivity {
                     mFirebaseAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(!task.isSuccessful()){
-                                Toast.makeText(LoginActivity.this,"Login Error, Please Login Again",Toast.LENGTH_SHORT).show();
-                            }
-                            else{
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, "Login Error, Please Login Again", Toast.LENGTH_SHORT).show();
+                            } else {
                                 mFirebaseAuth = FirebaseAuth.getInstance();
                                 firebaseUser = mFirebaseAuth.getCurrentUser();
                                 rootReference = FirebaseDatabase.getInstance().getReference();
 
-                                rootReference.child("Users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        loginType = Objects.requireNonNull(snapshot.child("LoginType").getValue()).toString();
-                                        firstTimeLogin = Objects.requireNonNull(snapshot.child("First Time Login").getValue()).toString();
+                                if (firebaseUser.isEmailVerified()) {
+                                    rootReference.child("Users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            loginType = Objects.requireNonNull(snapshot.child("LoginType").getValue()).toString();
+                                            firstTimeLogin = Objects.requireNonNull(snapshot.child("First Time Login").getValue()).toString();
 
-                                        if ("Patient".equalsIgnoreCase(loginType)) {
-                                            Toast.makeText(LoginActivity.this, "You are a Patient", Toast.LENGTH_SHORT).show();
-                                            if ("False".equalsIgnoreCase(firstTimeLogin)) {
-                                                Intent first = new Intent(LoginActivity.this, FirstMyProfileActivity.class);
-                                                startActivity(first);
-                                                finish();
+                                            if ("Patient".equalsIgnoreCase(loginType)) {
+                                               // Toast.makeText(LoginActivity.this, "Welcome Back", Toast.LENGTH_SHORT).show();
+                                                if ("False".equalsIgnoreCase(firstTimeLogin)) {
+                                                    Intent first = new Intent(LoginActivity.this, FirstMyProfileActivity.class);
+                                                    startActivity(first);
+                                                    finish();
+                                                } else {
+
+                                                    Intent dash = new Intent(LoginActivity.this, NavigationActivity.class);
+                                                    startActivity(dash);
+                                                }
                                             } else {
 
-                                                Intent dash = new Intent(LoginActivity.this, NavigationActivity.class);
-                                                startActivity(dash);
+                                                Toast.makeText(LoginActivity.this, "Login Error, You are not a Patient !!!", Toast.LENGTH_SHORT).show();
                                             }
                                         }
-                                        else {
 
-                                            Toast.makeText(LoginActivity.this, "Login Error, You are not a Patient !!!", Toast.LENGTH_SHORT).show();
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
                                         }
-                                    }
+                                    });
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
+                                } else {
+                                    firebaseUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(LoginActivity.this, "Please verify your Email ", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
 
-                                    }
-                                });
-
+                                }
                             }
                         }
                     });
@@ -153,7 +171,44 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        forgotPw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText resetMail = new EditText(v.getContext());
 
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+                alertDialog
+                        .setTitle("Reset Password ?")
+                        .setMessage("Enter Your Email To Received Reset Link")
+                        .setView(resetMail);
+
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String mail = resetMail.getText().toString();
+                        mFirebaseAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(LoginActivity.this,"Reset Link Sent To Your Email",Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(LoginActivity.this,"Error !! Reset Link is not Sent"+e.getMessage(),Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                alertDialog.create().show();
+            }
+        });
     }
 
     @Override

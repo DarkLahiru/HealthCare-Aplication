@@ -56,6 +56,8 @@ public class FirstMyProfileActivity extends AppCompatActivity {
     FirebaseAuth mFirebaseAuth;
     StorageReference storageReference;
 
+    boolean imgLoad = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +65,7 @@ public class FirstMyProfileActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnFirstSave);
         clickUpload = findViewById(R.id.clickFUpload);
         uploadedImage = findViewById(R.id.uploadedFImage);
-        eTBirthDay= findViewById(R.id.eTBirthDay);
+        eTBirthDay = findViewById(R.id.eTBirthDay);
         displayName = findViewById(R.id.txtFDisplayName);
         fullName = findViewById(R.id.txtFFullName);
         birthDay = findViewById(R.id.txtFBirthDay);
@@ -131,33 +133,37 @@ public class FirstMyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String name = Objects.requireNonNull(displayName.getEditText()).getText().toString();
-                String fName = Objects.requireNonNull(fullName.getEditText()).getText().toString();
-                String bod = Objects.requireNonNull(birthDay.getEditText()).getText().toString();
-                String phone = Objects.requireNonNull(phoneNum.getEditText()).getText().toString();
-                String heightValue = Objects.requireNonNull(height.getEditText()).getText().toString();
-                String weightValue = Objects.requireNonNull(weight.getEditText()).getText().toString();
-                String address = Objects.requireNonNull(homeAddress.getEditText()).getText().toString();
+                if (imgLoad) {
+                    String name = Objects.requireNonNull(displayName.getEditText()).getText().toString();
+                    String fName = Objects.requireNonNull(fullName.getEditText()).getText().toString();
+                    String bod = Objects.requireNonNull(birthDay.getEditText()).getText().toString();
+                    String phone = Objects.requireNonNull(phoneNum.getEditText()).getText().toString();
+                    String heightValue = Objects.requireNonNull(height.getEditText()).getText().toString();
+                    String weightValue = Objects.requireNonNull(weight.getEditText()).getText().toString();
+                    String address = Objects.requireNonNull(homeAddress.getEditText()).getText().toString();
 
-                if (name.isEmpty() || fName.isEmpty() || bod.isEmpty() || phone.isEmpty() || heightValue.isEmpty() || weightValue.isEmpty() || address.isEmpty()) {
-                    Toast.makeText(FirstMyProfileActivity.this, "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
-                } else {
+                    if (name.isEmpty() || fName.isEmpty() || bod.isEmpty() || phone.isEmpty() || heightValue.isEmpty() || weightValue.isEmpty() || address.isEmpty()) {
+                        Toast.makeText(FirstMyProfileActivity.this, "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
+                    } else {
 
 
-                    User myDetails = new User(name, fName, bod, phone, heightValue, weightValue, address);
-                    rootReference.child("Patients").child(firebaseUser.getUid()).child("MyProfile").setValue(myDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isComplete()) {
-                                Toast.makeText(FirstMyProfileActivity.this, "Update Data Successfully", Toast.LENGTH_SHORT).show();
-                                finish();
-                                Intent myIntent = new Intent(getApplicationContext(), NavigationActivity.class);
-                                startActivity(myIntent);
+                        User myDetails = new User(name, fName, bod, phone, heightValue, weightValue, address);
+                        rootReference.child("Patients").child(firebaseUser.getUid()).child("MyProfile").setValue(myDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isComplete()) {
+                                    rootReference.child("Users").child(firebaseUser.getUid()).child("First Time Login").setValue("true");
+                                    Toast.makeText(FirstMyProfileActivity.this, "Successful", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                    Intent myIntent = new Intent(getApplicationContext(), NavigationActivity.class);
+                                    startActivity(myIntent);
 
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
+                else  Toast.makeText(FirstMyProfileActivity.this, "Please add a image of you", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -180,6 +186,7 @@ public class FirstMyProfileActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     if (task.isSuccessful()) {
                         progressDialog.dismiss();
+                        imgLoad = true;
                         Toast.makeText(getApplicationContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show();
                     } else {
                         progressDialog.dismiss();

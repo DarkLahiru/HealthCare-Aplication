@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import ForDoctor.RegistrationDoctorActivity;
 import Profile.User;
 
 
@@ -75,22 +78,22 @@ public class RegistrationActivity extends AppCompatActivity {
                                         } else {
 
                                             firebaseUser = mFirebaseAuth.getCurrentUser();
-                                            User myUserInsertObj = new User(email, finalPwd);
-
-                                            rootReference.child("Patients").child(firebaseUser.getUid()).child("LoginDetails").setValue(myUserInsertObj)
+                                            assert firebaseUser != null;
+                                            firebaseUser.sendEmailVerification()
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isComplete()) {
+                                                            if (task.isSuccessful()) {
+                                                                Toast.makeText(RegistrationActivity.this, "Verification Email has been sent to your Email ", Toast.LENGTH_LONG).show();
                                                                 Toast.makeText(RegistrationActivity.this, "You Created Account Successfully", Toast.LENGTH_SHORT).show();
-                                                                finish();
+
                                                                 rootReference.child("Users").child(firebaseUser.getUid()).child("First Time Login").setValue("false");
                                                                 rootReference.child("Users").child(firebaseUser.getUid()).child("LoginType").setValue("Patient");
-                                                                rootReference.child("Patients").child(firebaseUser.getUid()).child("MyProfile").child("id").setValue(firebaseUser.getUid());
-                                                                Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
-                                                                startActivity(myIntent);
-
+                                                                Intent dash = new Intent(RegistrationActivity.this, LoginActivity.class);
+                                                                startActivity(dash);
+                                                                finish();
                                                             }
+
                                                         }
                                                     });
                                         }

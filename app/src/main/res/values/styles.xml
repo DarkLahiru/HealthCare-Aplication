@@ -15,6 +15,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
 
+
     </style>
 
 
@@ -35,6 +36,11 @@
         <item name="listPreferredItemPaddingRight">8dp</item>
 
 
+    </style>
+
+    <style name="MyDialogFadeAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

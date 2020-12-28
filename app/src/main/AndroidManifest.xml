@@ -17,13 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity android:name=".DoctorRateActivity"></activity>
         <activity
             android:name="ForDoctor.Appointments.CheckAppointmentsActivity"
             android:label="Appointments"
             android:parentActivityName="ForDoctor.NavigationDoctor" />
-        <activity android:name="Appointments.Confirmed.ConfirmedAppointmentActivity"
+        <activity
+            android:name="Appointments.Confirmed.ConfirmedAppointmentActivity"
             android:label="Confirmed Appointments"
-            android:parentActivityName=".NavigationActivity" />/>
+            android:parentActivityName="Appointments.AppointmentPatientActivity" />
         <activity
             android:name="TestResult.ReportIMGActivity"
             android:label="Report Details"
@@ -79,8 +81,7 @@
             android:parentActivityName="ForDoctor.MyProfile.MyProfileDoctorActivity" />
         <activity
             android:name="ForDoctor.MyProfile.MyProfileDoctorActivity"
-            android:label="Doctor Profile"
-            android:parentActivityName="ForDoctor.NavigationDoctor" />
+            android:label="" />
         <activity android:name="ForDoctor.MyProfile.FirstDoctorProfileActivity" />
         <activity android:name="ForDoctor.NavigationDoctor" />
         <activity android:name="ForDoctor.RegistrationDoctorActivity" />
@@ -135,8 +136,7 @@
             android:parentActivityName="Profile.MyProfileActivity" />
         <activity
             android:name="Profile.MyProfileActivity"
-            android:label="My Profile"
-            android:parentActivityName=".NavigationActivity" />
+            android:label="" />
         <activity
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation" />

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.healthcare.DoctorRateActivity;
 import com.example.healthcare.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
@@ -28,12 +29,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
+import ForDoctor.AppointmentLocationActivity;
+import Profile.MyProfileActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyProfileDoctorActivity extends AppCompatActivity {
     TextInputLayout fullName, phoneNum,specializations, homeAddress,doctorID;
     CircleImageView profileImage;
-    TextView profileName,emailId;
+    TextView profileName,emailId,patientMeet,feedback;
 
     Button btnUpdate;
 
@@ -58,6 +61,24 @@ public class MyProfileDoctorActivity extends AppCompatActivity {
         homeAddress = findViewById(R.id.txtHomeAddressDoctor);
         profileImage = findViewById(R.id.profile_imageDoc);
         emailId = findViewById(R.id.emailAddressDoctor);
+        patientMeet = findViewById(R.id.txtMeetLocationChange);
+        feedback = findViewById(R.id.txtFeedback);
+
+        patientMeet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goChange = new Intent(getApplicationContext(), AppointmentLocationActivity.class);
+                startActivity(goChange);
+            }
+        });
+
+        feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goChange = new Intent(getApplicationContext(), DoctorRateActivity.class);
+                startActivity(goChange);
+            }
+        });
 
         String docID;
         docID = getIntent().getStringExtra("docID");
@@ -77,15 +98,15 @@ public class MyProfileDoctorActivity extends AppCompatActivity {
         rootReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String mediID  = Objects.requireNonNull(snapshot.child("MyProfile").child("regID").getValue()).toString();
+                String medID  = Objects.requireNonNull(snapshot.child("MyProfile").child("regID").getValue()).toString();
                 String dName = Objects.requireNonNull(snapshot.child("MyProfile").child("displayName").getValue()).toString();
                 String fName = Objects.requireNonNull(snapshot.child("MyProfile").child("fullName").getValue()).toString();
                 String spec = Objects.requireNonNull(snapshot.child("MyProfile").child("specializations").getValue()).toString();
                 String phone = Objects.requireNonNull(snapshot.child("MyProfile").child("phoneNum").getValue()).toString();
                 String address = Objects.requireNonNull(snapshot.child("MyProfile").child("homeAddress").getValue()).toString();
-                String email = Objects.requireNonNull(snapshot.child("LoginDetails").child("username").getValue()).toString();
+                String email = firebaseUser.getEmail();
 
-                Objects.requireNonNull(doctorID.getEditText()).setText(mediID);
+                Objects.requireNonNull(doctorID.getEditText()).setText(medID);
                 profileName.setText(dName);
                 emailId.setText(email);
                 Objects.requireNonNull(fullName.getEditText()).setText(fName);

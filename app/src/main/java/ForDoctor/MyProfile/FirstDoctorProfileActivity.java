@@ -44,6 +44,7 @@ public class FirstDoctorProfileActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseAuth mFirebaseAuth;
     StorageReference storageReference;
+    Boolean imgLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,44 +81,50 @@ public class FirstDoctorProfileActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String docID = docRegID.getEditText().getText().toString();
-                String docName= displayName.getEditText().getText().toString();
-                String docFullName = fullName.getEditText().getText().toString();
-                String docSP = specializations.getEditText().getText().toString();
-                String phone    = phoneNum.getEditText().getText().toString();
-                String address = homeAddress.getEditText().getText().toString();
+                if (imgLoaded) {
+                    String docID = docRegID.getEditText().getText().toString();
+                    String docName = displayName.getEditText().getText().toString();
+                    String docFullName = fullName.getEditText().getText().toString();
+                    String docSP = specializations.getEditText().getText().toString();
+                    String phone = phoneNum.getEditText().getText().toString();
+                    String address = homeAddress.getEditText().getText().toString();
 
-                if (docName.isEmpty() || docFullName.isEmpty() || docSP.isEmpty() || phone.isEmpty() || address.isEmpty() ) {
-                    Toast.makeText(getApplicationContext(), "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
+                    if (docName.isEmpty() || docFullName.isEmpty() || docSP.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        doctorData.setRegID(docID);
+                        doctorData.setDisplayName(docName);
+                        doctorData.setFullName(docFullName);
+                        doctorData.setSpecializations(docSP);
+                        doctorData.setPhoneNum(phone);
+                        doctorData.setHomeAddress(address);
+                        doctorData.setId(firebaseUser.getUid());
+
+                        rootReference.child("Doctors").child(firebaseUser.getUid()).child("displayName").setValue(docName);
+                        rootReference.child("Doctors").child(firebaseUser.getUid()).child("specializations").setValue(docSP);
+                        //rootReference.child("Doctors").child(firebaseUser.getUid()).child("id").setValue(firebaseUser.getUid());
+                        rootReference.child("Doctors").child(firebaseUser.getUid()).child("profileImage").setValue(firebaseUser.getUid() + ".jpg");
+
+                        rootReference.child("Doctors").child(firebaseUser.getUid()).child("MyProfile").setValue(doctorData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isComplete()) {
+
+                                    Toast.makeText(getApplicationContext(), "Update Data Successfully", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                    Intent myIntent = new Intent(getApplicationContext(), AppointmentLocationActivity.class);
+                                    startActivity(myIntent);
+
+                                }
+                            }
+                        });
+                    }
+
                 }
                 else {
+                    Toast.makeText(getApplicationContext(), "Please add a Image of you", Toast.LENGTH_SHORT).show();
 
-                    doctorData.setRegID(docID);
-                    doctorData.setDisplayName(docName);
-                    doctorData.setFullName(docFullName);
-                    doctorData.setSpecializations(docSP);
-                    doctorData.setPhoneNum(phone);
-                    doctorData.setHomeAddress(address);
-                    doctorData.setId(firebaseUser.getUid());
-
-                    rootReference.child("Doctors").child(firebaseUser.getUid()).child("displayName").setValue(docName);
-                    rootReference.child("Doctors").child(firebaseUser.getUid()).child("specializations").setValue(docSP);
-                    //rootReference.child("Doctors").child(firebaseUser.getUid()).child("id").setValue(firebaseUser.getUid());
-                    rootReference.child("Doctors").child(firebaseUser.getUid()).child("profileImage").setValue(firebaseUser.getUid()+".jpg");
-
-                    rootReference.child("Doctors").child(firebaseUser.getUid()).child("MyProfile").setValue(doctorData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isComplete()) {
-
-                                Toast.makeText(getApplicationContext(), "Update Data Successfully", Toast.LENGTH_SHORT).show();
-                                finish();
-                                Intent myIntent = new Intent(getApplicationContext(), AppointmentLocationActivity.class);
-                                startActivity(myIntent);
-
-                            }
-                        }
-                    });
                 }
 
             }
@@ -141,6 +148,7 @@ public class FirstDoctorProfileActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     if (task.isSuccessful()) {
                         progressDialog.dismiss();
+                        imgLoaded = true;
                         Toast.makeText(getApplicationContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show();
                     } else {
                         progressDialog.dismiss();

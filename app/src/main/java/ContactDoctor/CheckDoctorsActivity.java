@@ -19,9 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.healthcare.DoctorRateActivity;
 import com.example.healthcare.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +37,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+import com.stepstone.apprating.AppRatingDialog;
+import com.stepstone.apprating.listener.RatingDialogListener;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import Chat.ChatListActivity;
@@ -44,7 +49,7 @@ import ForDoctor.MyProfile.MyProfileDoctorActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class CheckDoctorsActivity extends AppCompatActivity {
+public class CheckDoctorsActivity extends AppCompatActivity implements RatingDialogListener {
 
     RecyclerView recyclerView;
     FirebaseRecyclerOptions<DoctorData> options;
@@ -61,6 +66,8 @@ public class CheckDoctorsActivity extends AppCompatActivity {
     EditText mSearchText;
 
     Button message, favourite;
+    AppRatingDialog.Builder appRateDocBuilder;
+    String key,patientName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,11 +153,8 @@ public class CheckDoctorsActivity extends AppCompatActivity {
     }
 
     private void LoadData() {
-
-
         options = new FirebaseRecyclerOptions.Builder<DoctorData>().setQuery(rootReference, DoctorData.class).build();
         adapter = new FirebaseRecyclerAdapter<DoctorData, DoctorViewHolder>(options) {
-
             @NonNull
             @Override
             public DoctorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -162,7 +166,7 @@ public class CheckDoctorsActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull final DoctorViewHolder holder, final int position, @NonNull DoctorData model) {
                 holder.docName.setText(model.getDisplayName());
                 holder.docDescription.setText(model.getSpecializations());
-                final String key = getRef(position).getKey();
+                key = getRef(position).getKey();
                 storageReference.child(key + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -233,6 +237,42 @@ public class CheckDoctorsActivity extends AppCompatActivity {
                                 });
                             }
                         });
+                        bottomSheetView.findViewById(R.id.txtRateDoc).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                appRateDocBuilder = new AppRatingDialog.Builder();
+                                appRateDocBuilder.setPositiveButtonText("Submit")
+                                        .setNegativeButtonText("Cancel")
+                                        .setNoteDescriptions(Arrays.asList("Very Bad", "Not good", "Quite ok", "Very Good", "Excellent !!!"))
+                                        .setDefaultRating(2)
+                                        .setTitle("Rate Your Doctor")
+                                        .setDescription("Please select some stars and give your feedback")
+                                        .setCommentInputEnabled(true)
+                                        .setStarColor(R.color.starColor)
+                                        .setNoteDescriptionTextColor(R.color.noteDescriptionTextColor)
+                                        .setTitleTextColor(R.color.colorBlack)
+                                        .setDescriptionTextColor(R.color.contentTextColor)
+                                        .setHint("Please write your comment here ...")
+                                        .setHintTextColor(R.color.hintTextColor)
+                                        .setCommentTextColor(R.color.commentTextColor)
+                                        .setCommentBackgroundColor(R.color.commentBackgroundColor)
+                                        .setWindowAnimation(R.style.MyDialogFadeAnimation)
+                                        .setCancelable(false)
+                                        .setCanceledOnTouchOutside(false)
+                                        .create(CheckDoctorsActivity.this)
+                                        .show();
+
+                            }
+                        });
+                        bottomSheetView.findViewById(R.id.txtFeedback).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent message = new Intent(CheckDoctorsActivity.this, DoctorRateActivity.class);
+                                message.putExtra("docID", key);
+                                startActivity(message);
+                            }
+                        });
+
 
                         docProfileImage = bottomSheetView.findViewById(R.id.imgDocProfile);
                         docName = bottomSheetView.findViewById(R.id.txtDocName);
@@ -271,6 +311,55 @@ public class CheckDoctorsActivity extends AppCompatActivity {
         adapter.startListening();
         recyclerView.setAdapter(adapter);
     }
+
+    @Override
+    public void onNegativeButtonClicked() {
+    }
+
+    @Override
+    public void onNeutralButtonClicked() {
+
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int i, String s) {
+
+        rootReference = FirebaseDatabase.getInstance().getReference("Patients").child(firebaseUser.getUid()).child("MyProfile");
+        rootReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                patientName = snapshot.child("displayName").getValue().toString();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        Toast.makeText(getApplicationContext(),""+patientName,Toast.LENGTH_SHORT).show();
+        DoctorRate rate = new DoctorRate();
+        rate.setStars(String.valueOf(i));
+        rate.setFeedback(s);
+        rate.setPatientID(firebaseUser.getUid());
+        rate.setDoctorID(key);
+        rate.setPatientName(patientName);
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("DoctorRate").child(key).child(firebaseUser.getUid());
+        database.setValue(rate).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(),"Thank you for your feedback",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),"There is a problem "+e.getMessage(),Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
 
     public static class DoctorViewHolder extends RecyclerView.ViewHolder {
 

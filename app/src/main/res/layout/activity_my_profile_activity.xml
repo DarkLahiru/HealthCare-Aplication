@@ -7,16 +7,32 @@
     tools:context="Profile.MyProfileActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scrollView2"
+        tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimaryDark"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Patient Profile"
+                android:layout_gravity="center"
+                android:id="@+id/toolbar_title"
+                android:fontFamily="@font/bungee"
+                android:textSize="21sp"/>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -28,7 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bgapps"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="?attr/actionBarSize">
 
             <RelativeLayout
                 android:id="@+id/relativeLayout"
@@ -72,6 +89,7 @@
                     android:text="Email address"
                     android:textColor="@color/background"
                     android:textSize="14sp" />
+
             </RelativeLayout>
 
             <LinearLayout
@@ -209,7 +227,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="45dp">
 
                     <Button
                         android:id="@+id/btnUpdate"

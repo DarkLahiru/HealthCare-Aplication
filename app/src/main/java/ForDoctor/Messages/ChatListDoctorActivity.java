@@ -47,9 +47,9 @@ public class ChatListDoctorActivity extends AppCompatActivity {
     FirebaseRecyclerOptions<ChatList> options;
     FirebaseRecyclerAdapter<ChatList, ViewHolder> adapter;
 
-    private List<ChatList> userList;
+    private List<ChatList> userList = new ArrayList<>();
     RecyclerView recyclerView;
-    private List<User> user;
+    private List<String> user;
 
 
     @Override
@@ -70,31 +70,30 @@ public class ChatListDoctorActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
 
-        userList = new ArrayList<>();
 
-        rootReference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
-        rootReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userList.clear();
-                if (snapshot.exists()) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        ChatList chatList = dataSnapshot.getValue(ChatList.class);
-                        userList.add(chatList);
-                    }
+//        rootReference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
+//        rootReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                userList.clear();
+//                if (snapshot.exists()) {
+//                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                        ChatList chatList = dataSnapshot.getValue(ChatList.class);
+//                        userList.add(chatList);
+//                    }
                     chatList();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
     private void chatList() {
-        user = new ArrayList<>();
+       /* user = new ArrayList<>();
         rootReference = FirebaseDatabase.getInstance().getReference("Patients");
         rootReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -102,17 +101,17 @@ public class ChatListDoctorActivity extends AppCompatActivity {
                 user.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        User users = dataSnapshot.child("MyProfile").getValue(User.class);
-                        for (ChatList chatList : userList) {
-                            if (!userList.isEmpty()) {
-                                if (users.getId().equalsIgnoreCase(chatList.getId())) {
-                                    user.add(users);
+                        String userUID = dataSnapshot.getKey();
+                        if (!userList.isEmpty()) {
+                            for (ChatList chatList : userList) {
+                                if (userUID.equalsIgnoreCase(chatList.getId())) {
+                                    user.add(userUID);
                                 }
                             }
 
                         }
                     }
-                }
+                }*/
                 rootReference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
                 options = new FirebaseRecyclerOptions.Builder<ChatList>().setQuery(rootReference, ChatList.class).build();
                 adapter = new FirebaseRecyclerAdapter<ChatList, ViewHolder>(options) {
@@ -150,7 +149,7 @@ public class ChatListDoctorActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(getApplicationContext(), DocMessagesActivity.class);
-                                intent.putExtra("PatientID", model.getId());
+                                intent.putExtra("patientID", model.getId());
                                 startActivity(intent);
                             }
                         });
@@ -160,13 +159,13 @@ public class ChatListDoctorActivity extends AppCompatActivity {
                 recyclerView.setAdapter(adapter);
             }
 
-            @Override
+            /*@Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
 
-    }
+    }*/
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 

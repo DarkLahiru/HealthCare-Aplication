@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +72,7 @@ public class AppointmentLocationActivity extends AppCompatActivity {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid()).child("First Time Login").setValue("true");
                 startActivity(new Intent(getApplicationContext(),NavigationDoctor.class));
             }
         });

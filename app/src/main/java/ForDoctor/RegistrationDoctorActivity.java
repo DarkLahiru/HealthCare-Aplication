@@ -11,7 +11,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.healthcare.R;
+import com.example.healthcare.RegistrationActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,20 +27,20 @@ import Profile.User;
 public class RegistrationDoctorActivity extends AppCompatActivity {
 
     Button register;
-    EditText emailId, Password, rePassword,doctorID;
+    EditText emailId, Password, rePassword;
     FirebaseAuth mFirebaseAuth;
     DatabaseReference rootReference;
     FirebaseUser firebaseUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_doctor);
 
-        emailId = findViewById(R.id.usereTDoctor);
+        emailId = findViewById(R.id.usereTDoctorEmail);
         Password = findViewById(R.id.passeTDoctor);
         rePassword = findViewById(R.id.rePasseTDoctor);
         register = findViewById(R.id.btnSignUpDoc);
-        doctorID = findViewById(R.id.usereTDoctorID);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         rootReference = FirebaseDatabase.getInstance().getReference();
@@ -48,12 +51,7 @@ public class RegistrationDoctorActivity extends AppCompatActivity {
                 final String email = emailId.getText().toString();
                 String pwd = Password.getText().toString();
                 String rePwd = rePassword.getText().toString();
-                String docID   = doctorID.getText().toString();
-                if (docID.isEmpty()){
-                    doctorID.setError("Please enter registration number");
-                    doctorID.requestFocus();
-                }
-                else if (email.isEmpty()) {
+                if (email.isEmpty()) {
                     emailId.setError("Please enter email");
                     emailId.requestFocus();
                 } else if (pwd.isEmpty()) {
@@ -72,37 +70,42 @@ public class RegistrationDoctorActivity extends AppCompatActivity {
                         Password.setError("Password must have at least 6 characters");
                         Password.requestFocus();
                     } else {
-                        final String finalPwd = pwd;
-                        mFirebaseAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(RegistrationDoctorActivity.this, new OnCompleteListener<AuthResult>() {
+                        mFirebaseAuth.createUserWithEmailAndPassword(email, pwd)
+                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                            @Override
+                            public void onSuccess(AuthResult authResult) {
+                                firebaseUser = mFirebaseAuth.getCurrentUser();
+
+                                assert firebaseUser != null;
+                                firebaseUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (!task.isSuccessful()) {
-                                            Toast.makeText(RegistrationDoctorActivity.this, "SignUp Unsuccessful, Please Try Again", Toast.LENGTH_SHORT).show();
-                                        } else {
+                                    public void onSuccess(Void aVoid) {
 
-                                            firebaseUser = mFirebaseAuth.getCurrentUser();
-                                            User myUserInsertObj = new User(email, finalPwd);
+                                        Toast.makeText(RegistrationDoctorActivity.this, "Verification Email has been sent to your Email ", Toast.LENGTH_LONG).show();
 
-                                            rootReference.child("Doctors").child(firebaseUser.getUid()).child("LoginDetails").setValue(myUserInsertObj)
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isComplete()) {
-                                                                Toast.makeText(RegistrationDoctorActivity.this, "You Created Account Successfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(RegistrationDoctorActivity.this, "You Created Account Successfully", Toast.LENGTH_SHORT).show();
 
-                                                                rootReference.child("Users").child(firebaseUser.getUid()).child("First Time Login").setValue("false");
-                                                                rootReference.child("Users").child(firebaseUser.getUid()).child("LoginType").setValue("Doctor");
-                                                                rootReference.child("Users").child(firebaseUser.getUid()).child("MyProfile").child("regID").setValue(docID);
-                                                                Intent myIntent = new Intent(getApplicationContext(), LoginDoctorActivity.class);
-                                                                startActivity(myIntent);
-                                                                finish();
-                                                            }
-                                                        }
-                                                    });
-                                        }
+                                        rootReference.child("Users").child(firebaseUser.getUid()).child("First Time Login").setValue("false");
+                                        rootReference.child("Users").child(firebaseUser.getUid()).child("LoginType").setValue("Doctor");
+                                        Intent myIntent = new Intent(getApplicationContext(), LoginDoctorActivity.class);
+                                        startActivity(myIntent);
+                                        finish();
+
                                     }
-                                }
-                        );
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                    }
+                                });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(RegistrationDoctorActivity.this, "SignUp Unsuccessful, Please Try Again" + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
                     }
                 }
             }

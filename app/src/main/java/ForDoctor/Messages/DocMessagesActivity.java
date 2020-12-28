@@ -65,7 +65,7 @@ public class DocMessagesActivity extends AppCompatActivity {
 
         patientProfileImage = findViewById(R.id.messengerImage);
         patientName = findViewById(R.id.txtMessengerName);
-        patientID = getIntent().getStringExtra("PatientID");
+        patientID = getIntent().getStringExtra("patientID");
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();

@@ -58,6 +58,7 @@
                 android:fontFamily="@font/nunito_semibold"/>
 
 
+
         </LinearLayout>
     </LinearLayout>
     <View
@@ -120,8 +121,8 @@
             android:text="@string/send_a_message"
             android:textSize="15dp"
             android:textColor="@color/colorBlack"/>
-
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -131,7 +132,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:layout_marginBottom="20dp">
+        >
 
         <ImageView
             android:id="@+id/imgFav"
@@ -152,6 +153,67 @@
             android:textColor="@color/colorBlack"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_rate"
+            android:tint="@color/colorPrimaryDark"/>
+        <TextView
+            android:id="@+id/txtRateDoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="25dp"
+            android:text="Rate Doctor"
+            android:textSize="15dp"
+            android:textColor="@color/colorBlack"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        >
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_feedback"
+            android:tint="@color/colorPrimaryDark" />
+        <TextView
+            android:id="@+id/txtFeedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="25dp"
+            android:text="Check Other's Rates"
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"/>
+
+    </LinearLayout>
+
+
     
     <!--<Button
         android:id="@+id/btnAddToList"

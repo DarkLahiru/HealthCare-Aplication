@@ -71,33 +71,33 @@ public class ChatListActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
 
-        userList = new ArrayList<>();
-
-        rootReference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
-        rootReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    ChatList chatList = dataSnapshot.getValue(ChatList.class);
-                    userList.add(chatList);
-                }
+//        userList = new ArrayList<>();
+//
+//        rootReference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
+//        rootReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                userList.clear();
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    ChatList chatList = dataSnapshot.getValue(ChatList.class);
+//                    userList.add(chatList);
+//                }
                 chatList();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
     private void chatList() {
-        user = new ArrayList<>();
+        /*user = new ArrayList<>();
         rootReference = FirebaseDatabase.getInstance().getReference("Doctors");
-        rootReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                rootReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
                 user.clear();
                 if (snapshot.exists()) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -109,7 +109,7 @@ public class ChatListActivity extends AppCompatActivity {
                             }
                         }
                     }
-                }
+                }*/
                 rootReference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
                 options = new FirebaseRecyclerOptions.Builder<ChatList>().setQuery(rootReference, ChatList.class).build();
                 adapter = new FirebaseRecyclerAdapter<ChatList, UserViewHolder>(options) {
@@ -161,13 +161,13 @@ public class ChatListActivity extends AppCompatActivity {
 
             }
 
-            @Override
+           /* @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
 
-    }
+    }*/
 
 
     private class UserViewHolder extends RecyclerView.ViewHolder {

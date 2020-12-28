@@ -159,7 +159,7 @@ public class EventOnSelectedDayAdapter extends RecyclerView.Adapter<EventOnSelec
         });
 
         Intent intent = new Intent(context, DocMessagesActivity.class);
-        intent.putExtra("PatientID",bookingInformation.getPatientID());
+        intent.putExtra("patientID",bookingInformation.getPatientID());
         context.startActivity(intent);
 
     }

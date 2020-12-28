@@ -8,7 +8,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout4"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +21,17 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimaryDark"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/bungee"
+                android:text="Doctor Profile"
+                android:textSize="21sp" />
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -45,27 +55,54 @@
             <RelativeLayout
                 android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="20dp"
-                android:padding="40dp">
+                android:layout_height="250dp"
+                android:layout_marginTop="50dp"
+                android:paddingStart="20dp"
+                tools:ignore="RtlSymmetry"
+                android:gravity="center_vertical"
+                >
+
+                <LinearLayout
+                    android:id="@+id/group"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                   >
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_imageDoc"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
                     android:src="@drawable/ic_profile_image"
                     app:civ_border_color="@color/imgUpload"
-                    app:civ_border_width="2dp" />
+                    app:civ_border_width="2dp"
+                   />
 
+                <TextView
+                    android:id="@+id/txtFeedback"
+                    android:layout_width="145dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito_extrabold"
+                    android:text=" View Patients Feedback"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_marginTop="15dp"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/groupTwo"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/group"
+                    android:layout_marginTop="25dp">
                 <TextView
                     android:id="@+id/profile_nameDoctor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/profile_imageDoc"
                     android:fontFamily="@font/nunito_extrabold"
                     android:includeFontPadding="false"
                     android:text="Profile name"
@@ -76,20 +113,19 @@
                     android:id="@+id/emailAddressDoctor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/profile_nameDoctor"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/profile_imageDoc"
                     android:includeFontPadding="false"
                     android:text="Email address"
                     android:textColor="@color/background"
                     android:textSize="14sp" />
+
+                </LinearLayout>
+
+
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="55dp"
                 android:orientation="vertical"
                 android:padding="30dp">
 
@@ -196,23 +232,32 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="20dp"
+                   android:orientation="vertical"
+                    android:gravity="center">
 
                     <Button
                         android:id="@+id/btnUpdateDoctor"
                         android:layout_width="160dp"
                         android:layout_height="40dp"
-                        android:layout_centerInParent="true"
                         android:background="@drawable/custom_button"
                         android:text="Update"
                         android:textColor="#d8d8d8"
                         android:textStyle="bold"
-
+                        android:layout_marginBottom="35dp"
                         />
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/txtMeetLocationChange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Change Patient meet Locations"
+                        android:fontFamily="@font/nunito_extrabold"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="22sp"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -1,6 +1,7 @@
 package ForDoctor.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import ContactDoctor.CheckDoctorsActivity;
+import ContactDoctor.MessageActivity;
+import ForDoctor.Messages.DocMessagesActivity;
+import ForDoctor.MyProfile.MyProfileDoctorActivity;
+import Profile.MyProfileActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -53,6 +59,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         rootReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 holder.patientName.setText(snapshot.child("MyProfile").child("displayName").getValue().toString());
                 holder.patientPhone.setText(snapshot.child("MyProfile").child("phoneNum").getValue().toString());
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference("Patients").child("ProfileImage");
@@ -74,6 +81,27 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                                 );
                         bottomSheetDialog.setContentView(bottomSheetView);
                         bottomSheetDialog.show();
+                        CircleImageView circleImageView = bottomSheetView.findViewById(R.id.imgPatientProfile);
+                        TextView txtPatientName = bottomSheetView.findViewById(R.id.txtPatientName);
+                        TextView txtPatientNum = bottomSheetView.findViewById(R.id.txtPatientNum);
+
+
+                        bottomSheetView.findViewById(R.id.txtPatientProfile).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent profile = new Intent(context, MyProfileActivity.class);
+                                profile.putExtra("patientID", users);
+                                context.startActivity(profile);
+                            }
+                        });
+                        bottomSheetView.findViewById(R.id.txtSendMessage).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent message = new Intent(context, DocMessagesActivity.class);
+                                message.putExtra("patientID", users);
+                                context.startActivity(message);
+                            }
+                        });
                     }
                 });
             }

@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,9 +32,9 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyProfileActivity extends AppCompatActivity {
-    TextInputLayout fullName, birthDay, phoneNum, height, weight, homeAddress,txtBmiUpdated;
+    TextInputLayout fullName, birthDay, phoneNum, height, weight, homeAddress, txtBmiUpdated;
     CircleImageView profileImage;
-    TextView profileName,emailId;
+    TextView profileName, emailId;
 
     Button btnUpdate;
 
@@ -43,14 +44,13 @@ public class MyProfileActivity extends AppCompatActivity {
     StorageReference storageReference;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile_activity);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        //Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 
         btnUpdate = findViewById(R.id.btnUpdate);
@@ -68,8 +68,17 @@ public class MyProfileActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
 
+        String patientID;
+        patientID = getIntent().getStringExtra("patientID");
+        if (TextUtils.isEmpty(patientID)) {
+            rootReference = FirebaseDatabase.getInstance().getReference("Patients").child(firebaseUser.getUid());
+            storageReference = FirebaseStorage.getInstance().getReference("Patients").child("ProfileImage").child(firebaseUser.getUid() + ".jpg");
+        } else {
+            btnUpdate.setVisibility(View.GONE);
+            rootReference = FirebaseDatabase.getInstance().getReference("Patients").child(patientID);
+            storageReference = FirebaseStorage.getInstance().getReference("Patients").child("ProfileImage").child(patientID);
 
-        rootReference = FirebaseDatabase.getInstance().getReference("Patients").child(firebaseUser.getUid());
+        }
         rootReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -80,7 +89,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 String h = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("height").getValue()).toString();
                 String w = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("weight").getValue()).toString();
                 String address = Objects.requireNonNull(dataSnapshot.child("MyProfile").child("homeAddress").getValue()).toString();
-                String email = Objects.requireNonNull(dataSnapshot.child("LoginDetails").child("username").getValue()).toString();
+                String email = firebaseUser.getEmail();
 
                 float hForBMI = Float.parseFloat(h);
                 float wForBMI = Float.parseFloat(w);
@@ -106,18 +115,18 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
-        storageReference = FirebaseStorage.getInstance().getReference("Patients").child("ProfileImage").child(firebaseUser.getUid() + ".jpg");
+
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.with(getApplicationContext()).load(uri.toString()).resize(400,600).centerInside().into(profileImage);
+                Picasso.with(getApplicationContext()).load(uri.toString()).resize(400, 600).centerInside().into(profileImage);
             }
         });
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goEdit = new Intent(MyProfileActivity.this,EditMyProfileActivity.class);
+                Intent goEdit = new Intent(MyProfileActivity.this, EditMyProfileActivity.class);
                 startActivity(goEdit);
             }
         });
