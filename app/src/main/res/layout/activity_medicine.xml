@@ -32,8 +32,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rVMedDetails"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:layout_margin="40dp"
+            android:layout_height="550dp"
+            android:layout_margin="10dp"
             android:background="@color/titleColor"
             android:scrollbars="vertical" />
 
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="22dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="15dp"
             android:layout_gravity="bottom|end"
             android:text="new"
             app:icon="@drawable/ic_add"/>

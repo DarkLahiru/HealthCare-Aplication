@@ -11,11 +11,13 @@
     </string-array>
 
     <string-array name="report_types">
-        <item>mg</item>
-        <item>ml</item>
-        <item>gram</item>
-        <item>pills</item>
-        <item>other</item>
+        <item>Body Fluids</item>
+        <item>Imaging</item>
+        <item>Endoscopy</item>
+        <item>Body Functions</item>
+        <item>Biopsy</item>
+        <item>Genetic Testing</item>
+        <item>others</item>
     </string-array>
 
 

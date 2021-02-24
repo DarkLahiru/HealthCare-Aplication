@@ -18,9 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.healthcare.DoctorRateActivity;
 import com.example.healthcare.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +35,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+import com.stepstone.apprating.AppRatingDialog;
+import com.stepstone.apprating.listener.RatingDialogListener;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,7 +48,7 @@ import ForDoctor.MyProfile.DoctorData;
 import ForDoctor.MyProfile.MyProfileDoctorActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class FavouriteList extends AppCompatActivity {
+public class FavouriteList extends AppCompatActivity implements RatingDialogListener {
 
     DatabaseReference rootReference;
     DatabaseReference rf;
@@ -55,7 +60,8 @@ public class FavouriteList extends AppCompatActivity {
     FirebaseRecyclerAdapter<ChatList, UserViewHolder> adapter;
 
     RecyclerView recyclerView;
-
+    AppRatingDialog.Builder appRateDocBuilder;
+    String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +166,44 @@ public class FavouriteList extends AppCompatActivity {
 
                         }
                         });
+
+                        bottomSheetView.findViewById(R.id.txtRateDoc).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                appRateDocBuilder = new AppRatingDialog.Builder();
+                                appRateDocBuilder.setPositiveButtonText("Submit")
+                                        .setNegativeButtonText("Cancel")
+                                        .setNoteDescriptions(Arrays.asList("Very Bad", "Not good", "Quite ok", "Very Good", "Excellent !!!"))
+                                        .setDefaultRating(2)
+                                        .setTitle("Rate Your Doctor")
+                                        .setDescription("Please select some stars and give your feedback")
+                                        .setCommentInputEnabled(true)
+                                        .setStarColor(R.color.starColor)
+                                        .setNoteDescriptionTextColor(R.color.noteDescriptionTextColor)
+                                        .setTitleTextColor(R.color.colorBlack)
+                                        .setDescriptionTextColor(R.color.contentTextColor)
+                                        .setHint("Please write your comment here ...")
+                                        .setHintTextColor(R.color.hintTextColor)
+                                        .setCommentTextColor(R.color.commentTextColor)
+                                        .setCommentBackgroundColor(R.color.commentBackgroundColor)
+                                        .setWindowAnimation(R.style.MyDialogFadeAnimation)
+                                        .setCancelable(false)
+                                        .setCanceledOnTouchOutside(false)
+                                        .create(FavouriteList.this)
+                                        .show();
+
+                                key = model.getId();
+                            }
+                        });
+                        bottomSheetView.findViewById(R.id.txtFeedback).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent message = new Intent(FavouriteList.this, DoctorRateActivity.class);
+                                message.putExtra("docID", model.getId());
+                                startActivity(message);
+                            }
+                        });
+
                         ImageView docProfileImage = bottomSheetView.findViewById(R.id.imgDocProfile);
                         TextView docName = bottomSheetView.findViewById(R.id.txtDocName);
                         TextView docAbout = bottomSheetView.findViewById(R.id.txtDocStatus);
@@ -200,6 +244,39 @@ public class FavouriteList extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onNegativeButtonClicked() {
+
+    }
+
+    @Override
+    public void onNeutralButtonClicked() {
+
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int i, String s) {
+        DoctorRate rate = new DoctorRate();
+        rate.setStars(String.valueOf(i));
+        rate.setFeedback(s);
+        rate.setPatientID(firebaseUser.getUid());
+        rate.setDoctorID(key);
+
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("DoctorRate").child(key).child(firebaseUser.getUid());
+        database.setValue(rate).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(),"Thank you for your feedback",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),"There is a problem "+e.getMessage(),Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
     private static class UserViewHolder extends RecyclerView.ViewHolder {
 
         TextView docName, docDescription;
@@ -214,4 +291,6 @@ public class FavouriteList extends AppCompatActivity {
             docFace = (CircleImageView) mView.findViewById(R.id.profile_imageFace);
         }
     }
+
+
 }

@@ -26,6 +26,7 @@ public class Common {
     public static Calendar currentDate =  Calendar.getInstance()  ;
     public static String currentPatient;
     public static Upload currentReport;
+    public static int refresh;
 
     public static String convertTimeSlotToString(int position) {
         switch (position){

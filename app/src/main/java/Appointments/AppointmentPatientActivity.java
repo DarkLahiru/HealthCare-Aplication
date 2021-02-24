@@ -9,16 +9,18 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.healthcare.R;
+import com.example.healthcare.Utils;
 
 import java.util.Objects;
 
 import Appointments.Booking.BookAppointmentActivity;
 import Appointments.Confirmed.ConfirmedAppointmentActivity;
 import Appointments.Pending.PendingAppointmentActivity;
+import Common.Common;
 
 public class AppointmentPatientActivity extends AppCompatActivity {
 
-    ImageView add,pending,confirm;
+    ImageView add, pending, confirm;
 
 
     @Override
@@ -44,7 +46,9 @@ public class AppointmentPatientActivity extends AppCompatActivity {
         pending.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent((getApplicationContext()), PendingAppointmentActivity.class));
+                Intent intent = new Intent((getApplicationContext()), PendingAppointmentActivity.class);
+                startActivity(intent);
+
             }
         });
 

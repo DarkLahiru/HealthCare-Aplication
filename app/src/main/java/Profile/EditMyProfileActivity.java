@@ -38,6 +38,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -125,7 +126,7 @@ TextInputEditText eTBirthDay;
 
                     }
                 }, year, month, day);
-                datePicker.setTitle("Set Birth Date");
+                datePicker.getDatePicker().setMaxDate(new Date().getTime());
                 datePicker.show();
             }
         });
@@ -151,8 +152,8 @@ TextInputEditText eTBirthDay;
                             if (task.isComplete()) {
                                 Toast.makeText(EditMyProfileActivity.this, "Update Data Successfully", Toast.LENGTH_SHORT).show();
                                 finish();
-                                Intent myIntent = new Intent(getApplicationContext(), MyProfileActivity.class);
-                                startActivity(myIntent);
+                                /*Intent myIntent = new Intent(getApplicationContext(), MyProfileActivity.class);
+                                startActivity(myIntent);*/
 
                             }
                         }

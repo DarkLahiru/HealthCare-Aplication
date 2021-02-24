@@ -1,5 +1,6 @@
 package Reminder;
 
+import java.security.spec.DSAPrivateKeySpec;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,9 +16,19 @@ public class Reminder implements Comparable<Reminder> {
     private String dosageQuantity;
     private String instructions;
     private String repeatTime;
+    private String nodeKey;
     //private int medicineId;
 
 
+
+
+    public String getNodeKey() {
+        return nodeKey;
+    }
+
+    public void setNodeKey(String nodeKey) {
+        this.nodeKey = nodeKey;
+    }
 
     public String getMedicineName() {
         return medicineName;
@@ -104,21 +115,7 @@ public class Reminder implements Comparable<Reminder> {
     public String getAmPm() { return (hour < 12) ? "am" : "pm"; }
 
     public Reminder(){
-
     }
-
-
-    public String getStringTime() {
-        int nonMilitaryHour = hour % 12;
-        if (nonMilitaryHour == 0)
-            nonMilitaryHour = 12;
-        String min = Integer.toString(minute);
-        if (minute < 10)
-            min = "0" + minute;
-        String time = nonMilitaryHour + ":" + min + " " + getAmPm();
-        return time;
-    }
-
 
     @Override
     public int compareTo(Reminder reminder) {

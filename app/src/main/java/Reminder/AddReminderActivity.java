@@ -12,6 +12,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -43,6 +44,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class AddReminderActivity extends AppCompatActivity {
@@ -73,6 +75,7 @@ public class AddReminderActivity extends AppCompatActivity {
     int currentHour, currentMinute;
     String[] dosage_options;
     String dosage;
+    long alarm_time;
 
     //Database
     DatabaseReference rootReference;
@@ -125,7 +128,7 @@ public class AddReminderActivity extends AppCompatActivity {
                         startHour = selectedHour;
                         startMinute = selectedMinute;
                     }
-                }, hour, minute, true);//Yes 24 hour time
+                }, hour, minute, true);
                 timePicker.show();
             }
         });
@@ -144,7 +147,7 @@ public class AddReminderActivity extends AppCompatActivity {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Toast.makeText(getApplicationContext(), "" + month, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "" + month, Toast.LENGTH_SHORT).show();
                         String strMonth = "", strDay = "";
                         month++;
                         if (month < 10) {
@@ -161,6 +164,7 @@ public class AddReminderActivity extends AppCompatActivity {
                         startDate = strMonth + "/" + strDay + "/" + year;
                     }
                 }, year, month, day);
+                datePicker.getDatePicker().setMinDate(new Date().getTime());
                 datePicker.show();
             }
         });
@@ -180,7 +184,7 @@ public class AddReminderActivity extends AppCompatActivity {
                 saveReminderForMedication();//save all data
             }
         });
-    }
+    } 
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -191,6 +195,7 @@ public class AddReminderActivity extends AppCompatActivity {
             channel.setDescription("Channel Reminder");
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            assert notificationManager != null;
             notificationManager.createNotificationChannel(channel);
 
 
@@ -219,13 +224,17 @@ public class AddReminderActivity extends AppCompatActivity {
             reminder.setDosageQuantity(dosageValue + "");
             reminder.setDosageUnit(dosageUnit);
             reminder.setInstructions(instructions);
-            //reminder.setRepeatTime(reminderTimeQuntity+" "+reminderTimeUnit);
             reminder.setDaysOfWeek(daysOfWeek);
+
 
             mFirebaseAuth = FirebaseAuth.getInstance();
             firebaseUser = mFirebaseAuth.getCurrentUser();
             rootReference = FirebaseDatabase.getInstance().getReference("Reminders").child(firebaseUser.getUid());
-            rootReference.push().setValue(reminder).addOnCompleteListener(new OnCompleteListener<Void>() {
+            DatabaseReference pushedPostRef = rootReference.push();
+            String postId = pushedPostRef.getKey();
+            reminder.setNodeKey(postId);
+            assert postId != null;
+            rootReference.child(postId).setValue(reminder).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     task.isComplete();
@@ -235,19 +244,20 @@ public class AddReminderActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
             intent.putExtra("medicine_name", med_name);
             Calendar calendar = Calendar.getInstance();
-            long alarm_time = calendar.getTimeInMillis();
+
 
 
             switch (radioGroupDays.getCheckedRadioButtonId()) {
                 case R.id.radioEveryDay:
                     intent.putExtra("id", checkBoxCounter);
-                    alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     pendingIntent = PendingIntent.getBroadcast(AddReminderActivity.this, checkBoxCounter, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
                     calendar.set(Calendar.HOUR_OF_DAY, startHour);
                     calendar.set(Calendar.MINUTE, startMinute);
                     calendar.set(Calendar.SECOND, 0);
                     calendar.set(Calendar.MILLISECOND, 0);
+                    alarm_time = calendar.getTimeInMillis();
                     alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarm_time, AlarmManager.INTERVAL_DAY, pendingIntent);
                     break;
 
@@ -264,8 +274,8 @@ public class AddReminderActivity extends AppCompatActivity {
                             calendar.set(Calendar.SECOND, 0);
                             calendar.set(Calendar.MILLISECOND, 0);
                             calendar.set(Calendar.DAY_OF_WEEK, i);
-
-                            Toast.makeText(getApplicationContext(),""+i,Toast.LENGTH_LONG).show();
+                            alarm_time = calendar.getTimeInMillis();
+                            //Toast.makeText(getApplicationContext(),""+i,Toast.LENGTH_LONG).show();
 
                             if (calendar.before(Calendar.getInstance()))
                                 alarm_time += AlarmManager.INTERVAL_DAY * 7;
@@ -452,13 +462,11 @@ public class AddReminderActivity extends AppCompatActivity {
                 dosage = dosageValue + " " + dosageUnit;
                 textDosage.setText(dosage);
                 dialog.dismiss();
-                //  You can write the code  to save the selected item here
             }
         })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
                         dialog.dismiss();
                     }
                 });

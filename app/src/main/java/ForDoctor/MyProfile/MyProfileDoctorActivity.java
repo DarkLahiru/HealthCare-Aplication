@@ -91,6 +91,8 @@ public class MyProfileDoctorActivity extends AppCompatActivity {
         else
         {
             btnUpdate.setVisibility(View.GONE);
+            patientMeet.setVisibility(View.GONE);
+            feedback.setVisibility(View.INVISIBLE);
             rootReference = FirebaseDatabase.getInstance().getReference().child("Doctors").child(docID);
             storageReference = FirebaseStorage.getInstance().getReference().child("Doctors").child("ProfileImage").child(docID+".jpg");
         }

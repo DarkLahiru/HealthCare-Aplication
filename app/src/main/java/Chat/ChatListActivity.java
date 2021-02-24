@@ -82,7 +82,7 @@ public class ChatListActivity extends AppCompatActivity {
 //                    ChatList chatList = dataSnapshot.getValue(ChatList.class);
 //                    userList.add(chatList);
 //                }
-                chatList();
+        chatList();
 //            }
 //
 //            @Override
@@ -110,56 +110,56 @@ public class ChatListActivity extends AppCompatActivity {
                         }
                     }
                 }*/
-                rootReference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
-                options = new FirebaseRecyclerOptions.Builder<ChatList>().setQuery(rootReference, ChatList.class).build();
-                adapter = new FirebaseRecyclerAdapter<ChatList, UserViewHolder>(options) {
-                    @NonNull
+        rootReference = FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid());
+        options = new FirebaseRecyclerOptions.Builder<ChatList>().setQuery(rootReference, ChatList.class).build();
+        adapter = new FirebaseRecyclerAdapter<ChatList, UserViewHolder>(options) {
+            @NonNull
+            @Override
+            public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_doctor, parent, false);
+                return new UserViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull ChatList model) {
+                rf = FirebaseDatabase.getInstance().getReference("Doctors");
+                rf.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_doctor, parent, false);
-                        return new UserViewHolder(view);
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        holder.docName.setText(snapshot.child(model.getId()).child("displayName").getValue().toString());
+                        holder.docDescription.setText(snapshot.child(model.getId()).child("specializations").getValue().toString());
+                        storageReference = FirebaseStorage.getInstance().getReference("Doctors").child("ProfileImage");
+                        storageReference.child(model.getId() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Picasso.with(getApplicationContext()).load(uri.toString()).resize(400, 600).centerInside().into(holder.docFace);
+                            }
+                        });
                     }
 
                     @Override
-                    protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull ChatList model) {
-                        rf = FirebaseDatabase.getInstance().getReference("Doctors");
-                        rf.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                holder.docName.setText(snapshot.child(model.getId()).child("displayName").getValue().toString());
-                                holder.docDescription.setText(snapshot.child(model.getId()).child("specializations").getValue().toString());
-                                storageReference = FirebaseStorage.getInstance().getReference("Doctors").child("ProfileImage");
-                                storageReference.child(model.getId() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        Picasso.with(getApplicationContext()).load(uri.toString()).resize(400, 600).centerInside().into(holder.docFace);
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-
-                        holder.mView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-                                intent.putExtra("docID", model.getId());
-                                startActivity(intent);
-                            }
-                        });
-
+                    public void onCancelled(@NonNull DatabaseError error) {
 
                     }
-                };
-                adapter.startListening();
-                recyclerView.setAdapter(adapter);
+                });
+
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                        intent.putExtra("docID", model.getId());
+                        startActivity(intent);
+                    }
+                });
 
 
             }
+        };
+        adapter.startListening();
+        recyclerView.setAdapter(adapter);
+
+
+    }
 
            /* @Override
             public void onCancelled(@NonNull DatabaseError error) {

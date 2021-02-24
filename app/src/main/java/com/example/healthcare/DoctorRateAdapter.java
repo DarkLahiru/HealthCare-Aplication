@@ -10,6 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.List;
 
 import ContactDoctor.DoctorRate;
@@ -17,6 +23,7 @@ import ContactDoctor.DoctorRate;
 public class DoctorRateAdapter extends RecyclerView.Adapter<DoctorRateAdapter.MyViewHolder> {
     Context context;
     List<DoctorRate> doctorRates;
+    DatabaseReference databaseReference;
     public DoctorRateAdapter(Context context, List<DoctorRate> doctorRates) {
         this.context = context;
         this.doctorRates = doctorRates;
@@ -32,9 +39,21 @@ public class DoctorRateAdapter extends RecyclerView.Adapter<DoctorRateAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.patientName.setText(doctorRates.get(position).getPatientName());
+        //holder.patientName.setText(doctorRates.get(position).getPatientName());
         holder.feedback.setText(doctorRates.get(position).getFeedback());
         holder.stars.setRating(Float.parseFloat(doctorRates.get(position).getStars()));
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Patients").child(doctorRates.get(position).getPatientID()).child("MyProfile");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                holder.patientName.setText(snapshot.child("displayName").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override

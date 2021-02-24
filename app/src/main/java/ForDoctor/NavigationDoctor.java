@@ -33,8 +33,6 @@ import java.util.Objects;
 
 import ForDoctor.Fragments.HomeDoctor;
 import de.hdodenhof.circleimageview.CircleImageView;
-import fragments.AboutUsFragment;
-import fragments.HomeFragment;
 
 public class NavigationDoctor extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import Profile.EditMyProfileActivity;
@@ -111,6 +112,7 @@ public class AddMedRecordActivity extends AppCompatActivity {
 
                     }
                 }, year, month, day);
+                datePicker.getDatePicker().setMaxDate(new Date().getTime());
                 datePicker.show();
             }
         });

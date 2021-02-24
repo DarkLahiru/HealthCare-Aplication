@@ -151,6 +151,8 @@ public class BookingStep1Fragment extends Fragment {
 
 
                         Intent intentTwo = new Intent(Common.KEY_ENABLE_BUTTON_NEXT);
+                        intentTwo.putExtra(Common.KEY_DOCTOR_STORE, key);
+                        intentTwo.putExtra(Common.KEY_STEP, 1);
                         localBroadcastManager.sendBroadcast(intentTwo);
 
 

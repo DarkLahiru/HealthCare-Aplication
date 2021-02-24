@@ -85,6 +85,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                         TextView txtPatientName = bottomSheetView.findViewById(R.id.txtPatientName);
                         TextView txtPatientNum = bottomSheetView.findViewById(R.id.txtPatientNum);
 
+                        txtPatientName.setText(snapshot.child("MyProfile").child("displayName").getValue().toString());
+                        txtPatientNum.setText(snapshot.child("MyProfile").child("phoneNum").getValue().toString());
+                        storageReference.child(users + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Picasso.with(context).load(uri.toString()).resize(400, 600).centerInside().into(circleImageView);
+                            }
+                        });
+
 
                         bottomSheetView.findViewById(R.id.txtPatientProfile).setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -102,6 +111,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                                 context.startActivity(message);
                             }
                         });
+
                     }
                 });
             }

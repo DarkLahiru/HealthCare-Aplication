@@ -108,6 +108,7 @@ public class AddNewContactActivity extends AppCompatActivity {
                         });
                     }
 
+                    assert key != null;
                     rootReference.child(key).setValue(contactDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

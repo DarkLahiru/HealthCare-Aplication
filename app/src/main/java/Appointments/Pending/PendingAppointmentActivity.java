@@ -41,6 +41,7 @@ import java.util.Objects;
 
 import Appointments.Booking.Model.BookingInformation;
 import Appointments.Booking.Model.TimeSlot;
+import Common.Common;
 import Common.SpacesItemDecoration;
 
 public class PendingAppointmentActivity extends AppCompatActivity {
@@ -64,7 +65,6 @@ public class PendingAppointmentActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-
         initialize();
         initView();
         loadPendingAppointments();
@@ -86,7 +86,6 @@ public class PendingAppointmentActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         BookingInformation bookingInformation = dataSnapshot.getValue(BookingInformation.class);
                         if (bookingInformation.getPatientID().equals(firebaseUser.getUid()) && bookingInformation.getStatus().equals("pending")) {
@@ -101,6 +100,7 @@ public class PendingAppointmentActivity extends AppCompatActivity {
                         }
                     }
                     calendarView.setHighlightedDays(calendars);
+
                 }
 
 
@@ -133,14 +133,14 @@ public class PendingAppointmentActivity extends AppCompatActivity {
                         .setTitle("Cancel?")
                         .setMessage("Are you sure want to cancel this appointment?")
                         .setCancelable(false)
-                        .setPositiveButton("Cancel", R.drawable.ic_delete, new MaterialDialog.OnClickListener() {
+                        .setPositiveButton("Yes", R.drawable.ic_delete, new MaterialDialog.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
                                 // Delete Operation
-                                rootReference.child(clickedDateTime.get(which-1).getNodeKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                rootReference.child(clickedDateTime.get(which - 1).getNodeKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Toast.makeText(getApplicationContext(), "Remove Location Successfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Cancel Appointment Successfully", Toast.LENGTH_SHORT).show();
                                         dialogInterface.dismiss();
                                         finish();
                                         overridePendingTransition(0, 0);
@@ -152,9 +152,9 @@ public class PendingAppointmentActivity extends AppCompatActivity {
 
                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
                                         .child("AppointmentTimeSlot")
-                                        .child(clickedDateTime.get(which-1).getDoctorID())
-                                        .child(clickedDateTime.get(which-1).getDate())
-                                        .child(clickedDateTime.get(which-1).getNodeKey());
+                                        .child(clickedDateTime.get(which - 1).getDoctorID())
+                                        .child(clickedDateTime.get(which - 1).getDate())
+                                        .child(clickedDateTime.get(which - 1).getNodeKey());
                                 databaseReference.removeValue().addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
@@ -163,7 +163,7 @@ public class PendingAppointmentActivity extends AppCompatActivity {
                                 });
                             }
                         })
-                        .setNegativeButton("Don't", R.drawable.ic_close, new MaterialDialog.OnClickListener() {
+                        .setNegativeButton("No", R.drawable.ic_close, new MaterialDialog.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int which) {
                                 dialogInterface.dismiss();
@@ -175,7 +175,6 @@ public class PendingAppointmentActivity extends AppCompatActivity {
 
             }
         });
-
 
 
     }

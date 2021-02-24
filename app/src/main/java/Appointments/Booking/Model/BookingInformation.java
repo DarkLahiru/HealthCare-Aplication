@@ -1,13 +1,13 @@
 package Appointments.Booking.Model;
 
 public class BookingInformation {
-    private String status,patientName,patientPhone,patientID,time,doctorID,doctorName,locationId,locationName,locationAddress,docPhone,date,nodeKey;
+    private String status,patientName,patientPhone,patientID,time,doctorID,doctorName,locationId,locationName,locationAddress,docPhone,date,nodeKey,patientEmail;
     private Long slot;
 
     public BookingInformation() {
     }
 
-    public BookingInformation(String status, String patientName, String patientPhone, String patientID, String time, String doctorID, String doctorName, String locationId, String locationName, String locationAddress, String docPhone, String date, String nodeKey, Long slot) {
+    public BookingInformation(String status, String patientName, String patientPhone, String patientID, String time, String doctorID, String doctorName, String locationId, String locationName, String locationAddress, String docPhone, String date, String nodeKey, String patientEmail, Long slot) {
         this.status = status;
         this.patientName = patientName;
         this.patientPhone = patientPhone;
@@ -21,8 +21,10 @@ public class BookingInformation {
         this.docPhone = docPhone;
         this.date = date;
         this.nodeKey = nodeKey;
+        this.patientEmail = patientEmail;
         this.slot = slot;
     }
+
 
     public String getNodeKey() {
         return nodeKey;
@@ -126,6 +128,14 @@ public class BookingInformation {
 
     public void setDocPhone(String docPhone) {
         this.docPhone = docPhone;
+    }
+
+    public String getPatientEmail() {
+        return patientEmail;
+    }
+
+    public void setPatientEmail(String patientEmail) {
+        this.patientEmail = patientEmail;
     }
 
     public Long getSlot() {

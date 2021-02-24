@@ -127,6 +127,7 @@ public class CheckAppointmentsActivity extends AppCompatActivity {
         recycler_time_slot.setAdapter(adapter);
 
 
+
     }
 
     private void checkPendingAppointments() {
@@ -139,20 +140,10 @@ public class CheckAppointmentsActivity extends AppCompatActivity {
                 .setBtnConfirmText("Finish")
                 .setBtnConfirmTextSizeDp(16)
                 .setBtnConfirmTextColor("#1fd1ab")
-                .setBtnCancelText("Cancel", false)
-                .setBtnCancelTextColor("#555555")
-                .onCancel(new CustomDialog.BtnCallback() {
-                    @Override
-                    public void onClick(@NonNull CustomDialog customDialog, @NonNull CustomDialog.BtnAction btnAction) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
-                    }
-                })
                 .onConfirm(new CustomDialog.BtnCallback() {
                     @Override
                     public void onClick(@NonNull CustomDialog customDialog, @NonNull CustomDialog.BtnAction btnAction) {
+
                         finish();
                         overridePendingTransition(0, 0);
                         startActivity(getIntent());
@@ -183,7 +174,7 @@ public class CheckAppointmentsActivity extends AppCompatActivity {
                         assert bookingInformation != null;
                         if (bookingInformation.getDoctorID().equals(firebaseUser.getUid())) {
                             try {
-                                if (!simpleDateFormat.parse(bookingInformation.getDate()).before(new Date())) {
+                                if (!Objects.requireNonNull(simpleDateFormat.parse(bookingInformation.getDate())).before(new Date())) {
 
                                     if (bookingInformation.getStatus().equalsIgnoreCase("pending")) {
                                         String[] dateArray = bookingInformation.getDate().split("-");

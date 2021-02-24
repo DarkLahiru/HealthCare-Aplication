@@ -65,6 +65,7 @@ public class BookingStep4Fragment extends Fragment {
     @OnClick(R.id.btn_confirm)
     void confirmBooking() {
 
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         BookingInformation bookingInformation = new BookingInformation();
 
@@ -81,6 +82,8 @@ public class BookingStep4Fragment extends Fragment {
                 .append(simpleDateFormat.format(Common.currentDate.getTime())).toString());
         bookingInformation.setSlot(Long.valueOf(Common.currentTimeSlot));
         bookingInformation.setDate(simpleDateFormat.format(Common.currentDate.getTime()));
+        assert firebaseUser != null;
+        bookingInformation.setPatientEmail(firebaseUser.getEmail());
 
         rootReference = FirebaseDatabase.getInstance().getReference().child("Patients").child(Common.currentPatient).child("MyProfile");
         rootReference.addValueEventListener(new ValueEventListener() {

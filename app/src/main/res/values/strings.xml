@@ -55,11 +55,11 @@
     <string name="full_name">Full Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="home_address">Home Address</string>
-    <string name="add_new">Add</string>
+    <string name="add_new">Done</string>
     <string name="medical_council_reg_number">Medical Council Reg Number</string>
     <string name="search_doctor">Search doctor</string>
     <string name="available">Available</string>
-    <string name="_9_00_10_00">9.00 - 10.00</string>
+    <string name="_9_00_10_00">9.00 – 10.00</string>
     <string name="download">Download</string>
     <string name="appointment_details">Appointment Information</string>
     <string name="cancel_appointment">Cancel Appointment</string>

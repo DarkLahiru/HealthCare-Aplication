@@ -28,9 +28,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     private Context context;
     private List<Chats> mChats;
-    private String key,type;
+    private String key, type;
 
-    DatabaseReference rootReference;
     FirebaseUser firebaseUser;
     FirebaseAuth mFirebaseAuth;
     StorageReference storageReference;
@@ -39,7 +38,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
 
-    public MessageAdapter(Context context, List<Chats> mChats, String key,String type) {
+    public MessageAdapter(Context context, List<Chats> mChats, String key, String type) {
         this.mChats = mChats;
         this.context = context;
         this.key = key;
@@ -50,10 +49,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public MessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == MSG_TYPE_RIGHT) {
-            View view = LayoutInflater.from((context)).inflate(R.layout.chat_list_right, parent,false);
+            View view = LayoutInflater.from((context)).inflate(R.layout.chat_list_right, parent, false);
             return new MessageAdapter.ViewHolder(view);
         } else {
-            View view = LayoutInflater.from((context)).inflate(R.layout.chat_item_left, parent,false);
+            View view = LayoutInflater.from((context)).inflate(R.layout.chat_item_left, parent, false);
             return new ViewHolder(view);
         }
     }
@@ -63,10 +62,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         final Chats chats = mChats.get(position);
         holder.show_message.setText(chats.getMessage());
         storageReference = FirebaseStorage.getInstance().getReference(type).child("ProfileImage");
-        storageReference.child(key +".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child(key + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.with(context).load(uri.toString()).resize(400,600).centerInside().into(holder.profile_image);
+                Picasso.with(context).load(uri.toString()).resize(400, 600).centerInside().into(holder.profile_image);
             }
         });
     }

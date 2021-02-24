@@ -24,7 +24,7 @@ import ForDoctor.RegistrationDoctorActivity;
 import Profile.User;
 
 
-public class RegistrationActivity extends AppCompatActivity {
+public class  RegistrationActivity extends AppCompatActivity {
 
     Button register;
     EditText emailId, Password, rePassword;

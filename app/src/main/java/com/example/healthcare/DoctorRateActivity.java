@@ -2,12 +2,14 @@ package com.example.healthcare;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -58,7 +60,10 @@ public class DoctorRateActivity extends AppCompatActivity {
     }
 
     private void getDocID() {
-        if (docID.isEmpty()){
+
+        docID = getIntent().getStringExtra("docID");
+
+        if (TextUtils.isEmpty(docID)){
             userUID = firebaseUser.getUid();
         }
         else {
@@ -68,11 +73,13 @@ public class DoctorRateActivity extends AppCompatActivity {
 
     private void initialize() {
 
-        docID = getIntent().getStringExtra("docID");
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
         extendedFloatingActionButton = findViewById(R.id.extended_fab);
         rVFeedback = findViewById(R.id.rVFeedback);
+        rVFeedback.setHasFixedSize(true);
+        rVFeedback.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void loadDoctorFeedback() {

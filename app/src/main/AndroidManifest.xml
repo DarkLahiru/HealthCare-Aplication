@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DoctorRateActivity"></activity>
+        <activity android:name=".DoctorRateActivity" />
         <activity
             android:name="ForDoctor.Appointments.CheckAppointmentsActivity"
             android:label="Appointments"

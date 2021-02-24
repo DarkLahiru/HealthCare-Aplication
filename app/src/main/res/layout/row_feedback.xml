@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:background="@color/feedback_background"
         android:orientation="vertical"
-        android:padding="2dp">
+        android:padding="8dp"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -35,6 +35,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import ForDoctor.MyProfile.FirstDoctorProfileActivity;
@@ -124,6 +125,7 @@ public class FirstMyProfileActivity extends AppCompatActivity {
 
                     }
                 }, year, month, day);
+                datePicker.getDatePicker().setMaxDate(new Date().getTime());
                 datePicker.show();
             }
         });
@@ -163,7 +165,7 @@ public class FirstMyProfileActivity extends AppCompatActivity {
                         });
                     }
                 }
-                else  Toast.makeText(FirstMyProfileActivity.this, "Please add a image of you", Toast.LENGTH_SHORT).show();
+                else  Toast.makeText(FirstMyProfileActivity.this, "Please add a image of you's", Toast.LENGTH_SHORT).show();
 
             }
         });

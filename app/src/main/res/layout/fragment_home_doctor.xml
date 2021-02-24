@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="false"
         android:theme="@style/AppTheme.NoActionBar"
-        tools:context="fragments.HomeFragment">
+        tools:context="Fragments.HomeFragment">
 
         <ScrollView
             android:layout_width="match_parent"

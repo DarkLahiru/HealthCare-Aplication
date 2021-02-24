@@ -15,8 +15,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.healthcare.JavaMailAPI;
 import com.example.healthcare.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +37,7 @@ public class CheckAppointmentAdapter extends RecyclerView.Adapter<CheckAppointme
 
     public CheckAppointmentAdapter(Context context, List<BookingInformation> appointmentList) {
         this.context = context;
-        this.appointmentList  = appointmentList;
+        this.appointmentList = appointmentList;
     }
 
     @NonNull
@@ -65,10 +68,53 @@ public class CheckAppointmentAdapter extends RecyclerView.Adapter<CheckAppointme
                         .setPositiveButton("Yes",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        String patientNote = noteForPatient.getEditText().getText().toString();
-                                        if (!TextUtils.isEmpty(patientNote)) {
+                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
+                                                .child("AppointmentTimeSlot")
+                                                .child(appointmentList.get(position).getDoctorID())
+                                                .child(appointmentList.get(position).getDate())
+                                                .child(appointmentList.get(position).getNodeKey());
+                                        databaseReference.removeValue().addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(context, "TimeSlot Remove process is Unsuccessful ", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        FirebaseDatabase.getInstance().getReference()
+                                                .child("Appointments")
+                                                .child(appointmentList.get(position).getNodeKey())
+                                                .removeValue()
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
 
-                                        }
+
+                                                        String patientNote = noteForPatient.getEditText().getText().toString();
+
+                                                        if (!TextUtils.isEmpty(patientNote)) {
+                                                            String mail = appointmentList.get(position).getPatientEmail();
+                                                            String message = "Dear Patient, We are very sorry to say your Appointment with Dr." + appointmentList.get(position).getDoctorName() + " on " + appointmentList.get(position).getTime() + " has been cancelled. Doctor's Reason : " + patientNote + " .Please sign in to application for more details. Stay Safe";
+                                                            String subject = "Appointment Cancelled";
+
+                                                            JavaMailAPI javaMailAPI = new JavaMailAPI(context, mail, subject, message);
+                                                            javaMailAPI.execute();
+
+                                                        } else {
+                                                            String mail = appointmentList.get(position).getPatientEmail();
+                                                            String message = "Dear Patient, We are very sorry to say your Appointment with Dr." + appointmentList.get(position).getDoctorName() + " on " + appointmentList.get(position).getTime() + " has been cancelled. Please sign in to application for more details. Stay Safe";
+                                                            String subject = "Appointment Cancelled";
+                                                            JavaMailAPI javaMailAPI = new JavaMailAPI(context, mail, subject, message);
+                                                            javaMailAPI.execute();
+                                                        }
+                                                        //appointmentList.remove(position);
+                                                        //notifyItemRemoved(position);
+                                                        holder.lottie_animation_confirm.setVisibility(View.INVISIBLE);
+                                                        holder.lottie_animation_cancel.setVisibility(View.INVISIBLE);
+
+                                                    }
+                                                });
+                                        dialog.dismiss();
+
+
                                     }
                                 })
                         .setNegativeButton("No",
@@ -94,11 +140,21 @@ public class CheckAppointmentAdapter extends RecyclerView.Adapter<CheckAppointme
                         .setValue(appointmentList.get(position)).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(context,"Appointment Confirmed",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Appointment Confirmed", Toast.LENGTH_SHORT).show();
                         appointmentList.remove(position);
-                        notifyItemRemoved(position);
+                        /*notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, getItemCount());*/
+                        holder.lottie_animation_confirm.setVisibility(View.INVISIBLE);
+                        holder.lottie_animation_cancel.setVisibility(View.INVISIBLE);
                     }
                 });
+
+                String mail = appointmentList.get(position).getPatientEmail();
+                String message = "Dear Patient, Your Appointment with Dr." + appointmentList.get(position).getDoctorName() + " on " + appointmentList.get(position).getTime() + " has been confirmed.Please sign in to application for more details. Stay Safe";
+                String subject = "Appointment Confirmed";
+
+                JavaMailAPI javaMailAPI = new JavaMailAPI(context, mail, subject, message);
+                javaMailAPI.execute();
 
             }
         });
@@ -116,6 +172,7 @@ public class CheckAppointmentAdapter extends RecyclerView.Adapter<CheckAppointme
         CardView cardPendingAppointment;
         LottieAnimationView lottie_animation_cancel, lottie_animation_confirm;
         View mView;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;

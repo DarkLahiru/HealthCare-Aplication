@@ -131,11 +131,144 @@ public class CheckDoctorsActivity extends AppCompatActivity implements RatingDia
             protected void onBindViewHolder(@NonNull DoctorViewHolder holder, int position, @NonNull DoctorData model) {
                 holder.docName.setText(model.getDisplayName());
                 holder.docDescription.setText(model.getSpecializations());
-                final String key = getRef(position).getKey();
+                key = getRef(position).getKey();
                 storageReference.child(key + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.with(getApplicationContext()).load(uri.toString()).resize(400, 600).centerInside().into(holder.docFace);
+                    }
+                });
+
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(CheckDoctorsActivity.this, R.style.BottomSheetDialogTheme);
+                        final View bottomSheetView = LayoutInflater.from(getApplicationContext())
+                                .inflate(
+                                        R.layout.layout_bottomsheet_doctor,
+                                        (LinearLayout) findViewById(R.id.bottomSheetContainer)
+                                );
+                        bottomSheetDialog.setContentView(bottomSheetView);
+                        bottomSheetDialog.show();
+
+                        bottomSheetView.findViewById(R.id.txtDocProfile).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent profile = new Intent(CheckDoctorsActivity.this, MyProfileDoctorActivity.class);
+                                profile.putExtra("docID", key);
+                                startActivity(profile);
+                            }
+                        });
+                        bottomSheetView.findViewById(R.id.txtSendMessage).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent message = new Intent(CheckDoctorsActivity.this, MessageActivity.class);
+                                message.putExtra("docID", key);
+                                startActivity(message);
+                            }
+                        });
+                        bottomSheetView.findViewById(R.id.txtFavourite).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                DatabaseReference rReference = FirebaseDatabase.getInstance().getReference("PatientFavourites").child(firebaseUser.getUid());
+                                rReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()) {
+                                            boolean flag = false;
+                                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                                if (dataSnapshot.getKey().equalsIgnoreCase(key)) {
+                                                    flag = true;
+                                                }
+                                            }
+                                            if (flag) {
+                                                Toast.makeText(CheckDoctorsActivity.this, "Already Added", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(CheckDoctorsActivity.this, "Added to favourite", Toast.LENGTH_SHORT).show();
+                                                rReference.child(key).child("id").setValue(key);
+                                            }
+                                        } else {
+                                            Toast.makeText(CheckDoctorsActivity.this, "Added to favourite", Toast.LENGTH_SHORT).show();
+                                            rReference.child(key).child("id").setValue(key);
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                        });
+                        bottomSheetView.findViewById(R.id.txtRateDoc).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                appRateDocBuilder = new AppRatingDialog.Builder();
+                                appRateDocBuilder.setPositiveButtonText("Submit")
+                                        .setNegativeButtonText("Cancel")
+                                        .setNoteDescriptions(Arrays.asList("Very Bad", "Not good", "Quite ok", "Very Good", "Excellent !!!"))
+                                        .setDefaultRating(2)
+                                        .setTitle("Rate Your Doctor")
+                                        .setDescription("Please select some stars and give your feedback")
+                                        .setCommentInputEnabled(true)
+                                        .setStarColor(R.color.starColor)
+                                        .setNoteDescriptionTextColor(R.color.noteDescriptionTextColor)
+                                        .setTitleTextColor(R.color.colorBlack)
+                                        .setDescriptionTextColor(R.color.contentTextColor)
+                                        .setHint("Please write your comment here ...")
+                                        .setHintTextColor(R.color.hintTextColor)
+                                        .setCommentTextColor(R.color.commentTextColor)
+                                        .setCommentBackgroundColor(R.color.commentBackgroundColor)
+                                        .setWindowAnimation(R.style.MyDialogFadeAnimation)
+                                        .setCancelable(false)
+                                        .setCanceledOnTouchOutside(false)
+                                        .create(CheckDoctorsActivity.this)
+                                        .show();
+
+                            }
+                        });
+                        bottomSheetView.findViewById(R.id.txtFeedback).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent message = new Intent(CheckDoctorsActivity.this, DoctorRateActivity.class);
+                                message.putExtra("docID", key);
+                                startActivity(message);
+                            }
+                        });
+
+
+                        docProfileImage = bottomSheetView.findViewById(R.id.imgDocProfile);
+                        docName = bottomSheetView.findViewById(R.id.txtDocName);
+                        docAbout = bottomSheetView.findViewById(R.id.txtDocStatus);
+                        storageReference.child(key + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Picasso.with(getApplicationContext()).load(uri.toString()).resize(400, 600).centerInside().into(docProfileImage);
+                            }
+                        });
+
+                        assert key != null;
+                        rootReference.child(key).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                //Toast.makeText(CheckDoctorsActivity.this, "test", Toast.LENGTH_SHORT).show();
+                                String name = snapshot.child("MyProfile").child("displayName").getValue().toString();
+                                String about = snapshot.child("MyProfile").child("specializations").getValue().toString();
+
+                                docName.setText(name);
+                                docAbout.setText(about);
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+
                     }
                 });
             }
@@ -163,7 +296,7 @@ public class CheckDoctorsActivity extends AppCompatActivity implements RatingDia
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull final DoctorViewHolder holder, final int position, @NonNull DoctorData model) {
+            protected void onBindViewHolder(@NonNull DoctorViewHolder holder,int position, @NonNull DoctorData model) {
                 holder.docName.setText(model.getDisplayName());
                 holder.docDescription.setText(model.getSpecializations());
                 key = getRef(position).getKey();
@@ -324,26 +457,12 @@ public class CheckDoctorsActivity extends AppCompatActivity implements RatingDia
     @Override
     public void onPositiveButtonClicked(int i, String s) {
 
-        rootReference = FirebaseDatabase.getInstance().getReference("Patients").child(firebaseUser.getUid()).child("MyProfile");
-        rootReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                patientName = snapshot.child("displayName").getValue().toString();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        Toast.makeText(getApplicationContext(),""+patientName,Toast.LENGTH_SHORT).show();
         DoctorRate rate = new DoctorRate();
         rate.setStars(String.valueOf(i));
         rate.setFeedback(s);
         rate.setPatientID(firebaseUser.getUid());
         rate.setDoctorID(key);
-        rate.setPatientName(patientName);
+
         DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("DoctorRate").child(key).child(firebaseUser.getUid());
         database.setValue(rate).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

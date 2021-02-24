@@ -19,8 +19,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.healthcare.JavaMailAPI;
 import com.example.healthcare.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputLayout;
@@ -47,7 +50,6 @@ public class EventOnSelectedDayAdapter extends RecyclerView.Adapter<EventOnSelec
     LottieAnimationView lottie_animation_cancel, lottie_animation_confirm;
     Button btn_contact;
     DatabaseReference rootReference;
-
 
 
     LinearLayout layout_confirm_appointment, layout_btn_contact;
@@ -109,7 +111,7 @@ public class EventOnSelectedDayAdapter extends RecyclerView.Adapter<EventOnSelec
                 if (eventOnSelectedDay.get(position).getStatus().equalsIgnoreCase("pending")) {
                     layout_confirm_appointment.setVisibility(View.VISIBLE);
                     layout_btn_contact.setVisibility(View.GONE);
-                    cancelOrConfirm(eventOnSelectedDay.get(position));
+                    cancelOrConfirm(eventOnSelectedDay.get(position), bottomSheetDialog, position);
                 } else {
                     layout_btn_contact.setVisibility(View.VISIBLE);
                     layout_confirm_appointment.setVisibility(View.GONE);
@@ -122,17 +124,16 @@ public class EventOnSelectedDayAdapter extends RecyclerView.Adapter<EventOnSelec
                 }
 
 
-
             }
         });
     }
 
     private void contactPatient(BookingInformation bookingInformation) {
-        final DatabaseReference chatRef =FirebaseDatabase.getInstance().getReference("ChatList").child(bookingInformation.getPatientID()).child(bookingInformation.getDoctorID());
+        final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("ChatList").child(bookingInformation.getPatientID()).child(bookingInformation.getDoctorID());
         chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()){
+                if (!snapshot.exists()) {
                     chatRef.child("id").setValue(bookingInformation.getDoctorID());
                 }
             }
@@ -143,11 +144,11 @@ public class EventOnSelectedDayAdapter extends RecyclerView.Adapter<EventOnSelec
             }
         });
 
-        final DatabaseReference chatDocRef =FirebaseDatabase.getInstance().getReference("ChatList").child(bookingInformation.getDoctorID()).child(bookingInformation.getPatientID());
+        final DatabaseReference chatDocRef = FirebaseDatabase.getInstance().getReference("ChatList").child(bookingInformation.getDoctorID()).child(bookingInformation.getPatientID());
         chatDocRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()){
+                if (!snapshot.exists()) {
                     chatDocRef.child("id").setValue(bookingInformation.getPatientID());
                 }
             }
@@ -159,12 +160,12 @@ public class EventOnSelectedDayAdapter extends RecyclerView.Adapter<EventOnSelec
         });
 
         Intent intent = new Intent(context, DocMessagesActivity.class);
-        intent.putExtra("patientID",bookingInformation.getPatientID());
+        intent.putExtra("patientID", bookingInformation.getPatientID());
         context.startActivity(intent);
 
     }
 
-    private void cancelOrConfirm(BookingInformation bookingInformation) {
+    private void cancelOrConfirm(BookingInformation bookingInformation, BottomSheetDialog bottomSheetDialog, int position) {
         lottie_animation_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,10 +181,52 @@ public class EventOnSelectedDayAdapter extends RecyclerView.Adapter<EventOnSelec
                         .setPositiveButton("Yes",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        String patientNote = noteForPatient.getEditText().getText().toString();
-                                        if (!TextUtils.isEmpty(patientNote)) {
+                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
+                                                .child("AppointmentTimeSlot")
+                                                .child(bookingInformation.getDoctorID())
+                                                .child(bookingInformation.getDate())
+                                                .child(bookingInformation.getNodeKey());
+                                        databaseReference.removeValue().addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(context, "TimeSlot Remove process is Unsuccessful ", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        FirebaseDatabase.getInstance().getReference()
+                                                .child("Appointments")
+                                                .child(bookingInformation.getNodeKey())
+                                                .removeValue()
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
 
-                                        }
+
+                                                        String patientNote = noteForPatient.getEditText().getText().toString();
+
+                                                        if (!TextUtils.isEmpty(patientNote)) {
+                                                            String mail = bookingInformation.getPatientEmail();
+                                                            String message = "Dear Patient, We are very sorry to say your Appointment with Dr." + bookingInformation.getDoctorName() + " on " + bookingInformation.getTime() + " has been cancelled. Doctor's Reason : " + patientNote + " .Please sign in to application for more details. Stay Safe";
+                                                            String subject = "Appointment Cancelled";
+
+                                                            JavaMailAPI javaMailAPI = new JavaMailAPI(context, mail, subject, message);
+                                                            javaMailAPI.execute();
+
+                                                        } else {
+                                                            String mail = bookingInformation.getPatientEmail();
+                                                            String message = "Dear Patient, We are very sorry to say your Appointment with Dr." + bookingInformation.getDoctorName() + " on " + bookingInformation.getTime() + " has been cancelled. Please sign in to application for more details. Stay Safe";
+                                                            String subject = "Appointment Cancelled";
+                                                            JavaMailAPI javaMailAPI = new JavaMailAPI(context, mail, subject, message);
+                                                            javaMailAPI.execute();
+                                                        }
+                                                        eventOnSelectedDay.remove(position);
+                                                        notifyItemRemoved(position);
+                                                        notifyDataSetChanged();
+
+
+                                                    }
+                                                });
+                                        dialog.dismiss();
+
                                     }
                                 })
                         .setNegativeButton("No",
@@ -209,8 +252,19 @@ public class EventOnSelectedDayAdapter extends RecyclerView.Adapter<EventOnSelec
                         .setValue(bookingInformation).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(context,"Appointment Confirmed",Toast.LENGTH_SHORT).show();
-                        bottomSheetDialog.dismiss();
+                        Toast.makeText(context, "Appointment Confirmed", Toast.LENGTH_SHORT).show();
+                        EventOnSelectedDayAdapter.this.bottomSheetDialog.dismiss();
+
+                        String mail = bookingInformation.getPatientEmail();
+                        String message = "Dear Patient Your Appointment with Dr." + bookingInformation.getDoctorName() + " on " + bookingInformation.getTime() + " has been confirmed.Please sign in to application for more details. Stay Safe";
+                        String subject = "Appointment Confirmed";
+
+                        JavaMailAPI javaMailAPI = new JavaMailAPI(context, mail, subject, message);
+                        javaMailAPI.execute();
+                        eventOnSelectedDay.remove(position);
+                        notifyItemRemoved(position);
+                        notifyDataSetChanged();
+
                     }
                 });
 
@@ -227,7 +281,7 @@ public class EventOnSelectedDayAdapter extends RecyclerView.Adapter<EventOnSelec
         layout_btn_contact = bottomSheetView.findViewById(R.id.layout_btn_contact);
         lottie_animation_cancel = bottomSheetView.findViewById(R.id.lottie_animation_cancel);
         lottie_animation_confirm = bottomSheetView.findViewById(R.id.lottie_animation_confirm);
-        btn_contact  = bottomSheetView.findViewById(R.id.btnContactPatient);
+        btn_contact = bottomSheetView.findViewById(R.id.btnContactPatient);
     }
 
     @Override

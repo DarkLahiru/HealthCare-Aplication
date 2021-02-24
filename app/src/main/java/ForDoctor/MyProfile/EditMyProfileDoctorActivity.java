@@ -37,7 +37,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditMyProfileDoctorActivity extends AppCompatActivity {
-    TextInputLayout displayName, fullName, phoneNum, specializations, homeAddress;
+    TextInputLayout docRegID,displayName, fullName, phoneNum, specializations, homeAddress;
     Button btnSave;
     ImageView clickUpload;
     Uri imageUri;
@@ -62,7 +62,7 @@ public class EditMyProfileDoctorActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-
+        docRegID = findViewById(R.id.txtDocRegID);
         displayName = findViewById(R.id.txtDisplayNameDoctorEdit);
         fullName = findViewById(R.id.txtFullNameDoctorEdit);
         phoneNum = findViewById(R.id.txtPhoneNumDoctorEdit);
@@ -91,6 +91,7 @@ public class EditMyProfileDoctorActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String docID = docRegID.getEditText().getText().toString();
                 String docName= displayName.getEditText().getText().toString();
                 String docFullName = fullName.getEditText().getText().toString();
                 String docSP = specializations.getEditText().getText().toString();
@@ -101,7 +102,7 @@ public class EditMyProfileDoctorActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please fill all the fields!!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-
+                    doctorData.setRegID(docID);
                     doctorData.setDisplayName(docName);
                     doctorData.setFullName(docFullName);
                     doctorData.setSpecializations(docSP);
@@ -115,8 +116,7 @@ public class EditMyProfileDoctorActivity extends AppCompatActivity {
                             if (task.isComplete()) {
                                 Toast.makeText(getApplicationContext(), "Update Data Successfully", Toast.LENGTH_SHORT).show();
                                 finish();
-                                Intent myIntent = new Intent(getApplicationContext(), MyProfileDoctorActivity.class);
-                                startActivity(myIntent);
+
 
                             }
                         }
@@ -137,6 +137,7 @@ public class EditMyProfileDoctorActivity extends AppCompatActivity {
         rootReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String medID  = Objects.requireNonNull(snapshot.child("MyProfile").child("regID").getValue()).toString();
                 String dName = Objects.requireNonNull(snapshot.child("MyProfile").child("displayName").getValue()).toString();
                 String fName = Objects.requireNonNull(snapshot.child("MyProfile").child("fullName").getValue()).toString();
                 String spec = Objects.requireNonNull(snapshot.child("MyProfile").child("specializations").getValue()).toString();
@@ -144,6 +145,7 @@ public class EditMyProfileDoctorActivity extends AppCompatActivity {
                 String address = Objects.requireNonNull(snapshot.child("MyProfile").child("homeAddress").getValue()).toString();
                 //String email = Objects.requireNonNull(snapshot.child("LoginDetails").child("username").getValue()).toString();
 
+                Objects.requireNonNull(docRegID.getEditText()).setText(medID);
                 Objects.requireNonNull(displayName.getEditText()).setText(dName);
                 Objects.requireNonNull(fullName.getEditText()).setText(fName);
                 Objects.requireNonNull(specializations.getEditText()).setText(spec);

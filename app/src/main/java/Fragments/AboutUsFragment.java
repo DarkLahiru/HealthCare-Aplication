@@ -1,4 +1,4 @@
-package fragments;
+package Fragments;
 
 import android.os.Bundle;
 
@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 
 import com.example.healthcare.NavigationActivity;
 import com.example.healthcare.R;
-
-import java.util.Objects;
 
 
 /**

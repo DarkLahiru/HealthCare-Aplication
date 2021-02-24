@@ -141,7 +141,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
 
     private BroadcastReceiver buttonNextReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, @NonNull Intent intent) {
             int step = intent.getIntExtra(Common.KEY_STEP,0);
             if (step == 1 ){Common.currentDoctor = intent.getStringExtra(Common.KEY_DOCTOR_STORE);}
             else if (step == 2 ){Common.currentLocation = intent.getStringExtra(Common.KEY_LOCATION_SELECTED);}

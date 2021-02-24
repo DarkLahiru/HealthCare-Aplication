@@ -42,6 +42,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import Profile.MyProfileActivity;
@@ -134,6 +135,7 @@ public class NewReportActivity extends AppCompatActivity {
                         textStartDate.setText(strMonth + "/" + strDay + "/" + year);
                     }
                 }, year, month, day);
+                datePicker.getDatePicker().setMaxDate(new Date().getTime());
                 datePicker.show();
             }
         });
